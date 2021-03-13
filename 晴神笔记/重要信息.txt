@@ -1,0 +1,37 @@
+习题册代码地址：
+https://algorithmnote.coding.net/login?redirect=https%253A%252F%252Falgorithmnote.coding.net%252Fp%252FPAT_Code%252Fd%252FPAT_Code%252Fgit
+
+使用指南：
+http://ow365.cn/?i=13246&furl=http%3A%2F%2Fcdn11.bookln.cn%2F22657_ef7feac92587d2fd041fee85399f54a4df022e4f.pdf
+
+PAT  乙级题库：
+https://pintia.cn/problem-sets/994805260223102976/problems/type/7
+
+PAT 甲级题库：
+https://pintia.cn/problem-sets/994805342720868352/problems/type/7
+
+CSP 官网：
+http://cspro.org/
+
+未通过题目：
+Phone Bills 甲级
+
+To Fill or Not to Fill 甲级
+
+凸多边形的外接圆半径问题：
+https://blog.csdn.net/flashmsn/article/details/94642687
+课本P134 二分法扩展。
+
+二分 codeup 打印极值点下标
+极值点的条件很奇怪，数学上显然等价的两个条件，一个对，
+一个错。
+
+第五章数学问题 最后两节，扩展的欧几里得算法，计算组合数
+
+第九章提高篇数据结构专题2，9.5节，AVL树（平衡二叉查找树）
+
+图算法 1003 Emergency (25 分) SPFA 一个测试点不过。
+原因查明：第一标尺不变，第二标尺更优的分支，要把被更新的节点v入队，这样才能使得后续
+第二标尺得到更新。并不是数路径数错了，而是队列的入队少了一个地方。而Bellman没有用到队列，
+所以对比Bellman代码无法看到问题。但是堆优化的Dijkstra用了优先队列，启发了我。
+

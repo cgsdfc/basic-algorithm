@@ -1,0 +1,48 @@
+测试用例1：
+输入：
+double x12, y=1, num_stu=89,a[30],*p;
+Sum=num+x12*y
+
+输出：
+Sum num 
+
+测试用例2：
+输入：
+int int123  =456;
+in = ab_ * (int123++)
+
+输出：
+in ab_ 
+
+自测用例1：
+输入：
+int x12, y=1, num_stu=89,a[30],*p;
+Sum=num+（x12*y）-(*p)
+
+输出：
+Sum num 
+
+自测用例2：（*比较坑的情况，存疑）
+输入：
+int *p, sum = 10;
+p = &abc + &sum;
+
+输出：
+abc 
+
+自测用例3：
+输入：
+int x, y=1, *p = &sum;
+*p = 2 + y = x;
+
+输出：
+（换行）
+
+自测用例4：
+输入：
+double double123 = 456.78, f[20][30][10];
+dou = c[1][2][3]
+
+输出：
+dou c
+

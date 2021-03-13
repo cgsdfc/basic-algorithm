@@ -1,0 +1,54 @@
+10
+CSP
+
+CSP is
+a real realrealrealrealreal 
+     competition.
+
+   
+Come   and   join   us   
+
+
+----------------------------
+
+CSP
+
+CSP is a r
+eal realre
+alrealreal
+real compe
+tition.
+
+Come   and
+join   us
+10
+
+-----------------------
+10
+* CSP
+    
+*   CSP is
+  * a real  
+     competition.
+* 
+  * Come!   and   join.
+*Tel:
+* 12345
+* 
+
+-------------------------
+ . CSP
+
+ . CSP is 
+   * a rea
+   l compe
+   tition.
+ . * Come!
+   and   j
+   oin.
+
+*Tel:
+
+ . 12345
+ . 
+

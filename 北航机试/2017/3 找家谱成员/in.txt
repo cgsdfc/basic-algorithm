@@ -1,0 +1,53 @@
+测试用例1：
+输入：
+Ye Shu Ba
+Shu Ge Mei1
+Ba Self Mei2
+Ge Son1 Son2
+Son2 Mei1
+
+输出：
+Shu 1
+
+自测用例1：
+输入：
+Ye Shu Ba
+Shu Ge Mei1
+Ba Self Mei2
+Ge Son1 Son2
+Son2 Son1
+
+输出：
+Ge 0
+
+自测用例2：
+输入：
+Ye Shu Ba
+Shu Ge Mei1
+Ba Self Mei2
+Ge Son1 Son2
+Son2 Self
+
+输出：
+Ye 1
+
+自测用例3：（存疑）
+输入：
+Ye Shu Ba
+Shu Ge Mei1
+Ba Self Mei2
+Ge Son1 Son2
+Son2 Son2
+
+输出：
+Son2 0
+
+输入：
+Ye Shu Ba
+Shu Ge Mei1
+Ba Self Mei2
+Ge Son1 Son2
+Ye Son2
+
+输出：
+Ye 3

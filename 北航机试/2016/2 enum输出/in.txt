@@ -1,0 +1,50 @@
+测试用例1：
+输入： 
+enum BOOL{true,false};
+
+输出：
+true 0
+false 1
+
+测试用例2：
+输入： 
+enum date{JAN=1,FEB,MAR,APR,MAY,JUN,JULY,AUG,SEP,OCT,NOV,DEC,MON=1,TUE,WED,THU,FRI,SAT,SUN,found=1949};
+
+输出：
+JAN1
+FEB2
+MAR3
+APR4
+MAY5
+JUN6
+JULY7
+AUG8
+SEP9
+OCT10
+NOV11
+DEC12
+MON1
+TUE2
+WED3
+THU4
+FRI5
+SAT6
+SUN7
+found1949
+
+自测用例1：
+输入：
+enum _B1O2O3L{true,false=0};
+
+输出：
+true 0
+false 0
+
+自测用例2：（存疑）
+输入：
+enum _B1O2O3L{true,false=02};
+
+输出：
+true 0
+false 2
+

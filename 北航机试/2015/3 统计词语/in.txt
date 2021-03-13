@@ -1,0 +1,47 @@
+测试用例1：
+输入：
+we are family.
+you and me are family, you are my sister.
+
+输出：
+and
+are
+family
+me
+my
+sister
+we
+you
+
+测试用例2：
+输入：
+supercalifragilisticexpialidocious!
+
+输出：
+supercalifragilisticexpialidocious
+
+自测用例1：
+输入：
+we are family.you and me are family, you are my sis
+
+输出：
+and
+are
+family
+me
+my
+sis
+we
+you
+
+自测用例2：
+输入：
+“these violent delights have violent ends.” --shakespeare
+
+输出：
+delights
+ends
+have
+shakespeare
+these
+violent
