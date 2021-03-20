@@ -1,0 +1,33 @@
+样例输入
+# Hello
+
+Hello, world!
+
+样例输出
+<h1>Hello</h1>
+<p>Hello, world!</p>
+
+Hello
+Hello
+
+Hello
+
+Hello
+Hello
+
+###Hello
+
+[Hello](link)
+
+* a
+* b
+* c
+
+_ememem_
+
+[_hello_](link)
+
+_[hello](link)_
+
+[_a_ _b_](link)
+
