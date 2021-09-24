@@ -63,8 +63,8 @@ bool SPFA(int s) {
     inq[u] = false;
     // 遍历u的邻居进行松弛。
     for (int j = 0; j < Adj[u].size(); j++) {
-      int v = Adj[u][i].v;
-      int dis = Adj[u][i].dis;
+      int v = Adj[u][j].v;
+      int dis = Adj[u][j].dis;
       if (d[u] + dis < d[v]) {
         d[v] = d[u] + dis;
         // 注意，更新d数组不受inq的约束。
