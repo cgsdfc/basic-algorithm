@@ -1,12 +1,13 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
- 
-/* run this program using the console pauser or add your own getch, system("pause") or input loop */
+
+/* run this program using the console pauser or add your own getch,
+ * system("pause") or input loop */
 
 int main(int argc, char *argv[]) {
-	freopen("./LevelBuildTreeIn.txt", "r", stdin);
-	
-	TestLevelBuildTree();
-	return 0;
+  freopen("./LevelBuildTreeIn.txt", "r", stdin);
+
+  TestLevelBuildTree();
+  return 0;
 }

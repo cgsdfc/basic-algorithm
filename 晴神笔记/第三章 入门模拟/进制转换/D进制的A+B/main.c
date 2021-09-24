@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-/* run this program using the console pauser or add your own getch, system("pause") or input loop */
+/* run this program using the console pauser or add your own getch,
+ * system("pause") or input loop */
 
 /*
 关于d进制的数最长是多少。
@@ -15,24 +16,24 @@
 */
 
 #define MAXN 35
- 
+
 int main(int argc, char *argv[]) {
-	int a,b,d;
-	int c;
-	int ans[MAXN];
-	int k;
-	
-	scanf("%d%d%d", &a, &b, &d);
-	c=a+b;
-	k=0;
-	do {
-		ans[k++]=c % d;
-		c /= d;
-	} while (c);
-	
-	while (k--) {
-		printf("%d", ans[k]);
-	}
-	putchar('\n');
-	return 0;
+  int a, b, d;
+  int c;
+  int ans[MAXN];
+  int k;
+
+  scanf("%d%d%d", &a, &b, &d);
+  c = a + b;
+  k = 0;
+  do {
+    ans[k++] = c % d;
+    c /= d;
+  } while (c);
+
+  while (k--) {
+    printf("%d", ans[k]);
+  }
+  putchar('\n');
+  return 0;
 }

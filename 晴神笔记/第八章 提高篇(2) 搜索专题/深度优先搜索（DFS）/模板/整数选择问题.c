@@ -1,6 +1,6 @@
+#include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
-#include <assert.h>
 
 /*
 给定N个整数，从中选择K个数，使得这K个数之和恰好等于一个给定的整数 X；
@@ -13,20 +13,20 @@
 DFS的方法是在枚举子集的基础上增加对已枚举元素个数的限制。
 */
 
-int N; // 全集的大小。
-int K; // 待枚举的子集的大小。K<=N
-int X; // 限制，子集元素的和等于X。
-int MaxSum=-1; // 最大平方和。
+int N;           // 全集的大小。
+int K;           // 待枚举的子集的大小。K<=N
+int X;           // 限制，子集元素的和等于X。
+int MaxSum = -1; // 最大平方和。
 
 #define MAXN 100
-// 全集的元素。 
+// 全集的元素。
 int A[MAXN];
 
-// 保存最优方案（子集） 
+// 保存最优方案（子集）
 struct {
-	int data[MAXN];
-	int len;
-} ans, temp; 
+  int data[MAXN];
+  int len;
+} ans, temp;
 
 /*
 和子集枚举有相同的框架，但是把枚举的子集大小限制在K，
@@ -35,38 +35,37 @@ struct {
 index：当前要考虑的元素下标。
 nowK：当前产生的子集大小（对应 temp.len）。
 nowX：当前子集的元素和。
-nowS：当前子集元素的平方和。 
-*/ 
-static
-void DFS(int index, int nowK, int nowX, int nowS) {
-	int x;
-	/*
-	特判：当前状态有解，应该更新最大值。
-	*/
-	if (nowK == K && nowX == X) {
-		if (nowS > MaxSum) {
-			MaxSum=nowS;
-			ans=temp;
-		}
-		return;
-	}
-	/*
-	特判：当前状态无解。
-	*/
-	if (index == N || nowK > K || nowX > X) {
-		return;
-	} 
-	/*
-	考虑当前的数，然后继续。
-	*/
-	x=A[index];
-	temp.data[temp.len++]=x;
-	DFS(index+1, nowK+1, nowX+x, nowS+x*x);
-	--temp.len;
-	
-	// 不选当前数。
-	DFS(index+1, nowK, nowX, nowS); 
-} 
+nowS：当前子集元素的平方和。
+*/
+static void DFS(int index, int nowK, int nowX, int nowS) {
+  int x;
+  /*
+  特判：当前状态有解，应该更新最大值。
+  */
+  if (nowK == K && nowX == X) {
+    if (nowS > MaxSum) {
+      MaxSum = nowS;
+      ans = temp;
+    }
+    return;
+  }
+  /*
+  特判：当前状态无解。
+  */
+  if (index == N || nowK > K || nowX > X) {
+    return;
+  }
+  /*
+  考虑当前的数，然后继续。
+  */
+  x = A[index];
+  temp.data[temp.len++] = x;
+  DFS(index + 1, nowK + 1, nowX + x, nowS + x * x);
+  --temp.len;
+
+  // 不选当前数。
+  DFS(index + 1, nowK, nowX, nowS);
+}
 
 /*
 问题的变式
@@ -83,40 +82,39 @@ void DFS(int index, int nowK, int nowX, int nowS) {
 
 死胡同仍然是：
 1. 满K个元素。
-2. N个元素考虑完。 
+2. N个元素考虑完。
 */
 static void DFS2(int index, int nowK, int nowX, int nowS) {
-	int x;
-	/*
-	特判：当前状态有解，应该更新最大值。
-	*/
-	if (nowK == K && nowX == X) {
-		if (nowS > MaxSum) {
-			MaxSum=nowS;
-			ans=temp;
-		}
-		return;
-	}
-	/*
-	特判：当前状态无解。
-	*/
-	if (index == N || nowK > K || nowX > X) {
-		return;
-	} 
-	/*
-	考虑当前的数，然后继续。
-	*/
-	x=A[index];
-	temp.data[temp.len++]=x;
-	/*
-	元素可重复的修改：
-	取index后，继续考虑index，直到到达边界，就会通过下面的代码
-	考虑其他元素。即 index 参数这里，index+1 改为 index。 
-	*/ 
-	DFS2(index, nowK+1, nowX+x, nowS+x*x);
-	--temp.len;
-	
-	// 不选当前数。
-	DFS2(index+1, nowK, nowX, nowS); 
-}
+  int x;
+  /*
+  特判：当前状态有解，应该更新最大值。
+  */
+  if (nowK == K && nowX == X) {
+    if (nowS > MaxSum) {
+      MaxSum = nowS;
+      ans = temp;
+    }
+    return;
+  }
+  /*
+  特判：当前状态无解。
+  */
+  if (index == N || nowK > K || nowX > X) {
+    return;
+  }
+  /*
+  考虑当前的数，然后继续。
+  */
+  x = A[index];
+  temp.data[temp.len++] = x;
+  /*
+  元素可重复的修改：
+  取index后，继续考虑index，直到到达边界，就会通过下面的代码
+  考虑其他元素。即 index 参数这里，index+1 改为 index。
+  */
+  DFS2(index, nowK + 1, nowX + x, nowS + x * x);
+  --temp.len;
 
+  // 不选当前数。
+  DFS2(index + 1, nowK, nowX, nowS);
+}

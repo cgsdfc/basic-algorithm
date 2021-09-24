@@ -12,10 +12,10 @@
 
 基本属性：
 1. 树的节点总数N。
-	N=0，则为空树。遍历所有节点即可获取，或者维护size变量。
-	
+        N=0，则为空树。遍历所有节点即可获取，或者维护size变量。
+
 2. 节点的度，等于节点的孩子数。
-	
+
 3. 树的度，即所有节点的度的最大值。
 
 4. 节点的层次，根节点在第一层，其他节点的层次是其父节点层次加1.
@@ -25,40 +25,36 @@
 
 typedef struct Node Node;
 struct Node {
-	int data;
-	Node* child; // 第一个孩子 
-	Node* sibl; // 下一个兄弟。 
-}; 
+  int data;
+  Node *child; // 第一个孩子
+  Node *sibl;  // 下一个兄弟。
+};
 
-// 节点的度就是孩子数。 
-int NodeDegree(Node* n) {
-	int sum=0;
-	Node* ch;
-	for (ch=n->child; ch; ch=ch->sibl) {
-		++sum;
-	}
-	return sum;
-} 
-
-int NodeCount(Node* n) {
-	int sum=0;
-	Node* ch;
-	
-	if (!n) return 0;
-	for (ch=n->child; ch; ch=ch->sibl) {
-		sum += NodeCount(ch);
-	}
-	return sum+1;
+// 节点的度就是孩子数。
+int NodeDegree(Node *n) {
+  int sum = 0;
+  Node *ch;
+  for (ch = n->child; ch; ch = ch->sibl) {
+    ++sum;
+  }
+  return sum;
 }
 
-int EdgeCount(Node* n) {
-	return NodeCount(n) - 1;
+int NodeCount(Node *n) {
+  int sum = 0;
+  Node *ch;
+
+  if (!n)
+    return 0;
+  for (ch = n->child; ch; ch = ch->sibl) {
+    sum += NodeCount(ch);
+  }
+  return sum + 1;
 }
+
+int EdgeCount(Node *n) { return NodeCount(n) - 1; }
 
 /*
 判断一棵树是否为空。
-*/ 
-int IsEmpty(Node* n) {
-	return 0 == NodeCount(n);	
-} 
-
+*/
+int IsEmpty(Node *n) { return 0 == NodeCount(n); }
