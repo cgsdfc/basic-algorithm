@@ -6,3 +6,5 @@ Makefile.win
 *.docx
 *.pdf
 *.xlsx
+build/
+.vscode/
