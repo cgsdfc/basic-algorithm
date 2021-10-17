@@ -6,7 +6,7 @@
 
 // 线性表的两种实现：顺序表和链表，以及各种操作。
 
-int main(int argc, char *argv[]) {
-  TestRemoveAll();
-  return 0;
+int main(int argc, char* argv[]) {
+    TestRemoveAll();
+    return 0;
 }

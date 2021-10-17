@@ -13,7 +13,7 @@
 2. 无环，联通并且 E=V-1。
 */
 
-int N, M; // N个节点，M段线路。
+int N, M;  // N个节点，M段线路。
 
 #define MAXN 1005
 
@@ -28,53 +28,51 @@ BUG点：
 int father[MAXN];
 
 int Find(int x) {
-  int a = x;
-  while (x != father[x]) {
-    x = father[x];
-  }
-  // 超时了，必须压缩。
-  while (a != father[a]) {
-    int temp = father[a];
-    father[a] = x;
-    a = temp;
-  }
-  return x;
+    int a = x;
+    while (x != father[x]) {
+        x = father[x];
+    }
+    // 超时了，必须压缩。
+    while (a != father[a]) {
+        int temp = father[a];
+        father[a] = x;
+        a = temp;
+    }
+    return x;
 }
 
 void Union(int a, int b) {
-  int faA = Find(a);
-  int faB = Find(b);
-  if (faA != faB) {
-    father[faA] = faB;
-  }
+    int faA = Find(a);
+    int faB = Find(b);
+    if (faA != faB) { father[faA] = faB; }
 }
 
-int main(int argc, char **argv) {
-  // 注意，NM都为0时输入结束，即只要其中一个不为零就要处理。
-  while (scanf("%d%d", &N, &M), (N || M)) {
-    bool flag = M == N - 1;
-    for (int i = 1; i <= N; ++i) {
-      father[i] = i;
+int main(int argc, char** argv) {
+    // 注意，NM都为0时输入结束，即只要其中一个不为零就要处理。
+    while (scanf("%d%d", &N, &M), (N || M)) {
+        bool flag = M == N - 1;
+        for (int i = 1; i <= N; ++i) {
+            father[i] = i;
+        }
+        /*
+        利用并查集判断联通性，
+        并查集会忽略掉成环的边，而得出森林。
+        最后检查是否只有一个集合即可。
+        */
+        while (M--) {
+            int a, b;
+            // 无重边，无自环。
+            scanf("%d%d", &a, &b);
+            Union(a, b);
+        }
+        int num = 0;  // 多少个集合。
+        for (int i = 1; i <= N; ++i) {
+            if (father[i] == i) {
+                ++num;  // 一个根节点代表一个集合。
+            }
+        }
+        puts(flag && num == 1 ? "Yes" : "No");
     }
-    /*
-    利用并查集判断联通性，
-    并查集会忽略掉成环的边，而得出森林。
-    最后检查是否只有一个集合即可。
-    */
-    while (M--) {
-      int a, b;
-      // 无重边，无自环。
-      scanf("%d%d", &a, &b);
-      Union(a, b);
-    }
-    int num = 0; // 多少个集合。
-    for (int i = 1; i <= N; ++i) {
-      if (father[i] == i) {
-        ++num; // 一个根节点代表一个集合。
-      }
-    }
-    puts(flag && num == 1 ? "Yes" : "No");
-  }
 
-  return 0;
+    return 0;
 }

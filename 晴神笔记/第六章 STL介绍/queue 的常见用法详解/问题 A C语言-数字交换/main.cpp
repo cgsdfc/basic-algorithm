@@ -16,84 +16,76 @@ using namespace std;
 */
 
 void Print(queue<int> q) {
-  while (!q.empty()) {
-    printf("%d ", q.front());
-    q.pop();
-  }
-  printf("\n");
+    while (!q.empty()) {
+        printf("%d ", q.front());
+        q.pop();
+    }
+    printf("\n");
 }
 
 /*
 把x出现的位置换为第一个元素，把第一个元素换为x。
 */
-void SwapFirst(queue<int> &q, int x) {
-  if (q.front() == x) {
-    return;
-  }
-  queue<int> temp;
-  temp.push(x); // x作为第一个元素。
-  int first = q.front();
-  q.pop();
-  while (!q.empty()) {
-    if (q.front() == x) {
-      // x出现了，换为first。
-      temp.push(first);
-    } else {
-      temp.push(q.front());
-    }
+void SwapFirst(queue<int>& q, int x) {
+    if (q.front() == x) { return; }
+    queue<int> temp;
+    temp.push(x);  // x作为第一个元素。
+    int first = q.front();
     q.pop();
-  }
-  q = temp;
+    while (!q.empty()) {
+        if (q.front() == x) {
+            // x出现了，换为first。
+            temp.push(first);
+        } else {
+            temp.push(q.front());
+        }
+        q.pop();
+    }
+    q = temp;
 }
 
 /*
 把x出现的位置换为最后一个元素，把最后一个元素换为x。
 */
-void SwapLast(queue<int> &q, int x) {
-  if (q.back() == x) {
-    return;
-  }
-  queue<int> temp;
-  int last = q.back();
-  // q的最后一个元素不能放入temp，
-  // 而应该把x作为最后一个放入temp。
-  while (q.size() != 1) {
-    if (q.front() == x) {
-      temp.push(last);
-    } else {
-      temp.push(q.front());
+void SwapLast(queue<int>& q, int x) {
+    if (q.back() == x) { return; }
+    queue<int> temp;
+    int last = q.back();
+    // q的最后一个元素不能放入temp，
+    // 而应该把x作为最后一个放入temp。
+    while (q.size() != 1) {
+        if (q.front() == x) {
+            temp.push(last);
+        } else {
+            temp.push(q.front());
+        }
+        q.pop();
     }
-    q.pop();
-  }
-  temp.push(x);
-  q = temp;
+    temp.push(x);
+    q = temp;
 }
 
-int main(int argc, char **argv) {
-  const int N = 10;
-  int i;
-  int Min, Max;
-  queue<int> q;
+int main(int argc, char** argv) {
+    const int N = 10;
+    int i;
+    int Min, Max;
+    queue<int> q;
 
-  for (int i = 0; i < N; ++i) {
-    int x;
-    scanf("%d", &x);
-    if (i == 0 || x > Max) {
-      Max = x;
+    for (int i = 0; i < N; ++i) {
+        int x;
+        scanf("%d", &x);
+        if (i == 0 || x > Max) { Max = x; }
+        if (i == 0 || x < Min) { Min = x; }
+        q.push(x);
     }
-    if (i == 0 || x < Min) {
-      Min = x;
-    }
-    q.push(x);
-  }
 
-  //	printf("Min %d Max %d\n", Min, Max);
+    //	printf("Min %d Max %d\n", Min, Max);
 
-  SwapFirst(q, Min);
-  //	Print(q);
+    SwapFirst(q, Min);
+    //	Print(q);
 
-  SwapLast(q, Max);
-  Print(q);
+    SwapLast(q, Max);
+    Print(q);
 
-  return 0;
+    return 0;
 }

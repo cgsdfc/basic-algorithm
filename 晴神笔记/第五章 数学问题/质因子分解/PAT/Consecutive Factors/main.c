@@ -31,56 +31,56 @@ len。这是有可能的，比如60，第一个序列：2 3，因为2*3*4=24 所以不能到5了。
 不能被序列的最后一个元素的下一个整除，这时候可以舍弃序列的前缀，向前移动，可能获取更长的序列。
 */
 void Find(ll N) {
-  ll i;
-  ll sqr;
-  ll max = -1;
-  ll pos;
+    ll i;
+    ll sqr;
+    ll max = -1;
+    ll pos;
 
-  sqr = sqrt(N);
+    sqr = sqrt(N);
 
-  //	printf("N %lld sqr %lld\n", N, sqr);
+    //	printf("N %lld sqr %lld\n", N, sqr);
 
-  for (i = 2; i <= sqr; ++i) {
-    ll j;
-    ll p;
-    ll len;
+    for (i = 2; i <= sqr; ++i) {
+        ll j;
+        ll p;
+        ll len;
 
-    if (N % i != 0) {
-      //			++i;
-      continue;
+        if (N % i != 0) {
+            //			++i;
+            continue;
+        }
+
+        p = i;
+        j = i + 1;
+        while (j <= sqr && N % (p * j) == 0) {
+            //			printf("j %lld p %lld\n", j,p);
+            p *= j;
+            ++j;
+        }
+
+        //		printf("i %lld j %lld\n",i,j);
+
+        len = j - i;
+        if (len > max) {
+            max = len;
+            pos = i;
+        }
+        //		i=j;
     }
-
-    p = i;
-    j = i + 1;
-    while (j <= sqr && N % (p * j) == 0) {
-      //			printf("j %lld p %lld\n", j,p);
-      p *= j;
-      ++j;
+    if (max == -1) {
+        // N是素数。
+        max = 1;
+        pos = N;
     }
-
-    //		printf("i %lld j %lld\n",i,j);
-
-    len = j - i;
-    if (len > max) {
-      max = len;
-      pos = i;
+    printf("%d\n", max);
+    for (i = pos; i < pos + max; ++i) {
+        if (i == pos) {
+            printf("%d", i);
+        } else {
+            printf("*%d", i);
+        }
     }
-    //		i=j;
-  }
-  if (max == -1) {
-    // N是素数。
-    max = 1;
-    pos = N;
-  }
-  printf("%d\n", max);
-  for (i = pos; i < pos + max; ++i) {
-    if (i == pos) {
-      printf("%d", i);
-    } else {
-      printf("*%d", i);
-    }
-  }
-  printf("\n");
+    printf("\n");
 }
 
 /*
@@ -90,10 +90,10 @@ void Find(ll N) {
 而任意一个小于等于sqrtN的因子的序列，它最短都是1.
 鉴于长度相同而要求开始元素最小，所以大于sqrtN的因子可以不考虑。
 */
-int main(int argc, char *argv[]) {
-  ll N;
+int main(int argc, char* argv[]) {
+    ll N;
 
-  scanf("%lld", &N);
-  Find(N);
-  return 0;
+    scanf("%lld", &N);
+    Find(N);
+    return 0;
 }

@@ -5,26 +5,30 @@
 
 #define MAXN 110
 
-int IsSpace(char c) { return c == ' ' || c == '\t' || c == '\r' || c == '\n'; }
+int IsSpace(char c) {
+    return c == ' ' || c == '\t' || c == '\r' || c == '\n';
+}
 
-int IsLower(char c) { return 'a' <= c && c <= 'z'; }
+int IsLower(char c) {
+    return 'a' <= c && c <= 'z';
+}
 
-int main(int argc, char *argv[]) {
-  char line[MAXN];
+int main(int argc, char* argv[]) {
+    char line[MAXN];
 
-  while (gets(line)) {
-    int i;
-    int len = strlen(line);
+    while (gets(line)) {
+        int i;
+        int len = strlen(line);
 
-    for (i = 0; i < len; ++i) {
-      char c = line[i];
-      if (IsLower(c) && (i == 0 || IsSpace(line[i - 1]))) {
-        putchar('A' + c - 'a');
-      } else {
-        putchar(c);
-      }
+        for (i = 0; i < len; ++i) {
+            char c = line[i];
+            if (IsLower(c) && (i == 0 || IsSpace(line[i - 1]))) {
+                putchar('A' + c - 'a');
+            } else {
+                putchar(c);
+            }
+        }
+        putchar('\n');
     }
-    putchar('\n');
-  }
-  return 0;
+    return 0;
 }

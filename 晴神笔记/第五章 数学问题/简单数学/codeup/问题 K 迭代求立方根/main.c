@@ -29,14 +29,14 @@ x/(3*y(n)*y(n)),其中y0=x.求给定的x经过n次迭代后立方根的值。
 40.302088
 */
 
-int main(int argc, char *argv[]) {
-  int x, n;
-  while (scanf("%d%d", &x, &n) != EOF) {
-    double y = x;
-    while (n--) {
-      y = y * 2 / 3 + x / (3 * y * y);
+int main(int argc, char* argv[]) {
+    int x, n;
+    while (scanf("%d%d", &x, &n) != EOF) {
+        double y = x;
+        while (n--) {
+            y = y * 2 / 3 + x / (3 * y * y);
+        }
+        printf("%.6f\n", y);
     }
-    printf("%.6f\n", y);
-  }
-  return 0;
+    return 0;
 }

@@ -5,9 +5,9 @@
  * system("pause") or input loop */
 
 typedef struct Person {
-  char name[10];
-  int age;
-  int net;
+    char name[10];
+    int age;
+    int net;
 } Person;
 
 #define MAXN 100005
@@ -22,19 +22,17 @@ Person per[MAXN];
 
 int Amax, Amin;
 
-int InRange(int age) { return Amin <= age && age <= Amax; }
+int InRange(int age) {
+    return Amin <= age && age <= Amax;
+}
 
-int CMP(const void *_a, const void *_b) {
-  Person *a = (Person *)_a;
-  Person *b = (Person *)_b;
+int CMP(const void* _a, const void* _b) {
+    Person* a = (Person*) _a;
+    Person* b = (Person*) _b;
 
-  if (a->net != b->net) {
-    return b->net - a->net;
-  }
-  if (a->age != b->age) {
-    return a->age - b->age;
-  }
-  return strcmp(a->name, b->name);
+    if (a->net != b->net) { return b->net - a->net; }
+    if (a->age != b->age) { return a->age - b->age; }
+    return strcmp(a->name, b->name);
 }
 
 /*
@@ -56,47 +54,45 @@ int CMP(const void *_a, const void *_b) {
 实测，能把数据量最大的一组的耗时从300ms降到150ms。
 */
 
-int main(int argc, char *argv[]) {
-  int n, k;
-  int i;
-  int nvalid;
+int main(int argc, char* argv[]) {
+    int n, k;
+    int i;
+    int nvalid;
 
-  freopen("./in.txt", "r", stdin);
+    freopen("./in.txt", "r", stdin);
 
-  scanf("%d%d", &n, &k);
-  for (i = 0; i < n; ++i) {
-    scanf("%s%d%d", per[i].name, &per[i].age, &per[i].net);
-  }
-  qsort(per, n, sizeof(Person), CMP);
-
-  // 预处理
-  nvalid = 0;
-  for (i = 0; i < n; ++i) {
-    int age = per[i].age;
-    if (count[age] < MAXM) {
-      count[age]++;
-      valid[nvalid++] = per[i];
+    scanf("%d%d", &n, &k);
+    for (i = 0; i < n; ++i) {
+        scanf("%s%d%d", per[i].name, &per[i].age, &per[i].net);
     }
-  }
+    qsort(per, n, sizeof(Person), CMP);
 
-  for (i = 0; i < k; ++i) {
-    int m;
-    int j;
-    int num;
+    // 预处理
+    nvalid = 0;
+    for (i = 0; i < n; ++i) {
+        int age = per[i].age;
+        if (count[age] < MAXM) {
+            count[age]++;
+            valid[nvalid++] = per[i];
+        }
+    }
 
-    scanf("%d%d%d", &m, &Amin, &Amax);
-    printf("Case #%d:\n", i + 1);
-    num = 0;
-    for (j = 0; j < nvalid; ++j) {
-      Person *p = &valid[j];
-      if (InRange(p->age) && num < m) {
-        ++num;
-        printf("%s %d %d\n", p->name, p->age, p->net);
-      }
+    for (i = 0; i < k; ++i) {
+        int m;
+        int j;
+        int num;
+
+        scanf("%d%d%d", &m, &Amin, &Amax);
+        printf("Case #%d:\n", i + 1);
+        num = 0;
+        for (j = 0; j < nvalid; ++j) {
+            Person* p = &valid[j];
+            if (InRange(p->age) && num < m) {
+                ++num;
+                printf("%s %d %d\n", p->name, p->age, p->net);
+            }
+        }
+        if (!num) { puts("None"); }
     }
-    if (!num) {
-      puts("None");
-    }
-  }
-  return 0;
+    return 0;
 }

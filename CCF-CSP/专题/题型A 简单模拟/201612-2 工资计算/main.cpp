@@ -18,28 +18,23 @@
 超过4500元部分应缴税(6500-4500)×20%=400元。总共缴税745元，税后所得为9255元。
 */
 
-const int P[][2] = {{0, 3},      {1500, 10},  {4500, 20}, {9000, 25},
-                    {35000, 30}, {55000, 35}, {80000, 45}};
+const int P[][2] = {{0, 3}, {1500, 10}, {4500, 20}, {9000, 25}, {35000, 30}, {55000, 35}, {80000, 45}};
 const int lenP = sizeof(P) / sizeof(P[0]);
 
 // 由税前工资，计算税后工资。
 int f(int S) {
-  if (S <= 3500)
-    return S;
-  int A = S - 3500;
-  for (int i = 0; i < lenP; ++i) {
-    int left = P[i][0];
-    int right = A;
-    if (i != lenP - 1 && P[i + 1][0] < A) {
-      right = P[i + 1][0];
+    if (S <= 3500) return S;
+    int A = S - 3500;
+    for (int i = 0; i < lenP; ++i) {
+        int left = P[i][0];
+        int right = A;
+        if (i != lenP - 1 && P[i + 1][0] < A) { right = P[i + 1][0]; }
+        if (left >= right) break;
+        int rate = P[i][1];
+        int cost = (right - left) * rate / 100;
+        S -= cost;
     }
-    if (left >= right)
-      break;
-    int rate = P[i][1];
-    int cost = (right - left) * rate / 100;
-    S -= cost;
-  }
-  return S;
+    return S;
 }
 
 /* run this program using the console pauser or add your own getch,
@@ -49,14 +44,13 @@ int f(int S) {
 #define MAXS 154400
 
 void GetMaxS() {
-  int S = 0;
-  while (1) {
-    int T = f(S);
-    if (T > MAXT)
-      break;
-    printf("S %d T %d\n", S, T);
-    S += 100;
-  }
+    int S = 0;
+    while (1) {
+        int T = f(S);
+        if (T > MAXT) break;
+        printf("S %d T %d\n", S, T);
+        S += 100;
+    }
 }
 
 /*
@@ -64,21 +58,21 @@ void GetMaxS() {
 题目保证S是整百的数，所以枚举的数据必须是整百的。
 */
 void Search(int left, int right, int T) {
-  while (left <= right) {
-    int mid = (left + right) / 2;
-    int t = f(mid * 100); // 整百。
-                          //		printf("t %d mid %d\n", t, mid);
+    while (left <= right) {
+        int mid = (left + right) / 2;
+        int t = f(mid * 100);  // 整百。
+                               //		printf("t %d mid %d\n", t, mid);
 
-    if (t == T) {
-      printf("%d\n", mid * 100);
-      return;
+        if (t == T) {
+            printf("%d\n", mid * 100);
+            return;
+        }
+        if (T < t) {
+            right = mid - 1;
+        } else {
+            left = mid + 1;
+        }
     }
-    if (T < t) {
-      right = mid - 1;
-    } else {
-      left = mid + 1;
-    }
-  }
 }
 
 /*
@@ -86,18 +80,18 @@ void Search(int left, int right, int T) {
 不必二分查找。
 */
 
-int main(int argc, char **argv) {
-  int T;
-  scanf("%d", &T);
-  // 二分查找。
-  Search(1, MAXS / 100, T);
-  return 0;
+int main(int argc, char** argv) {
+    int T;
+    scanf("%d", &T);
+    // 二分查找。
+    Search(1, MAXS / 100, T);
+    return 0;
 
-  // 线性查找。
-  int S = 100;
-  while (f(S) != T) {
-    S += 100;
-  }
-  printf("%d\n", S);
-  return 0;
+    // 线性查找。
+    int S = 100;
+    while (f(S) != T) {
+        S += 100;
+    }
+    printf("%d\n", S);
+    return 0;
 }

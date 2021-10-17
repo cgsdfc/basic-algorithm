@@ -19,35 +19,33 @@ typedef long long LL;
 递归写法，计算 pow(a, b) % m.
 */
 LL binaryPow(LL a, LL b, LL m) {
-  if (m == 1)
-    return 0; // 任何整数对1取余，都是0.
+    if (m == 1) return 0;  // 任何整数对1取余，都是0.
 
-  if (b == 0)
-    return 1;
-  if (b & 1) {
-    return a * binaryPow(a, b - 1, m) % m;
-    // 奇数，b-1
-  } else {
-    // 偶数，先算b/2.
-    LL mul = binaryPow(a, b / 2, m);
-    return mul * mul % m;
-  }
+    if (b == 0) return 1;
+    if (b & 1) {
+        return a * binaryPow(a, b - 1, m) % m;
+        // 奇数，b-1
+    } else {
+        // 偶数，先算b/2.
+        LL mul = binaryPow(a, b / 2, m);
+        return mul * mul % m;
+    }
 }
 
 /*
 迭代写法。
 */
 LL IterPow(LL a, LL b, LL m) {
-  LL ans = 1;
-  while (b > 0) {
-    if (b & 1) {
-      // 逢奇便取。
-      ans = ans * a % m;
+    LL ans = 1;
+    while (b > 0) {
+        if (b & 1) {
+            // 逢奇便取。
+            ans = ans * a % m;
+        }
+        // 底数自乘。
+        a = a * a % m;
+        // 指数右移。
+        b >>= 1;
     }
-    // 底数自乘。
-    a = a * a % m;
-    // 指数右移。
-    b >>= 1;
-  }
-  return ans;
+    return ans;
 }

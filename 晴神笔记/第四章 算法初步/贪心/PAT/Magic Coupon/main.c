@@ -12,83 +12,76 @@
 0作为正数，排在最后面。
 */
 typedef struct List {
-  int data[MAXN];
-  int negs;
-  int len;
+    int data[MAXN];
+    int negs;
+    int len;
 } List;
 
 List coupon, product;
 
-int CMP(const void *_a, const void *_b) {
-  int a = *(int *)_a;
-  int b = *(int *)_b;
+int CMP(const void* _a, const void* _b) {
+    int a = *(int*) _a;
+    int b = *(int*) _b;
 
-  if (a < 0 && b < 0) {
-    return a - b;
-  }
-  if (a >= 0 && b >= 0) {
-    return b - a;
-  }
-  // ab符号不同。负数在前，正数在后。
-  if (a < 0)
-    return -1;
-  return 1;
+    if (a < 0 && b < 0) { return a - b; }
+    if (a >= 0 && b >= 0) { return b - a; }
+    // ab符号不同。负数在前，正数在后。
+    if (a < 0) return -1;
+    return 1;
 }
 
-void Print(List *x) {
-  int i;
+void Print(List* x) {
+    int i;
 
-  printf("len %d negs %d\n", x->len, x->negs);
-  for (i = 0; i < x->len; ++i) {
-    printf("%d ", x->data[i]);
-  }
-  puts("");
-}
-
-void Read(List *x) {
-  int i;
-
-  x->negs = 0;
-  scanf("%d", &x->len);
-  for (i = 0; i < x->len; ++i) {
-    int v;
-    scanf("%d", &v);
-    x->data[i] = v;
-    if (v < 0) {
-      ++x->negs;
+    printf("len %d negs %d\n", x->len, x->negs);
+    for (i = 0; i < x->len; ++i) {
+        printf("%d ", x->data[i]);
     }
-  }
-  qsort(&x->data, x->len, sizeof(int), CMP);
-
-  //	Print(x);
+    puts("");
 }
 
-int FindMax(List *a, List *b) {
-  int ans = 0;
-  int i;
-  int j;
+void Read(List* x) {
+    int i;
 
-  // 先计算负负得正的和。
-  for (i = 0; i < a->negs && i < b->negs; ++i) {
-    ans += a->data[i] * b->data[i];
-  }
+    x->negs = 0;
+    scanf("%d", &x->len);
+    for (i = 0; i < x->len; ++i) {
+        int v;
+        scanf("%d", &v);
+        x->data[i] = v;
+        if (v < 0) { ++x->negs; }
+    }
+    qsort(&x->data, x->len, sizeof(int), CMP);
 
-  for (i = a->negs, j = b->negs; i < a->len && j < b->len; ++i, ++j) {
-    ans += a->data[i] * b->data[j];
-  }
-
-  return ans;
+    //	Print(x);
 }
 
-int main(int argc, char *argv[]) {
-  int res;
+int FindMax(List* a, List* b) {
+    int ans = 0;
+    int i;
+    int j;
 
-  freopen("./in.txt", "r", stdin);
+    // 先计算负负得正的和。
+    for (i = 0; i < a->negs && i < b->negs; ++i) {
+        ans += a->data[i] * b->data[i];
+    }
 
-  Read(&coupon);
-  Read(&product);
-  res = FindMax(&coupon, &product);
-  printf("%d\n", res);
+    for (i = a->negs, j = b->negs; i < a->len && j < b->len; ++i, ++j) {
+        ans += a->data[i] * b->data[j];
+    }
 
-  return 0;
+    return ans;
+}
+
+int main(int argc, char* argv[]) {
+    int res;
+
+    freopen("./in.txt", "r", stdin);
+
+    Read(&coupon);
+    Read(&product);
+    res = FindMax(&coupon, &product);
+    printf("%d\n", res);
+
+    return 0;
 }

@@ -15,18 +15,17 @@
 */
 
 typedef struct Node {
-  int val;
-  int pos;
+    int val;
+    int pos;
 } Node;
 
 Node a[MAXN];
 
-int CMP(const void *_a, const void *_b) {
-  Node *a = (Node *)_a;
-  Node *b = (Node *)_b;
-  if (a->val != b->val)
-    return a->val - b->val;
-  return a->pos - b->pos;
+int CMP(const void* _a, const void* _b) {
+    Node* a = (Node*) _a;
+    Node* b = (Node*) _b;
+    if (a->val != b->val) return a->val - b->val;
+    return a->pos - b->pos;
 }
 
 /*
@@ -34,54 +33,54 @@ int CMP(const void *_a, const void *_b) {
 则一定是原来数列里面等于x的第一个元素。
 */
 int lower_bound(int left, int right, int x) {
-  int mid;
-  while (left < right) {
-    mid = (left + right) / 2;
-    if (a[mid].val >= x) {
-      right = mid;
-    } else {
-      left = mid + 1;
+    int mid;
+    while (left < right) {
+        mid = (left + right) / 2;
+        if (a[mid].val >= x) {
+            right = mid;
+        } else {
+            left = mid + 1;
+        }
     }
-  }
-  return left;
+    return left;
 }
 
 void Print(int n) {
-  int i;
-  for (i = 0; i < n; ++i) {
-    printf("pos %d val %d\n", a[i].pos, a[i].val);
-  }
+    int i;
+    for (i = 0; i < n; ++i) {
+        printf("pos %d val %d\n", a[i].pos, a[i].val);
+    }
 }
 
-int main(int argc, char *argv[]) {
-  int n;
+int main(int argc, char* argv[]) {
+    int n;
 
-  while (scanf("%d", &n) != EOF) {
-    int i;
-    int res;
-    int x;
+    while (scanf("%d", &n) != EOF) {
+        int i;
+        int res;
+        int x;
 
-    for (i = 0; i < n; ++i) {
-      scanf("%d", &a[i].val);
-      a[i].pos = i;
+        for (i = 0; i < n; ++i) {
+            scanf("%d", &a[i].val);
+            a[i].pos = i;
+        }
+
+        //		Print(n);
+
+        scanf("%d", &x);
+        /*
+        写SizeOfElem参数时，如果直接写元素类型，则容易出错，
+        试想，元素类型变了，这里却忘了改。写sizeof(a[0])则自动更改。
+        */
+        qsort(a, n, sizeof(a[0]), CMP);
+
+        res = lower_bound(0, n, x);
+        if (res != n && a[res].val == x) {
+            printf("%d\n", a[res].pos);
+        } else {
+            puts("-1");
+        }
     }
 
-    //		Print(n);
-
-    scanf("%d", &x);
-    /*
-    写SizeOfElem参数时，如果直接写元素类型，则容易出错，
-    试想，元素类型变了，这里却忘了改。写sizeof(a[0])则自动更改。
-    */
-    qsort(a, n, sizeof(a[0]), CMP);
-
-    res = lower_bound(0, n, x);
-    if (res != n && a[res].val == x) {
-      printf("%d\n", a[res].pos);
-    } else {
-      puts("-1");
-    }
-  }
-
-  return 0;
+    return 0;
 }

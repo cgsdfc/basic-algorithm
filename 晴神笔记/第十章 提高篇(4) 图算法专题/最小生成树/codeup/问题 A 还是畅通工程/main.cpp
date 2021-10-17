@@ -31,43 +31,41 @@ int d[MAXN];
 */
 
 int Prim(int s) {
-  fill(vis, vis + MAXN, false);
-  fill(d, d + MAXN, INF);
-  d[s] = 0;
-  int ans = 0;
-  for (int i = 0; i < N; ++i) {
-    int u = -1;
-    int MIN = INF;
-    for (int j = 1; j <= N; ++j) {
-      if (!vis[j] && d[j] < MIN) {
-        MIN = d[j];
-        u = j;
-      }
+    fill(vis, vis + MAXN, false);
+    fill(d, d + MAXN, INF);
+    d[s] = 0;
+    int ans = 0;
+    for (int i = 0; i < N; ++i) {
+        int u = -1;
+        int MIN = INF;
+        for (int j = 1; j <= N; ++j) {
+            if (!vis[j] && d[j] < MIN) {
+                MIN = d[j];
+                u = j;
+            }
+        }
+        assert(u != -1);
+        vis[u] = true;
+        ans += d[u];
+        for (int j = 1; j <= N; ++j) {
+            if (!vis[j] && G[u][j] != INF && G[u][j] < d[j]) { d[j] = G[u][j]; }
+        }
     }
-    assert(u != -1);
-    vis[u] = true;
-    ans += d[u];
-    for (int j = 1; j <= N; ++j) {
-      if (!vis[j] && G[u][j] != INF && G[u][j] < d[j]) {
-        d[j] = G[u][j];
-      }
-    }
-  }
-  return ans;
+    return ans;
 }
 
-int main(int argc, char **argv) {
-  while (scanf("%d", &N), N) {
-    int M = N * (N - 1) / 2;
-    fill(G[0], G[0] + MAXN * MAXN, INF);
-    while (M--) {
-      int u, v, d;
-      scanf("%d%d%d", &u, &v, &d);
-      G[u][v] = G[v][u] = d;
+int main(int argc, char** argv) {
+    while (scanf("%d", &N), N) {
+        int M = N * (N - 1) / 2;
+        fill(G[0], G[0] + MAXN * MAXN, INF);
+        while (M--) {
+            int u, v, d;
+            scanf("%d%d%d", &u, &v, &d);
+            G[u][v] = G[v][u] = d;
+        }
+        int ans = Prim(1);
+        printf("%d\n", ans);
     }
-    int ans = Prim(1);
-    printf("%d\n", ans);
-  }
 
-  return 0;
+    return 0;
 }

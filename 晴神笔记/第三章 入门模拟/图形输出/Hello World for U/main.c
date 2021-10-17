@@ -21,39 +21,39 @@
 可以设一个k记录当前字符串的位置，便于找到要输出的字符。
 */
 
-int main(int argc, char *argv[]) {
-  int n, m, N;
-  char str[MAXN];
-  int i, j, k;
+int main(int argc, char* argv[]) {
+    int n, m, N;
+    char str[MAXN];
+    int i, j, k;
 
-  scanf("%s", str);
-  N = strlen(str);
-  n = (N + 2) / 3;
-  m = N + 2 - 2 * n;
+    scanf("%s", str);
+    N = strlen(str);
+    n = (N + 2) / 3;
+    m = N + 2 - 2 * n;
 
-  //	printf("n=%d, m=%d\n", n, m);
+    //	printf("n=%d, m=%d\n", n, m);
 
-  k = 0;
-  for (i = 0; i < n; ++i) {
-    if (i != n - 1) {
-      // 前n-1行的打印。
-      for (j = 0; j < m; ++j) {
-        if (j == 0) {
-          putchar(str[k]);
-        } else if (j == m - 1) {
-          putchar(str[N - 1 - k]);
+    k = 0;
+    for (i = 0; i < n; ++i) {
+        if (i != n - 1) {
+            // 前n-1行的打印。
+            for (j = 0; j < m; ++j) {
+                if (j == 0) {
+                    putchar(str[k]);
+                } else if (j == m - 1) {
+                    putchar(str[N - 1 - k]);
+                } else {
+                    putchar(' ');
+                }
+            }
+            ++k;  // 每打一行
         } else {
-          putchar(' ');
+            // 最后一行的打印
+            for (j = 0; j < m; ++j) {
+                putchar(str[k++]);
+            }
         }
-      }
-      ++k; // 每打一行
-    } else {
-      // 最后一行的打印
-      for (j = 0; j < m; ++j) {
-        putchar(str[k++]);
-      }
+        putchar('\n');
     }
-    putchar('\n');
-  }
-  return 0;
+    return 0;
 }

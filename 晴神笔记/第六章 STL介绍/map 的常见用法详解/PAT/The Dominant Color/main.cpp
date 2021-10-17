@@ -13,51 +13,51 @@ map<int, int> count;
 */
 
 void main2() {
-  int M, N;
-  int count = 0;
-  int ans;
+    int M, N;
+    int count = 0;
+    int ans;
 
-  scanf("%d%d", &M, &N);
-  for (int i = 0; i < N; ++i) {
-    for (int j = 0; j < M; ++j) {
-      int x;
-      scanf("%d", &x);
-      if (count == 0) {
-        count = 1;
-        ans = x;
-      } else {
-        if (ans == x) {
-          ++count;
-        } else {
-          --count;
+    scanf("%d%d", &M, &N);
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < M; ++j) {
+            int x;
+            scanf("%d", &x);
+            if (count == 0) {
+                count = 1;
+                ans = x;
+            } else {
+                if (ans == x) {
+                    ++count;
+                } else {
+                    --count;
+                }
+            }
         }
-      }
     }
-  }
-  printf("%d\n", ans);
+    printf("%d\n", ans);
 }
 
-int main(int argc, char **argv) {
-  main2();
-  return 0;
+int main(int argc, char** argv) {
+    main2();
+    return 0;
 
-  int M, N;
-  scanf("%d%d", &M, &N);
-  for (int i = 0; i < N; ++i) {
-    for (int j = 0; j < M; ++j) {
-      int x;
-      scanf("%d", &x);
-      count[x]++;
+    int M, N;
+    scanf("%d%d", &M, &N);
+    for (int i = 0; i < N; ++i) {
+        for (int j = 0; j < M; ++j) {
+            int x;
+            scanf("%d", &x);
+            count[x]++;
+        }
     }
-  }
-  int total = M * N;
-  for (map<int, int>::iterator it = count.begin(); it != count.end(); ++it) {
-    int x = it->first;
-    int cnt = it->second;
-    if (2 * cnt > total) {
-      printf("%d\n", x);
-      break;
+    int total = M * N;
+    for (map<int, int>::iterator it = count.begin(); it != count.end(); ++it) {
+        int x = it->first;
+        int cnt = it->second;
+        if (2 * cnt > total) {
+            printf("%d\n", x);
+            break;
+        }
     }
-  }
-  return 0;
+    return 0;
 }

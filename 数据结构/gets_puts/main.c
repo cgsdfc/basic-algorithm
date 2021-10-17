@@ -12,14 +12,14 @@ fgets，fputs是一对，他们对换行时原样输出和输入，即fputs不会自动添加换行，
 fgets也不会吃掉输入的换行。
 */
 
-int main(int argc, char *argv[]) {
-  char str[] = "Hello World";
-  puts(str);
-  puts(str);
-  printf("\n");
-  fputs(str, stdout);
-  fputs(str, stdout);
+int main(int argc, char* argv[]) {
+    char str[] = "Hello World";
+    puts(str);
+    puts(str);
+    printf("\n");
+    fputs(str, stdout);
+    fputs(str, stdout);
 
-  //	gets, fgets 的行为类似。
-  return 0;
+    //	gets, fgets 的行为类似。
+    return 0;
 }

@@ -16,35 +16,32 @@ const int W[17] = {7, 9, 10, 5, 8, 4, 2, 1, 6, 3, 7, 9, 10, 5, 8, 4, 2};
 const char Map[11] = "10X98765432";
 
 int Valid(char id[], int n) {
-  int sum = 0;
-  int i;
-  int z, m;
+    int sum = 0;
+    int i;
+    int z, m;
 
-  for (i = 0; i < 17; ++i) {
-    if (!isdigit(id[i]))
-      return 0;
-    sum += W[i] * (id[i] - '0');
-  }
-  z = sum % 11;
-  m = Map[z];
-  return m == id[17];
+    for (i = 0; i < 17; ++i) {
+        if (!isdigit(id[i])) return 0;
+        sum += W[i] * (id[i] - '0');
+    }
+    z = sum % 11;
+    m = Map[z];
+    return m == id[17];
 }
 
-int main(int argc, char *argv[]) {
-  char id[MAXN];
-  int n;
-  int invalid = 0;
+int main(int argc, char* argv[]) {
+    char id[MAXN];
+    int n;
+    int invalid = 0;
 
-  scanf("%d", &n);
-  while (n--) {
-    scanf("%s", id);
-    if (!Valid(id, strlen(id))) {
-      puts(id);
-      ++invalid;
+    scanf("%d", &n);
+    while (n--) {
+        scanf("%s", id);
+        if (!Valid(id, strlen(id))) {
+            puts(id);
+            ++invalid;
+        }
     }
-  }
-  if (!invalid) {
-    puts("All passed");
-  }
-  return 0;
+    if (!invalid) { puts("All passed"); }
+    return 0;
 }

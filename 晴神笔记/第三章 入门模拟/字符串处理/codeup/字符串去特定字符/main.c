@@ -22,28 +22,26 @@ good
 
 #define MAXN 1000
 
-int main(int argc, char *argv[]) {
-  char str[MAXN];
-  char c;
+int main(int argc, char* argv[]) {
+    char str[MAXN];
+    char c;
 
-  while (gets(str) && scanf("%c", &c) != EOF) {
-    int i;
-    int k;
-    int len = strlen(str);
+    while (gets(str) && scanf("%c", &c) != EOF) {
+        int i;
+        int k;
+        int len = strlen(str);
 
-    getchar();
-    k = 0;
-    /*
-    顺序表删除所有特定元素，不需要顺序表有序。
-    */
-    for (i = 0; i < len; ++i) {
-      if (str[i] != c) {
-        str[k++] = str[i];
-      }
+        getchar();
+        k = 0;
+        /*
+        顺序表删除所有特定元素，不需要顺序表有序。
+        */
+        for (i = 0; i < len; ++i) {
+            if (str[i] != c) { str[k++] = str[i]; }
+        }
+        str[k] = 0;
+        puts(str);
     }
-    str[k] = 0;
-    puts(str);
-  }
 
-  return 0;
+    return 0;
 }

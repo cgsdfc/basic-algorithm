@@ -30,29 +30,26 @@ You love Tian Qin
 
 char str[MAXN], a[MAXN], b[MAXN];
 
-int main(int argc, char *argv[]) {
-  while (gets(str) && gets(a) && gets(b)) {
-    int i;
-    int len = strlen(str);
-    char buf[MAXN];
-    int k = 0;
+int main(int argc, char* argv[]) {
+    while (gets(str) && gets(a) && gets(b)) {
+        int i;
+        int len = strlen(str);
+        char buf[MAXN];
+        int k = 0;
 
-    for (i = 0; i < len; ++i) {
-      char c = str[i];
-      if (isalpha(c)) {
-        buf[k++] = c;
-      }
+        for (i = 0; i < len; ++i) {
+            char c = str[i];
+            if (isalpha(c)) { buf[k++] = c; }
 
-      if (c == ' ' || i == len - 1) {
-        // 单词结束边界。
-        buf[k] = 0;
-        k = 0;
-        printf("%s", (0 == strcmp(buf, a)) ? b : buf);
-        if (c == ' ')
-          putchar(c);
-      }
+            if (c == ' ' || i == len - 1) {
+                // 单词结束边界。
+                buf[k] = 0;
+                k = 0;
+                printf("%s", (0 == strcmp(buf, a)) ? b : buf);
+                if (c == ' ') putchar(c);
+            }
+        }
+        putchar('\n');
     }
-    putchar('\n');
-  }
-  return 0;
+    return 0;
 }

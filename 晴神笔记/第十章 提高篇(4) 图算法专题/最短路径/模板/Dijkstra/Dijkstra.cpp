@@ -20,32 +20,32 @@
                 2. 优化距离时，只考虑未访问的节点。
 */
 
-#include <algorithm> // fill
+#include <algorithm>  // fill
 #include <cstdio>
-#include <queue> // pq
+#include <queue>  // pq
 #include <vector>
 using namespace std;
 
-#define MAXN 1000 // 节点数上限，注意节点从0--N-1 。
+#define MAXN 1000  // 节点数上限，注意节点从0--N-1 。
 
-int N; // 节点数。
+int N;  // 节点数。
 
-int d[MAXN];    // 距离数组，初始化为 INF
-bool vis[MAXN]; // 标记数组，初始化为 false
+int d[MAXN];     // 距离数组，初始化为 INF
+bool vis[MAXN];  // 标记数组，初始化为 false
 const int INF = 1e9;
 
 // 表示一条带权边。
 struct Node {
-  int v;    // 终点。
-  int dist; // 边权。
-  Node(int v_, int dist_) {
-    v = v_;
-    dist = dist_;
-  }
+    int v;     // 终点。
+    int dist;  // 边权。
+    Node(int v_, int dist_) {
+        v = v_;
+        dist = dist_;
+    }
 };
 
 // 注意邻接表要带上边权。
-vector<Node> Adj[MAXN]; // 邻接表。
+vector<Node> Adj[MAXN];  // 邻接表。
 
 /*
 邻接表版本迪杰斯特拉
@@ -54,40 +54,40 @@ s：源点。
 */
 
 void Dijkstra(int s) {
-  // 初始化。
-  fill(d, d + N, INF);       // 距离无穷大。
-  fill(vis, vis + N, false); // 节点未访问。
-  d[s] = 0; // 注意，这个容易漏掉！！没有这个循环只进行一步。
+    // 初始化。
+    fill(d, d + N, INF);        // 距离无穷大。
+    fill(vis, vis + N, false);  // 节点未访问。
+    d[s] = 0;                   // 注意，这个容易漏掉！！没有这个循环只进行一步。
 
-  for (int i = 0; i < N; ++i) { // 循环N轮，每轮解决一个节点。
-    // 查找当前最优节点。
-    int u = -1;
-    int MIN = INF;
-    // 线性扫描，如果查找不到小于INF的节点，则说明剩下节点全部不可达。
-    for (int j = 0; j < N; ++j) {
-      if (!vis[j] && d[j] < MIN) {
-        // 注意已访问节点不要考虑。
-        u = j;
-        MIN = d[j];
-      }
+    for (int i = 0; i < N; ++i) {  // 循环N轮，每轮解决一个节点。
+        // 查找当前最优节点。
+        int u = -1;
+        int MIN = INF;
+        // 线性扫描，如果查找不到小于INF的节点，则说明剩下节点全部不可达。
+        for (int j = 0; j < N; ++j) {
+            if (!vis[j] && d[j] < MIN) {
+                // 注意已访问节点不要考虑。
+                u = j;
+                MIN = d[j];
+            }
+        }
+        if (u == -1) {
+            // 不存在比INF更优的节点，所以不可能继续优化。
+            return;
+        }
+        // 找到当前最优节点u，根据贪心策略，u就是全局最优解。
+        vis[u] = true;
+        // 根据u进行优化，即通过u为中间节点，优化其他未访问节点的d。
+        // 实际上要处理的节点就是u的邻居。即遍历u的邻居。
+        for (int j = 0; j < N; ++j) {
+            int v = Adj[u][j].v;
+            int dist = Adj[u][j].dist;
+            if (!vis[v] && d[u] + dist < d[v]) {
+                // 存在更优解。
+                d[v] = d[u] + dist;
+            }
+        }
     }
-    if (u == -1) {
-      // 不存在比INF更优的节点，所以不可能继续优化。
-      return;
-    }
-    // 找到当前最优节点u，根据贪心策略，u就是全局最优解。
-    vis[u] = true;
-    // 根据u进行优化，即通过u为中间节点，优化其他未访问节点的d。
-    // 实际上要处理的节点就是u的邻居。即遍历u的邻居。
-    for (int j = 0; j < N; ++j) {
-      int v = Adj[u][j].v;
-      int dist = Adj[u][j].dist;
-      if (!vis[v] && d[u] + dist < d[v]) {
-        // 存在更优解。
-        d[v] = d[u] + dist;
-      }
-    }
-  }
 }
 
 // 邻接矩阵，保存边权，或者INF，如果边不存在。
@@ -99,30 +99,26 @@ int G[MAXN][MAXN];
 唯一的区别是优化操作的遍历邻居部分。
 */
 void Dijkstra2(int s) {
-  fill(d, d + N, INF);
-  fill(vis, vis + N, false);
-  d[s] = 0;
-  for (int i = 0; i < N; ++i) {
-    int u = -1;
-    int MIN = INF;
-    for (int j = 0; j < N; ++j) {
-      if (!vis[j] && d[j] < MIN) {
-        u = j;
-        MIN = d[j];
-      }
+    fill(d, d + N, INF);
+    fill(vis, vis + N, false);
+    d[s] = 0;
+    for (int i = 0; i < N; ++i) {
+        int u = -1;
+        int MIN = INF;
+        for (int j = 0; j < N; ++j) {
+            if (!vis[j] && d[j] < MIN) {
+                u = j;
+                MIN = d[j];
+            }
+        }
+        if (u == -1) { return; }
+        // u的最短距离在前几轮产生，只是在这一轮才能确定u的最短距离不会再变化了。
+        // 也就是说，每轮的最短距离的最小值，不可能再更优了，因此就定下来了。
+        vis[u] = true;
+        for (int v = 0; v < N; ++v) {
+            if (!vis[v] && G[u][v] != INF && G[u][v] + d[u] < d[v]) { d[v] = G[u][v] + d[u]; }
+        }
     }
-    if (u == -1) {
-      return;
-    }
-    // u的最短距离在前几轮产生，只是在这一轮才能确定u的最短距离不会再变化了。
-    // 也就是说，每轮的最短距离的最小值，不可能再更优了，因此就定下来了。
-    vis[u] = true;
-    for (int v = 0; v < N; ++v) {
-      if (!vis[v] && G[u][v] != INF && G[u][v] + d[u] < d[v]) {
-        d[v] = G[u][v] + d[u];
-      }
-    }
-  }
 }
 
 /*
@@ -135,9 +131,9 @@ void Dijkstra2(int s) {
 */
 
 struct cmp {
-  bool operator()(Node a, Node b) {
-    return a.dist > b.dist; // 小顶堆。
-  }
+    bool operator()(Node a, Node b) {
+        return a.dist > b.dist;  // 小顶堆。
+    }
 };
 
 typedef priority_queue<Node, vector<Node>, cmp> PQueue;
@@ -146,65 +142,63 @@ typedef priority_queue<Node, vector<Node>, cmp> PQueue;
 注意堆的处理。
 */
 void Dijkstra3(int s) {
-  PQueue Q;
-  fill(vis, vis + N, false);
-  fill(d, d + N, INF);
-  d[s] = 0;
-  Q.push(Node(s, 0));
+    PQueue Q;
+    fill(vis, vis + N, false);
+    fill(d, d + N, INF);
+    d[s] = 0;
+    Q.push(Node(s, 0));
 
-  // 用类似BFS的写法，更顺手。
-  while (!Q.empty()) {
-    Node top = Q.top();
-    Q.pop();
-    if (vis[top.v]) {
-      continue;
-      // 是个冗余元素，因为更优的距离被发现了，并标记为已访问，而旧的解无法从堆中删除。
-      // 注意，这种冗余元素是无法避免的。
+    // 用类似BFS的写法，更顺手。
+    while (!Q.empty()) {
+        Node top = Q.top();
+        Q.pop();
+        if (vis[top.v]) {
+            continue;
+            // 是个冗余元素，因为更优的距离被发现了，并标记为已访问，而旧的解无法从堆中删除。
+            // 注意，这种冗余元素是无法避免的。
+        }
+        // 如果Q变为空都找不到v，则算法结束，不需要特判。
+        int v = top.v;
+        vis[v] = true;
+        // 优化操作，被优化的节点要插入堆（否则不会被算法考虑）。
+        for (int i = 0; i < Adj[v].size(); ++i) {
+            int u = Adj[v][i].v;
+            int dist = Adj[v][i].dist;
+            // 经过v的路径更近。
+            if (!vis[u] && d[v] + dist < d[u]) {
+                d[u] = d[v] + dist;
+                // 注意，把更优的距离直接加入堆，当最优解出队后，
+                // vis设为true，则其他相同节点的距离的节点，就会被忽略掉。
+                Q.push(Node(u, d[u]));
+            }
+        }
     }
-    // 如果Q变为空都找不到v，则算法结束，不需要特判。
-    int v = top.v;
-    vis[v] = true;
-    // 优化操作，被优化的节点要插入堆（否则不会被算法考虑）。
-    for (int i = 0; i < Adj[v].size(); ++i) {
-      int u = Adj[v][i].v;
-      int dist = Adj[v][i].dist;
-      // 经过v的路径更近。
-      if (!vis[u] && d[v] + dist < d[u]) {
-        d[u] = d[v] + dist;
-        // 注意，把更优的距离直接加入堆，当最优解出队后，
-        // vis设为true，则其他相同节点的距离的节点，就会被忽略掉。
-        Q.push(Node(u, d[u]));
-      }
-    }
-  }
 }
 
 /*
 堆优化，邻接矩阵。
 */
 void Dijkstra4(int s) {
-  // 初始化。
-  fill(vis, vis + N, false);
-  fill(d, d + N, INF);
-  PQueue Q;
-  Q.push(Node(s, 0));
-  d[s] = 0;
+    // 初始化。
+    fill(vis, vis + N, false);
+    fill(d, d + N, INF);
+    PQueue Q;
+    Q.push(Node(s, 0));
+    d[s] = 0;
 
-  while (!Q.empty()) {
-    Node top = Q.top();
-    if (vis[top.v]) {
-      continue;
+    while (!Q.empty()) {
+        Node top = Q.top();
+        if (vis[top.v]) { continue; }
+        int u = top.v;
+        vis[u] = true;
+        for (int v = 0; v < N; ++v) {
+            // 特判一下INF，可以防止溢出。
+            if (!vis[v] && G[u][v] != INF && G[u][v] + d[u] < d[v]) {
+                d[v] = G[u][v] + d[u];
+                Q.push(Node(v, d[v]));
+            }
+        }
     }
-    int u = top.v;
-    vis[u] = true;
-    for (int v = 0; v < N; ++v) {
-      // 特判一下INF，可以防止溢出。
-      if (!vis[v] && G[u][v] != INF && G[u][v] + d[u] < d[v]) {
-        d[v] = G[u][v] + d[u];
-        Q.push(Node(v, d[v]));
-      }
-    }
-  }
 }
 
 /*
@@ -229,41 +223,39 @@ void Dijkstra4(int s) {
 int pre[MAXN];
 
 void Dijkstra5(int s) {
-  // 初始化。
-  fill(vis, vis + N, false);
-  fill(d, d + N, INF);
-  /*
-  pre的初始化，令各个元素为i，表示每个前驱为点自身。
-  如果图是联通图，则最后pre是一颗树，s是唯一的根，只有s使得
-  pre[s]=s。这在打印路径有用。
-  */
-  for (int i = 0; i < N; ++i) {
-    pre[i] = i;
-  }
-
-  PQueue Q;
-  Q.push(Node(s, 0));
-  d[s] = 0;
-
-  while (!Q.empty()) {
-    Node top = Q.top();
-    if (vis[top.v]) {
-      continue;
+    // 初始化。
+    fill(vis, vis + N, false);
+    fill(d, d + N, INF);
+    /*
+    pre的初始化，令各个元素为i，表示每个前驱为点自身。
+    如果图是联通图，则最后pre是一颗树，s是唯一的根，只有s使得
+    pre[s]=s。这在打印路径有用。
+    */
+    for (int i = 0; i < N; ++i) {
+        pre[i] = i;
     }
-    int u = top.v;
-    vis[u] = true;
-    for (int v = 0; v < N; ++v) {
-      // 特判一下INF，可以防止溢出。
-      if (!vis[v] && G[u][v] != INF && G[u][v] + d[u] < d[v]) {
-        d[v] = G[u][v] + d[u];
-        Q.push(Node(v, d[v]));
-        /*
-        pre的更新。
-        */
-        pre[v] = u; // 被优化的v的前驱是当前最优解u。
-      }
+
+    PQueue Q;
+    Q.push(Node(s, 0));
+    d[s] = 0;
+
+    while (!Q.empty()) {
+        Node top = Q.top();
+        if (vis[top.v]) { continue; }
+        int u = top.v;
+        vis[u] = true;
+        for (int v = 0; v < N; ++v) {
+            // 特判一下INF，可以防止溢出。
+            if (!vis[v] && G[u][v] != INF && G[u][v] + d[u] < d[v]) {
+                d[v] = G[u][v] + d[u];
+                Q.push(Node(v, d[v]));
+                /*
+                pre的更新。
+                */
+                pre[v] = u;  // 被优化的v的前驱是当前最优解u。
+            }
+        }
     }
-  }
 }
 
 /*
@@ -272,13 +264,13 @@ s：源点。
 v：终点。（当前节点）
 */
 void PrintPath(int s, int v) {
-  if (s == v) {
-    printf("%d\n", s);
-    return;
-  }
-  // 先打印父节点的路径。
-  PrintPath(s, pre[v]);
-  printf("%d\n", v);
+    if (s == v) {
+        printf("%d\n", s);
+        return;
+    }
+    // 先打印父节点的路径。
+    PrintPath(s, pre[v]);
+    printf("%d\n", v);
 }
 
 /*
@@ -288,42 +280,40 @@ pre2的元素存放的是某节点的全部前驱。
 vector<int> pre2[MAXN];
 
 void Dijkstra6(int s) {
-  // 初始化。
-  fill(vis, vis + N, false);
-  fill(d, d + N, INF);
-  /*
-  注意，无需初始化，vector自动初始化为空。
-  */
+    // 初始化。
+    fill(vis, vis + N, false);
+    fill(d, d + N, INF);
+    /*
+    注意，无需初始化，vector自动初始化为空。
+    */
 
-  PQueue Q;
-  Q.push(Node(s, 0));
-  d[s] = 0;
+    PQueue Q;
+    Q.push(Node(s, 0));
+    d[s] = 0;
 
-  while (!Q.empty()) {
-    Node top = Q.top();
-    if (vis[top.v]) {
-      continue;
-    }
-    int u = top.v;
-    vis[u] = true;
-    for (int v = 0; v < N; ++v) {
-      // 特判一下INF，可以防止溢出。
-      if (!vis[v] && G[u][v] != INF) {
-        // 注意，加入pre后，等于当前最优解的情况也要处理。
-        if (G[u][v] + d[u] < d[v]) {
-          d[v] = G[u][v] + d[u];
-          Q.push(Node(v, d[v]));
-          // 当前是更优解，之前收集的前驱没用了。
-          pre2[v].clear();
-          // 这里的逻辑，就是一边计算最大值，一边记录达到最大值的原像的逻辑。
-          pre2[v].push_back(u);
-        } else if (G[u][v] + d[u] == d[v]) {
-          // 相同长度的路径又多了一条，要增加一个前驱。
-          pre2[v].push_back(u);
+    while (!Q.empty()) {
+        Node top = Q.top();
+        if (vis[top.v]) { continue; }
+        int u = top.v;
+        vis[u] = true;
+        for (int v = 0; v < N; ++v) {
+            // 特判一下INF，可以防止溢出。
+            if (!vis[v] && G[u][v] != INF) {
+                // 注意，加入pre后，等于当前最优解的情况也要处理。
+                if (G[u][v] + d[u] < d[v]) {
+                    d[v] = G[u][v] + d[u];
+                    Q.push(Node(v, d[v]));
+                    // 当前是更优解，之前收集的前驱没用了。
+                    pre2[v].clear();
+                    // 这里的逻辑，就是一边计算最大值，一边记录达到最大值的原像的逻辑。
+                    pre2[v].push_back(u);
+                } else if (G[u][v] + d[u] == d[v]) {
+                    // 相同长度的路径又多了一条，要增加一个前驱。
+                    pre2[v].push_back(u);
+                }
+            }
         }
-      }
     }
-  }
 }
 
 vector<int> tempPath;
@@ -334,21 +324,21 @@ vector<int> tempPath;
 把全部路径存储起来排序。每个路径的输出格式是从源点到终点的节点序列，空格分隔。
 */
 void PrintPath2(int s, int v) {
-  if (s == v) {
-    // s为起点，到达了递归边界。
-    tempPath.push_back(s);
-    // 打印路径。注意，tempPath逆序保存路径，要逆序输出。
-    for (int i = tempPath.size() - 1; i >= 0; --i) {
-      printf("%d%s", tempPath[i], i == 0 ? "\n" : " ");
+    if (s == v) {
+        // s为起点，到达了递归边界。
+        tempPath.push_back(s);
+        // 打印路径。注意，tempPath逆序保存路径，要逆序输出。
+        for (int i = tempPath.size() - 1; i >= 0; --i) {
+            printf("%d%s", tempPath[i], i == 0 ? "\n" : " ");
+        }
+        tempPath.pop_back();
+        return;
+    }
+    tempPath.push_back(v);
+    for (int i = 0; i < pre2[v].size(); ++i) {
+        PrintPath2(s, pre2[v][i]);
     }
     tempPath.pop_back();
-    return;
-  }
-  tempPath.push_back(v);
-  for (int i = 0; i < pre2[v].size(); ++i) {
-    PrintPath2(s, pre2[v][i]);
-  }
-  tempPath.pop_back();
 }
 
 /*
@@ -371,43 +361,41 @@ void PrintPath2(int s, int v) {
 2. 修改优化操作的逻辑，同步更新数组c。
 */
 
-int cost[MAXN][MAXN]; // 题目输入数据，cost[u][v] 代表边 u->v 的边权。
-int c[MAXN]; // 代表源点到u的最小花费（边权和），随d数组一起更新。
+int cost[MAXN][MAXN];  // 题目输入数据，cost[u][v] 代表边 u->v 的边权。
+int c[MAXN];           // 代表源点到u的最小花费（边权和），随d数组一起更新。
 
 // 这里假设要最小化新边权cost。
 void Dijkstra7(int s) {
-  // 初始化。
-  fill(vis, vis + N, false);
-  fill(d, d + N, INF);
-  fill(c, c + N, INF);
-  PQueue Q;
-  Q.push(Node(s, 0));
-  d[s] = 0;
-  c[s] = 0;
+    // 初始化。
+    fill(vis, vis + N, false);
+    fill(d, d + N, INF);
+    fill(c, c + N, INF);
+    PQueue Q;
+    Q.push(Node(s, 0));
+    d[s] = 0;
+    c[s] = 0;
 
-  while (!Q.empty()) {
-    Node top = Q.top();
-    if (vis[top.v]) {
-      continue;
-    }
-    int u = top.v;
-    vis[u] = true;
-    for (int v = 0; v < N; ++v) {
-      if (!vis[v] && G[u][v] != INF) {
-        // 当第一标尺出现更优时，同时更新两个标尺的当前最优，即d和c。
-        if (G[u][v] + d[u] < d[v]) {
-          d[v] = G[u][v] + d[u];
-          c[v] = cost[u][v] + c[u];
-          // 注意d和c的更新是完全类似的。
-          Q.push(Node(v, d[v]));
-          // 当第一标尺和当前最优相同时，考虑第二标尺并更新。
-        } else if (G[u][v] + d[u] == d[v] && cost[u][v] + c[u] < c[v]) {
-          // 此时只需更新第二标尺。
-          c[v] = cost[u][v] + c[u];
+    while (!Q.empty()) {
+        Node top = Q.top();
+        if (vis[top.v]) { continue; }
+        int u = top.v;
+        vis[u] = true;
+        for (int v = 0; v < N; ++v) {
+            if (!vis[v] && G[u][v] != INF) {
+                // 当第一标尺出现更优时，同时更新两个标尺的当前最优，即d和c。
+                if (G[u][v] + d[u] < d[v]) {
+                    d[v] = G[u][v] + d[u];
+                    c[v] = cost[u][v] + c[u];
+                    // 注意d和c的更新是完全类似的。
+                    Q.push(Node(v, d[v]));
+                    // 当第一标尺和当前最优相同时，考虑第二标尺并更新。
+                } else if (G[u][v] + d[u] == d[v] && cost[u][v] + c[u] < c[v]) {
+                    // 此时只需更新第二标尺。
+                    c[v] = cost[u][v] + c[u];
+                }
+            }
         }
-      }
     }
-  }
 }
 
 /*
@@ -417,44 +405,42 @@ void Dijkstra7(int s) {
 物质最大）。点权由题目输入，记录在数组weight中，新增数组w，表示源点s到节点u的路径的最大点权和，
 更新规则与新增边权是类似的，即先考虑第一标尺（距离），然后考虑第二标尺。注意新增点权的写法略有不同。
 */
-int weight[MAXN]; // 题目输入。
-int w[MAXN]; // 源点s到节点u的路径的最大点权和。即当前s到u的最大点权和。
+int weight[MAXN];  // 题目输入。
+int w[MAXN];       // 源点s到节点u的路径的最大点权和。即当前s到u的最大点权和。
 
 void Dijkstra8(int s) {
-  // 初始化。
-  fill(vis, vis + N, false);
-  fill(d, d + N, INF);
-  fill(w, w + N,
-       0); // 求最小时，初始时为INF，求最大时，初始时为0（非负数的最大最小）。
+    // 初始化。
+    fill(vis, vis + N, false);
+    fill(d, d + N, INF);
+    fill(w, w + N,
+         0);  // 求最小时，初始时为INF，求最大时，初始时为0（非负数的最大最小）。
 
-  PQueue Q;
-  Q.push(Node(s, 0));
-  d[s] = 0;
-  w[s] = weight[s];
+    PQueue Q;
+    Q.push(Node(s, 0));
+    d[s] = 0;
+    w[s] = weight[s];
 
-  while (!Q.empty()) {
-    Node top = Q.top();
-    if (vis[top.v]) {
-      continue;
-    }
-    int u = top.v;
-    vis[u] = true;
-    for (int v = 0; v < N; ++v) {
-      if (!vis[v] && G[u][v] != INF) {
-        if (G[u][v] + d[u] < d[v]) {
-          d[v] = G[u][v] + d[u];
-          // s->u, u->v = s->v
-          w[v] = weight[v] + w[u];
+    while (!Q.empty()) {
+        Node top = Q.top();
+        if (vis[top.v]) { continue; }
+        int u = top.v;
+        vis[u] = true;
+        for (int v = 0; v < N; ++v) {
+            if (!vis[v] && G[u][v] != INF) {
+                if (G[u][v] + d[u] < d[v]) {
+                    d[v] = G[u][v] + d[u];
+                    // s->u, u->v = s->v
+                    w[v] = weight[v] + w[u];
 
-          Q.push(Node(v, d[v]));
-          // 当第一标尺和当前最优相同时，考虑第二标尺并更新。
-        } else if (G[u][v] + d[u] == d[v] && weight[v] + w[u] > w[v]) {
-          // 此时只需更新第二标尺。
-          w[v] = weight[v] + w[u];
+                    Q.push(Node(v, d[v]));
+                    // 当第一标尺和当前最优相同时，考虑第二标尺并更新。
+                } else if (G[u][v] + d[u] == d[v] && weight[v] + w[u] > w[v]) {
+                    // 此时只需更新第二标尺。
+                    w[v] = weight[v] + w[u];
+                }
+            }
         }
-      }
     }
-  }
 }
 
 /*
@@ -464,34 +450,32 @@ void Dijkstra8(int s) {
 int num[MAXN];
 
 void Dijkstra9(int s) {
-  // 初始化。
-  fill(vis, vis + N, false);
-  fill(d, d + N, INF);
-  fill(num, num + N, 0);
+    // 初始化。
+    fill(vis, vis + N, false);
+    fill(d, d + N, INF);
+    fill(num, num + N, 0);
 
-  PQueue Q;
-  Q.push(Node(s, 0));
-  d[s] = 0;
-  num[s] = 1; // 注意，到源点s的最短路有且仅有一条。
+    PQueue Q;
+    Q.push(Node(s, 0));
+    d[s] = 0;
+    num[s] = 1;  // 注意，到源点s的最短路有且仅有一条。
 
-  while (!Q.empty()) {
-    Node top = Q.top();
-    if (vis[top.v]) {
-      continue;
-    }
-    int u = top.v;
-    vis[u] = true;
-    for (int v = 0; v < N; ++v) {
-      if (!vis[v] && G[u][v] != INF) {
-        if (G[u][v] + d[u] < d[v]) {
-          d[v] = G[u][v] + d[u];
-          num[v] = num[u]; // 因为经过u的路径更短，所以之前求出的v的最短路
-                           // 不再是最短了，数量必须改。
-        } else if (G[u][v] + d[u] == d[v]) {
-          // 经过u的路径和v的当前最短路径一样长，所以累加。
-          num[v] += num[u];
+    while (!Q.empty()) {
+        Node top = Q.top();
+        if (vis[top.v]) { continue; }
+        int u = top.v;
+        vis[u] = true;
+        for (int v = 0; v < N; ++v) {
+            if (!vis[v] && G[u][v] != INF) {
+                if (G[u][v] + d[u] < d[v]) {
+                    d[v] = G[u][v] + d[u];
+                    num[v] = num[u];  // 因为经过u的路径更短，所以之前求出的v的最短路
+                                      // 不再是最短了，数量必须改。
+                } else if (G[u][v] + d[u] == d[v]) {
+                    // 经过u的路径和v的当前最短路径一样长，所以累加。
+                    num[v] += num[u];
+                }
+            }
         }
-      }
     }
-  }
 }

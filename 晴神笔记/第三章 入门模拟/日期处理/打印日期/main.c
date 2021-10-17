@@ -25,40 +25,46 @@ yyyy-mm-dd的格式将输入中对应的日期打印出来。
 
 const int MonDays[13] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
-int Leap(int y) { return (y % 4 == 0 && y % 100 != 0) || (y % 400 == 0); }
+int Leap(int y) {
+    return (y % 4 == 0 && y % 100 != 0) || (y % 400 == 0);
+}
 
-int GetMonDays(int yy, int mm) { return MonDays[mm] + (mm == 2 && Leap(yy)); }
+int GetMonDays(int yy, int mm) {
+    return MonDays[mm] + (mm == 2 && Leap(yy));
+}
 
 typedef struct Time {
-  int yy, mm, dd;
+    int yy, mm, dd;
 } Time;
 
 Time Get(int yy, int n) {
-  Time t;
-  int mm = 1;
-  int ds;
+    Time t;
+    int mm = 1;
+    int ds;
 
-  while (n > (ds = GetMonDays(yy, mm))) {
-    n -= ds;
-    ++mm;
-  }
-  t.yy = yy;
-  t.mm = mm;
-  t.dd = n;
-  return t;
+    while (n > (ds = GetMonDays(yy, mm))) {
+        n -= ds;
+        ++mm;
+    }
+    t.yy = yy;
+    t.mm = mm;
+    t.dd = n;
+    return t;
 }
 
-void Print(Time t) { printf("%04d-%02d-%02d\n", t.yy, t.mm, t.dd); }
+void Print(Time t) {
+    printf("%04d-%02d-%02d\n", t.yy, t.mm, t.dd);
+}
 
 int main() {
-  int yy, n;
+    int yy, n;
 
-  freopen("./in.txt", "r", stdin);
+    freopen("./in.txt", "r", stdin);
 
-  while (scanf("%d%d", &yy, &n) != EOF) {
-    Time t = Get(yy, n);
-    Print(t);
-  }
+    while (scanf("%d%d", &yy, &n) != EOF) {
+        Time t = Get(yy, n);
+        Print(t);
+    }
 
-  return 0;
+    return 0;
 }

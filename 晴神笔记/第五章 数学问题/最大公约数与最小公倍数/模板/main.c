@@ -12,12 +12,13 @@
 3. 由a，b的因子集合（多重集合）的交集组成。
 */
 
-int gcd(int a, int b) { return !b ? a : gcd(b, a % b); }
+int gcd(int a, int b) {
+    return !b ? a : gcd(b, a % b);
+}
 
 int gcd2(int a, int b) {
-  if (b == 0)
-    return a;
-  return gcd2(b, a % b);
+    if (b == 0) return a;
+    return gcd2(b, a % b);
 }
 
 /*
@@ -29,6 +30,10 @@ int gcd2(int a, int b) {
 4. 为了防止溢出，一般先除再乘。
 */
 
-int lcm(int a, int b) { return a / gcd(a, b) * b; }
+int lcm(int a, int b) {
+    return a / gcd(a, b) * b;
+}
 
-int main(int argc, char *argv[]) { return 0; }
+int main(int argc, char* argv[]) {
+    return 0;
+}

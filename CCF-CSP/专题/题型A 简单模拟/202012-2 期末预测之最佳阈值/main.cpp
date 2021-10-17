@@ -23,25 +23,27 @@ using namespace std;
 */
 
 struct Node {
-  int y, r;
+    int y, r;
 };
 
 #define MAXN 100005
 
 Node node[MAXN];
-int ge[MAXN]; // 大于等于x并且r==1的个数。
-int le[MAXN]; // 小于等于x并且r==0的个数。
+int ge[MAXN];  // 大于等于x并且r==1的个数。
+int le[MAXN];  // 小于等于x并且r==0的个数。
 
 int M;
 
 // 要从大到小。因为相同的正确率要取最大的y。
-bool cmp(Node a, Node b) { return a.y > b.y; }
+bool cmp(Node a, Node b) {
+    return a.y > b.y;
+}
 
 void Print(int a[]) {
-  for (int i = 0; i < M; ++i) {
-    printf("%d ", a[i]);
-  }
-  printf("\n");
+    for (int i = 0; i < M; ++i) {
+        printf("%d ", a[i]);
+    }
+    printf("\n");
 }
 
 /*
@@ -49,96 +51,88 @@ void Print(int a[]) {
 用N平方超时，仅有70分。
 */
 void Solve2() {
-  int maxval = -1;
-  int ans;
+    int maxval = -1;
+    int ans;
 
-  for (int i = 0; i < M; ++i) {
-    // 把每个y作为参数。
-    int tot = 0; // 正确率。
-    int the = node[i].y;
-    for (int j = 0; j < M; ++j) {
-      int pred = node[j].y >= the; // 预测函数。
-      if (pred == node[j].r) {
-        ++tot;
-      }
+    for (int i = 0; i < M; ++i) {
+        // 把每个y作为参数。
+        int tot = 0;  // 正确率。
+        int the = node[i].y;
+        for (int j = 0; j < M; ++j) {
+            int pred = node[j].y >= the;  // 预测函数。
+            if (pred == node[j].r) { ++tot; }
+        }
+        //		printf("y %d tot %d\n", the, tot);
+        if (tot > maxval || (tot == maxval && the > ans)) {
+            maxval = tot;
+            ans = the;
+        }
     }
-    //		printf("y %d tot %d\n", the, tot);
-    if (tot > maxval || (tot == maxval && the > ans)) {
-      maxval = tot;
-      ans = the;
-    }
-  }
-  printf("%d\n", ans);
+    printf("%d\n", ans);
 }
 
-int main(int argc, char **argv) {
-  scanf("%d", &M);
-  for (int i = 0; i < M; ++i) {
-    scanf("%d%d", &node[i].y, &node[i].r);
-  }
-  // 常规方法。
-  Solve2();
-  return 0;
-
-  sort(node, node + M, cmp);
-
-  /*
-  对每个x，求大于等于x并且r==1的个数。
-  */
-  for (int i = 0; i < M; ++i) {
-    if (i != 0) {
-      // 有前驱，继承。
-      ge[i] = ge[i - 1];
+int main(int argc, char** argv) {
+    scanf("%d", &M);
+    for (int i = 0; i < M; ++i) {
+        scanf("%d%d", &node[i].y, &node[i].r);
     }
-    if (node[i].r) {
-      ++ge[i];
-    }
-  }
-  //	Print(ge);
+    // 常规方法。
+    Solve2();
+    return 0;
 
-  /*
-  注意，必须要用小于等于关系才能递推正确。
-  即，和gt一样的逻辑，计算小于等于x并且r==0的个数 。
-  */
-  for (int i = M - 1; i >= 0; --i) {
-    if (i != M - 1) {
-      le[i] = le[i + 1];
-    }
-    if (!node[i].r) {
-      ++le[i];
-    }
-  }
-  //	Print(le);
+    sort(node, node + M, cmp);
 
-  /*
-  还需要一个循环计算正确率。
-  因为le的数据还不符合要求。
-  */
-  int x = le[M - 1];
-  for (int i = M - 2; i >= 0; --i) {
-    if (node[i].y != node[i + 1].y) {
-      // 这里的正确率是小于的正确率。
-      // yi > yi+1, 且 le[i+1] 表示小于等于yi+1的正确率，
-      //  所以小于yi的正确率就是le[i+1].
-      // 否则保持正确率不变，因为yi==yi+1，相同元素正确率相同。
-      x = le[i + 1];
+    /*
+    对每个x，求大于等于x并且r==1的个数。
+    */
+    for (int i = 0; i < M; ++i) {
+        if (i != 0) {
+            // 有前驱，继承。
+            ge[i] = ge[i - 1];
+        }
+        if (node[i].r) { ++ge[i]; }
     }
-    ge[i] += x;
-  }
-  //	Print(ge);
+    //	Print(ge);
 
-  int maxval = -1;
-  int ans;
-  for (int i = 0; i < M; ++i) {
-    int rate = ge[i];
-    if (rate > maxval) {
-      maxval = rate;
-      ans = node[i].y;
+    /*
+    注意，必须要用小于等于关系才能递推正确。
+    即，和gt一样的逻辑，计算小于等于x并且r==0的个数 。
+    */
+    for (int i = M - 1; i >= 0; --i) {
+        if (i != M - 1) { le[i] = le[i + 1]; }
+        if (!node[i].r) { ++le[i]; }
     }
-  }
+    //	Print(le);
 
-  //	printf("max %d\n", maxval);
-  printf("%d\n", ans);
+    /*
+    还需要一个循环计算正确率。
+    因为le的数据还不符合要求。
+    */
+    int x = le[M - 1];
+    for (int i = M - 2; i >= 0; --i) {
+        if (node[i].y != node[i + 1].y) {
+            // 这里的正确率是小于的正确率。
+            // yi > yi+1, 且 le[i+1] 表示小于等于yi+1的正确率，
+            //  所以小于yi的正确率就是le[i+1].
+            // 否则保持正确率不变，因为yi==yi+1，相同元素正确率相同。
+            x = le[i + 1];
+        }
+        ge[i] += x;
+    }
+    //	Print(ge);
 
-  return 0;
+    int maxval = -1;
+    int ans;
+    for (int i = 0; i < M; ++i) {
+        int rate = ge[i];
+        if (rate > maxval) {
+            maxval = rate;
+            ans = node[i].y;
+        }
+    }
+
+    //	printf("max %d\n", maxval);
+    printf("%d\n", ans);
+
+    return 0;
 }

@@ -23,9 +23,9 @@
 int index;
 
 struct Node {
-  int data; // 键值。
-  int lchild;
-  int rchild;
+    int data;  // 键值。
+    int lchild;
+    int rchild;
 } node[MAXN];
 
 // 节点分配函数，也是初始化函数。
@@ -37,29 +37,29 @@ struct Node {
 可以应付。
 */
 int NewNode(int data) {
-  node[index].data = data;
-  node[index].lchild = node[index].rchild = -1;
-  return index++;
+    node[index].data = data;
+    node[index].lchild = node[index].rchild = -1;
+    return index++;
 }
 
 /*
 在root中查找x，返回节点编号。递归写法。
 */
 int search(int root, int x) {
-  if (root == -1) {
-    // 空树说明查找失败。
-    return -1;
-  }
-  if (node[root].data == x) {
-    // 查找成功。
-    return root;
-  }
-  // 往左子树或者右子树递归。
-  if (node[root].data < x) {
-    return search(node[root].lchild, x);
-  } else {
-    return search(node[root].rchild, x);
-  }
+    if (root == -1) {
+        // 空树说明查找失败。
+        return -1;
+    }
+    if (node[root].data == x) {
+        // 查找成功。
+        return root;
+    }
+    // 往左子树或者右子树递归。
+    if (node[root].data < x) {
+        return search(node[root].lchild, x);
+    } else {
+        return search(node[root].rchild, x);
+    }
 }
 
 /*
@@ -74,22 +74,22 @@ int search(int root, int x) {
 插入x。插入成功返回true，插入失败（元素已存在）返回false。
 如果不需要处理插入失败的情况，可以返回void。
 */
-bool insert(int &root, int x) {
-  if (root == -1) {
-    // 查找失败就是插入的位置。
-    root = NewNode(x);
-    return true;
-  }
-  if (node[root].data == x) {
-    // 元素已存在。
-    return false;
-  }
-  // 查找。
-  if (node[root].data < x) {
-    return insert(node[root].lchild, x);
-  } else {
-    return insert(node[root].rchild, x);
-  }
+bool insert(int& root, int x) {
+    if (root == -1) {
+        // 查找失败就是插入的位置。
+        root = NewNode(x);
+        return true;
+    }
+    if (node[root].data == x) {
+        // 元素已存在。
+        return false;
+    }
+    // 查找。
+    if (node[root].data < x) {
+        return insert(node[root].lchild, x);
+    } else {
+        return insert(node[root].rchild, x);
+    }
 }
 
 /*
@@ -111,47 +111,45 @@ x的前驱和后继（如果存在），都可以代替x的位置而维持BST的性质。
 找最小值，一直往左。
 */
 int findMax(int root) {
-  while (node[root].rchild != -1) {
-    root = node[root].rchild;
-  }
-  return root;
+    while (node[root].rchild != -1) {
+        root = node[root].rchild;
+    }
+    return root;
 }
 
-bool deleteNode(int &root, int x) {
-  if (root == -1) {
-    // 元素不存在。
-    return false;
-  }
-  if (node[root].data < x) {
-    return deleteNode(node[root].lchild, x);
-  }
-  if (node[root].data > x) {
-    return deleteNode(node[root].rchild, x);
-  }
-  // 找到了x。
-  if (node[root].lchild == -1 && node[root].rchild == -1) {
-    // 我是叶子。
-    root = -1; // 直接删除。
+bool deleteNode(int& root, int x) {
+    if (root == -1) {
+        // 元素不存在。
+        return false;
+    }
+    if (node[root].data < x) { return deleteNode(node[root].lchild, x); }
+    if (node[root].data > x) { return deleteNode(node[root].rchild, x); }
+    // 找到了x。
+    if (node[root].lchild == -1 && node[root].rchild == -1) {
+        // 我是叶子。
+        root = -1;  // 直接删除。
+        return true;
+    }
+    if (node[root].lchild != -1 && node[root].rchild != -1) {
+        // 两个孩子都有，必须用前驱/后继代替。
+        // 可以交替删除前驱/后继。
+        // 找前驱。
+        int pre = findMax(node[root].lchild);
+        // 前驱的数据覆盖x元素。
+        node[root].data = node[pre].data;
+        // 删前驱。
+        return deleteNode(node[root].lchild, node[pre].data);
+    }
+    if (node[root].lchild != -1) {
+        // 只有左孩子。用左孩子代替root。
+        root = node[root].lchild;
+    } else {
+        // 只有右孩子。
+        root = node[root].rchild;
+    }
     return true;
-  }
-  if (node[root].lchild != -1 && node[root].rchild != -1) {
-    // 两个孩子都有，必须用前驱/后继代替。
-    // 可以交替删除前驱/后继。
-    // 找前驱。
-    int pre = findMax(node[root].lchild);
-    // 前驱的数据覆盖x元素。
-    node[root].data = node[pre].data;
-    // 删前驱。
-    return deleteNode(node[root].lchild, node[pre].data);
-  }
-  if (node[root].lchild != -1) {
-    // 只有左孩子。用左孩子代替root。
-    root = node[root].lchild;
-  } else {
-    // 只有右孩子。
-    root = node[root].rchild;
-  }
-  return true;
 }
 
-int main(int argc, char **argv) { return 0; }
+int main(int argc, char** argv) {
+    return 0;
+}

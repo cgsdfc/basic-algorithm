@@ -8,30 +8,28 @@
 
 int a[MAXN];
 
-int main(int argc, char *argv[]) {
-  int n;
+int main(int argc, char* argv[]) {
+    int n;
 
-  while (scanf("%d", &n) != EOF) {
-    int i;
-    int m;
+    while (scanf("%d", &n) != EOF) {
+        int i;
+        int m;
 
-    for (i = 0; i < n; ++i) {
-      scanf("%d", &a[i]);
-    }
-    scanf("%d", &m);
-    while (m--) {
-      int x;
-      scanf("%d", &x);
-      for (i = 0; i < n; ++i) {
-        if (a[i] == x) {
-          puts("YES");
-          break;
+        for (i = 0; i < n; ++i) {
+            scanf("%d", &a[i]);
         }
-      }
-      if (i == n) {
-        puts("NO");
-      }
+        scanf("%d", &m);
+        while (m--) {
+            int x;
+            scanf("%d", &x);
+            for (i = 0; i < n; ++i) {
+                if (a[i] == x) {
+                    puts("YES");
+                    break;
+                }
+            }
+            if (i == n) { puts("NO"); }
+        }
     }
-  }
-  return 0;
+    return 0;
 }

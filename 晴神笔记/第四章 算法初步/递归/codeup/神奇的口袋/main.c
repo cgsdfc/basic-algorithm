@@ -21,39 +21,37 @@ n是物品数量。
 题目保证各个物品体积不同。
 */
 int Find(int V, int N, int curval) {
-  if (N == 0) {
-    if (curval == V) {
-      ++sum;
+    if (N == 0) {
+        if (curval == V) { ++sum; }
+        return;
     }
-    return;
-  }
-  // 当前元素a[N-1]
-  if (curval > V) {
-    // 剪枝，就算后面的元素都不取，也不可能满足。
-    return;
-  }
+    // 当前元素a[N-1]
+    if (curval > V) {
+        // 剪枝，就算后面的元素都不取，也不可能满足。
+        return;
+    }
 
-  // 不取当前元素 。
-  Find(V, N - 1, curval);
-  // 取当前元素。
-  Find(V, N - 1, curval + a[N - 1]);
+    // 不取当前元素 。
+    Find(V, N - 1, curval);
+    // 取当前元素。
+    Find(V, N - 1, curval + a[N - 1]);
 }
 
-int main(int argc, char *argv[]) {
-  int n;
-  int i;
+int main(int argc, char* argv[]) {
+    int n;
+    int i;
 
-  //	freopen("./in.txt","r",stdin);
+    //	freopen("./in.txt","r",stdin);
 
-  while (scanf("%d", &n) != EOF) {
-    memset(hashtable, 0, sizeof(hashtable));
-    for (i = 0; i < n; ++i) {
-      scanf("%d", &a[i]);
-      hashtable[a[i]]++;
+    while (scanf("%d", &n) != EOF) {
+        memset(hashtable, 0, sizeof(hashtable));
+        for (i = 0; i < n; ++i) {
+            scanf("%d", &a[i]);
+            hashtable[a[i]]++;
+        }
+        sum = 0;
+        Find(40, n, 0);
+        printf("%d\n", sum);
     }
-    sum = 0;
-    Find(40, n, 0);
-    printf("%d\n", sum);
-  }
-  return 0;
+    return 0;
 }

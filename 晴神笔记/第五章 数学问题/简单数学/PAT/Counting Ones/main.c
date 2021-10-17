@@ -34,44 +34,44 @@
 */
 
 int Count(int N) {
-  int ans = 0;
-  int p2 = 1;
-  // 用来控制循环
-  int K = N;
+    int ans = 0;
+    int p2 = 1;
+    // 用来控制循环
+    int K = N;
 
-  while (K) {
-    // 求个位，先看十位，求十位，先看百位。
-    int p = p2 * 10;
-    int q = N / p;
-    int r = N % p;
+    while (K) {
+        // 求个位，先看十位，求十位，先看百位。
+        int p = p2 * 10;
+        int q = N / p;
+        int r = N % p;
 
-    ans += q * p2;
-    // >=20，则10--19全都有。
-    if (r >= 2 * p2) {
-      ans += p2;
-      // 10到19之间，则
-    } else if (p2 <= r) {
-      ans += r % p2 + 1;
-      // 小于10，则什么都没有。
-    } else {
-      ans += 0;
+        ans += q * p2;
+        // >=20，则10--19全都有。
+        if (r >= 2 * p2) {
+            ans += p2;
+            // 10到19之间，则
+        } else if (p2 <= r) {
+            ans += r % p2 + 1;
+            // 小于10，则什么都没有。
+        } else {
+            ans += 0;
+        }
+
+        p2 *= 10;
+        K /= 10;
     }
-
-    p2 *= 10;
-    K /= 10;
-  }
-  return ans;
+    return ans;
 }
 
-int main(int argc, char *argv[]) {
-  int N;
-  int ans;
-  /*
-  复杂度时N的10进制位数的线性。
-  */
-  scanf("%d", &N);
-  ans = Count(N);
-  printf("%d\n", ans);
+int main(int argc, char* argv[]) {
+    int N;
+    int ans;
+    /*
+    复杂度时N的10进制位数的线性。
+    */
+    scanf("%d", &N);
+    ans = Count(N);
+    printf("%d\n", ans);
 
-  return 0;
+    return 0;
 }

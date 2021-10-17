@@ -16,79 +16,75 @@
 #define MAXN 100
 
 typedef struct Big {
-  int d[MAXN];
-  int len;
+    int d[MAXN];
+    int len;
 } Big;
 
 /*
 a和a的逆序数相加。
 */
 Big Add(Big a) {
-  int i;
-  Big c = {};
-  int carry = 0;
+    int i;
+    Big c = {};
+    int carry = 0;
 
-  for (i = 0; i < a.len; ++i) {
-    int temp = a.d[i] + a.d[a.len - 1 - i] + carry;
-    c.d[c.len++] = temp % 10;
-    carry = temp / 10;
-  }
-  if (carry) {
-    c.d[c.len++] = carry;
-  }
-  return c;
+    for (i = 0; i < a.len; ++i) {
+        int temp = a.d[i] + a.d[a.len - 1 - i] + carry;
+        c.d[c.len++] = temp % 10;
+        carry = temp / 10;
+    }
+    if (carry) { c.d[c.len++] = carry; }
+    return c;
 }
 
 // 判定a是否是回文数。
 int Judge(Big a) {
-  int i;
-  for (i = 0; i < a.len / 2; ++i) {
-    if (a.d[i] != a.d[a.len - 1 - i]) {
-      return 0;
+    int i;
+    for (i = 0; i < a.len / 2; ++i) {
+        if (a.d[i] != a.d[a.len - 1 - i]) { return 0; }
     }
-  }
-  return 1;
+    return 1;
 }
 
 Big From(char str[], int len) {
-  int i;
-  Big c = {};
+    int i;
+    Big c = {};
 
-  c.len = len;
-  for (i = 0; i < len; ++i) {
-    c.d[i] = str[len - 1 - i] - '0';
-  }
-  return c;
+    c.len = len;
+    for (i = 0; i < len; ++i) {
+        c.d[i] = str[len - 1 - i] - '0';
+    }
+    return c;
 }
 
 void Print(Big a) {
-  int i;
-  for (i = a.len - 1; i >= 0; --i) {
-    printf("%d", a.d[i]);
-  }
-  printf("\n");
+    int i;
+    for (i = a.len - 1; i >= 0; --i) {
+        printf("%d", a.d[i]);
+    }
+    printf("\n");
 }
 
-int main(int argc, char *argv[]) {
-  char str[MAXN];
-  Big a;
-  int K;
-  int i;
+int main(int argc, char* argv[]) {
+    char str[MAXN];
+    Big a;
+    int K;
+    int i;
 
-  scanf("%s%d", str, &K);
-  a = From(str, strlen(str));
-  if (Judge(a)) {
-    // 特判：输入就是回文数。
+    scanf("%s%d", str, &K);
+    a = From(str, strlen(str));
+    if (Judge(a)) {
+        // 特判：输入就是回文数。
+        Print(a);
+        printf("0\n");
+        return 0;
+    }
+    for (i = 0; i < K && !Judge(a); ++i) {
+        //		Print(a);
+        a = Add(a);
+    }
     Print(a);
-    printf("0\n");
-    return 0;
-  }
-  for (i = 0; i < K && !Judge(a); ++i) {
-    //		Print(a);
-    a = Add(a);
-  }
-  Print(a);
-  printf("%d\n", i);
+    printf("%d\n", i);
 
-  return 0;
+    return 0;
 }

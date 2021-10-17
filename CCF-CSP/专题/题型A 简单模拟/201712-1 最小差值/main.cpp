@@ -17,23 +17,21 @@ int a[MAXN];
 // 这个值的设定是根据输入每个元素x的最大值。
 const int INF = 100000;
 
-int main(int argc, char **argv) {
-  scanf("%d", &N);
-  for (int i = 0; i < N; ++i) {
-    scanf("%d", &a[i]);
-  }
-  sort(a, a + N);
-  int ans = INF;
-  for (int i = 0; i < N - 1; ++i) {
-    int diff = a[i + 1] - a[i];
-    if (diff < ans) {
-      ans = diff;
+int main(int argc, char** argv) {
+    scanf("%d", &N);
+    for (int i = 0; i < N; ++i) {
+        scanf("%d", &a[i]);
     }
-    if (ans == 0) {
-      break; // 绝对值的最小是0.
+    sort(a, a + N);
+    int ans = INF;
+    for (int i = 0; i < N - 1; ++i) {
+        int diff = a[i + 1] - a[i];
+        if (diff < ans) { ans = diff; }
+        if (ans == 0) {
+            break;  // 绝对值的最小是0.
+        }
     }
-  }
-  printf("%d\n", ans);
+    printf("%d\n", ans);
 
-  return 0;
+    return 0;
 }

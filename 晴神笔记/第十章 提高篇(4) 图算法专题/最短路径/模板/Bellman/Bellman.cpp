@@ -36,23 +36,23 @@ Bellman算法在最短路不存在时，返回false，否则返回true，并求出最短路。
 Bellman算法的复杂度为 O(VE)。
 */
 
-#include <set> // 求全部最短路必备。
+#include <set>  // 求全部最短路必备。
 #include <vector>
 using namespace std;
 
-#define MAXN 505 // 节点上界。
+#define MAXN 505  // 节点上界。
 
 // 边。
 struct Node {
-  int v;
-  int dis;
+    int v;
+    int dis;
 };
 
-vector<Node> Adj[MAXN]; // 邻接表。
+vector<Node> Adj[MAXN];  // 邻接表。
 
-int d[MAXN]; // 距离数组。
+int d[MAXN];  // 距离数组。
 
-int N; // 节点数。
+int N;  // 节点数。
 // 算法不需要vis数组。
 const int INF = 1e9;
 
@@ -62,38 +62,38 @@ s：源点。
 如果最短路存在（不存在s可达的负环），返回true，否则返回false。
 */
 bool Bellman(int s) {
-  fill(d, d + N, INF);
-  d[s] = 0;
-  // N-1轮松弛。
-  int T = N - 1;
-  while (T--) {
-    // 每轮松弛，访问所有边。
-    for (int u = 0; u < N; ++u) {
-      for (int i = 0; i < Adj[u].size(); ++i) {
-        int v = Adj[u][i].v;
-        int dis = Adj[u][i].dis;
-        // u->v dis
-        if (d[u] + dis < d[v]) {
-          // len(s-->u->v) < len(s-->v)
-          // 对于s到v的路径来说，经过u的路径更短。
-          d[v] = d[u] + dis;
+    fill(d, d + N, INF);
+    d[s] = 0;
+    // N-1轮松弛。
+    int T = N - 1;
+    while (T--) {
+        // 每轮松弛，访问所有边。
+        for (int u = 0; u < N; ++u) {
+            for (int i = 0; i < Adj[u].size(); ++i) {
+                int v = Adj[u][i].v;
+                int dis = Adj[u][i].dis;
+                // u->v dis
+                if (d[u] + dis < d[v]) {
+                    // len(s-->u->v) < len(s-->v)
+                    // 对于s到v的路径来说，经过u的路径更短。
+                    d[v] = d[u] + dis;
+                }
+            }
         }
-      }
     }
-  }
-  // 检测负环，实际上就是再次松弛操作，检测是否能松弛。
-  for (int u = 0; u < N; ++u) {
-    for (int i = 0; i < Adj[u].size(); ++i) {
-      int v = Adj[u][i].v;
-      int dis = Adj[u][i].dis;
-      if (d[u] + dis < d[v]) {
-        // 还能够松弛，则有负环。
-        return false;
-      }
+    // 检测负环，实际上就是再次松弛操作，检测是否能松弛。
+    for (int u = 0; u < N; ++u) {
+        for (int i = 0; i < Adj[u].size(); ++i) {
+            int v = Adj[u][i].v;
+            int dis = Adj[u][i].dis;
+            if (d[u] + dis < d[v]) {
+                // 还能够松弛，则有负环。
+                return false;
+            }
+        }
     }
-  }
-  // 无法松弛，则无负环。
-  return true;
+    // 无法松弛，则无负环。
+    return true;
 }
 
 /*
@@ -101,33 +101,31 @@ bool Bellman(int s) {
 否则V轮结束后，返回false。这是一个逻辑等价的算法，但是可以减少迭代轮数。
 */
 bool Bellman2(int s) {
-  fill(d, d + N, INF);
-  d[s] = 0;
-  // N轮操作，边松弛，边检测是否能够松弛。
-  int T = N;
-  while (T--) { // 最多进行V次就能判断是否存在负环。
-    // 检测本轮结束后，是否改变了d数组。
-    bool changed = false;
-    // 每轮松弛，访问所有边。
-    for (int u = 0; u < N; ++u) {
-      for (int i = 0; i < Adj[u].size(); ++i) {
-        int v = Adj[u][i].v;
-        int dis = Adj[u][i].dis;
-        // u->v dis
-        if (d[u] + dis < d[v]) {
-          // len(s-->u->v) < len(s-->v)
-          // 对于s到v的路径来说，经过u的路径更短。
-          d[v] = d[u] + dis;
-          changed = true;
+    fill(d, d + N, INF);
+    d[s] = 0;
+    // N轮操作，边松弛，边检测是否能够松弛。
+    int T = N;
+    while (T--) {  // 最多进行V次就能判断是否存在负环。
+        // 检测本轮结束后，是否改变了d数组。
+        bool changed = false;
+        // 每轮松弛，访问所有边。
+        for (int u = 0; u < N; ++u) {
+            for (int i = 0; i < Adj[u].size(); ++i) {
+                int v = Adj[u][i].v;
+                int dis = Adj[u][i].dis;
+                // u->v dis
+                if (d[u] + dis < d[v]) {
+                    // len(s-->u->v) < len(s-->v)
+                    // 对于s到v的路径来说，经过u的路径更短。
+                    d[v] = d[u] + dis;
+                    changed = true;
+                }
+            }
         }
-      }
+        if (!changed) { return true; }
     }
-    if (!changed) {
-      return true;
-    }
-  }
-  // 相当于把Bellman的V-1轮松弛和最后一轮的检测逻辑合并为V轮。
-  return false;
+    // 相当于把Bellman的V-1轮松弛和最后一轮的检测逻辑合并为V轮。
+    return false;
 }
 
 /*
@@ -136,48 +134,47 @@ Bellman计算最短路数量和统计全部最短路。
 在负环不存在的前提下（即保证最短路存在），算法只需要迭代V-1轮，不需要检测负环，
 当然可以提前退出，但是优化并不明显。
 */
-int num[MAXN];      // 记录s到u的路径数量。
-set<int> pre[MAXN]; // 记录u的前驱。
+int num[MAXN];       // 记录s到u的路径数量。
+set<int> pre[MAXN];  // 记录u的前驱。
 
 void Bellman3(int s) {
-  fill(d, d + N, INF);
-  d[s] = 0;
-  // N-1轮松弛。
-  int T = N - 1;
-  while (T--) {
-    // 每轮松弛，访问所有边。
-    for (int u = 0; u < N; ++u) {
-      for (int i = 0; i < Adj[u].size(); ++i) {
-        int v = Adj[u][i].v;
-        int dis = Adj[u][i].dis;
-        // u->v dis
-        if (d[u] + dis < d[v]) {
-          // 对于s到v的路径来说，经过u的路径更短。
-          d[v] = d[u] + dis;
-          num[v] = num[u];
-          pre[v].clear();
-          pre[v].insert(u);
-        } else if (d[u] + dis == d[v]) {
-          // 注意！
-          /*
-          这里，可能是一条相同长度的新路径，也可能是一条已经访问过的路径，
-          在Bellman的框架下，二者很难区分（是可以区分的）。如果u是新增的前驱，
-          即 pre[v]
-          没有u，那么就是新路径。如果u已经存在于v的前驱中，那么看num[v]
-          是否变化，但是现有框架无法得知这一点，所以为了简便起见，就重新计算num[v]，
-          而不是计算增量。具体方法是，先更新pre[v]，然后根据v的num等于v的前驱的num之和来计算。
-          显然，如果Pi是前驱i的一条路径，Pj是前驱j的一条路径，且i不等于j，则Pi和Pj是不同的路径，
-          所以上述计算是正确的。
-          */
-          // 因为存在重复访问的问题，所以重新计算num。
-          num[v] = 0;
-          pre[v].insert(u);
-          for (set<int>::iterator it = pre[v].begin(); it != pre[v].end();
-               ++it) {
-            num[v] += num[*it]; // 累计前驱的num之和。
-          }
+    fill(d, d + N, INF);
+    d[s] = 0;
+    // N-1轮松弛。
+    int T = N - 1;
+    while (T--) {
+        // 每轮松弛，访问所有边。
+        for (int u = 0; u < N; ++u) {
+            for (int i = 0; i < Adj[u].size(); ++i) {
+                int v = Adj[u][i].v;
+                int dis = Adj[u][i].dis;
+                // u->v dis
+                if (d[u] + dis < d[v]) {
+                    // 对于s到v的路径来说，经过u的路径更短。
+                    d[v] = d[u] + dis;
+                    num[v] = num[u];
+                    pre[v].clear();
+                    pre[v].insert(u);
+                } else if (d[u] + dis == d[v]) {
+                    // 注意！
+                    /*
+                    这里，可能是一条相同长度的新路径，也可能是一条已经访问过的路径，
+                    在Bellman的框架下，二者很难区分（是可以区分的）。如果u是新增的前驱，
+                    即 pre[v]
+                    没有u，那么就是新路径。如果u已经存在于v的前驱中，那么看num[v]
+                    是否变化，但是现有框架无法得知这一点，所以为了简便起见，就重新计算num[v]，
+                    而不是计算增量。具体方法是，先更新pre[v]，然后根据v的num等于v的前驱的num之和来计算。
+                    显然，如果Pi是前驱i的一条路径，Pj是前驱j的一条路径，且i不等于j，则Pi和Pj是不同的路径，
+                    所以上述计算是正确的。
+                    */
+                    // 因为存在重复访问的问题，所以重新计算num。
+                    num[v] = 0;
+                    pre[v].insert(u);
+                    for (set<int>::iterator it = pre[v].begin(); it != pre[v].end(); ++it) {
+                        num[v] += num[*it];  // 累计前驱的num之和。
+                    }
+                }
+            }
         }
-      }
     }
-  }
 }

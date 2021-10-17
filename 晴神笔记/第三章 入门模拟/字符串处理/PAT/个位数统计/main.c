@@ -8,21 +8,19 @@
 
 int cnt[15];
 
-int main(int argc, char *argv[]) {
-  char str[MAXN];
-  int i;
-  int len;
+int main(int argc, char* argv[]) {
+    char str[MAXN];
+    int i;
+    int len;
 
-  scanf("%s", str);
-  len = strlen(str);
-  for (i = 0; i < len; ++i) {
-    int num = str[i] - '0';
-    cnt[num]++;
-  }
-  for (i = 0; i < 10; ++i) {
-    if (cnt[i]) {
-      printf("%d:%d\n", i, cnt[i]);
+    scanf("%s", str);
+    len = strlen(str);
+    for (i = 0; i < len; ++i) {
+        int num = str[i] - '0';
+        cnt[num]++;
     }
-  }
-  return 0;
+    for (i = 0; i < 10; ++i) {
+        if (cnt[i]) { printf("%d:%d\n", i, cnt[i]); }
+    }
+    return 0;
 }

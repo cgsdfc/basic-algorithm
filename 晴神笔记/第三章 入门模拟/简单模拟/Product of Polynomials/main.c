@@ -20,46 +20,43 @@
 double res[MAXN];
 
 typedef struct Term {
-  int exp;
-  double cof;
+    int exp;
+    double cof;
 } Term;
 
 #define MAXK 15
 
-int main(int argc, char *argv[]) {
-  int n;        // 第一个乘数的长度.
-  Term a[MAXK]; // 第一个乘数.
-  int m;        // 第二个乘数的长度.
-  int i;
-  int j;
+int main(int argc, char* argv[]) {
+    int n;         // 第一个乘数的长度.
+    Term a[MAXK];  // 第一个乘数.
+    int m;         // 第二个乘数的长度.
+    int i;
+    int j;
 
-  freopen("./in.txt", "r", stdin);
+    freopen("./in.txt", "r", stdin);
 
-  scanf("%d", &n);
-  for (i = 0; i < n; ++i) {
-    scanf("%d%lf", &a[i].exp, &a[i].cof);
-  }
-
-  scanf("%d", &m);
-  for (i = 0; i < m; ++i) {
-    int e;
-    double c;
-    scanf("%d%lf", &e, &c);
-    for (j = 0; j < n; ++j) {
-      res[a[j].exp + e] += a[j].cof * c;
+    scanf("%d", &n);
+    for (i = 0; i < n; ++i) {
+        scanf("%d%lf", &a[i].exp, &a[i].cof);
     }
-  }
-  // 计算c的非零项.
-  n = 0;
-  for (i = 0; i < MAXN; ++i) {
-    if (res[i])
-      ++n;
-  }
-  printf("%d", n);
-  for (i = MAXN - 1; i >= 0; --i) {
-    if (res[i]) {
-      printf(" %d %.1f", i, res[i]);
+
+    scanf("%d", &m);
+    for (i = 0; i < m; ++i) {
+        int e;
+        double c;
+        scanf("%d%lf", &e, &c);
+        for (j = 0; j < n; ++j) {
+            res[a[j].exp + e] += a[j].cof * c;
+        }
     }
-  }
-  return 0;
+    // 计算c的非零项.
+    n = 0;
+    for (i = 0; i < MAXN; ++i) {
+        if (res[i]) ++n;
+    }
+    printf("%d", n);
+    for (i = MAXN - 1; i >= 0; --i) {
+        if (res[i]) { printf(" %d %.1f", i, res[i]); }
+    }
+    return 0;
 }

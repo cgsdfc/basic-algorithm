@@ -19,77 +19,79 @@ using namespace std;
 #define MAXN (30000 + 5)
 
 struct Heap {
-  // 小顶堆，实现最小代价的先出来。
-  int N;
-  int data[MAXN];
+    // 小顶堆，实现最小代价的先出来。
+    int N;
+    int data[MAXN];
 
-  void Init() { N = 0; }
-  void Down(int low, int hi) {
-    // 向下调整。
-    int i = low;
-    int j = i * 2;
-    while (j <= hi) {
-      if (j + 1 <= hi && data[j + 1] < data[j]) {
-        j++;
-      }
-      if (data[j] < data[i]) {
-        // 孩子更小。
-        swap(data[j], data[i]);
-        i = j;
-        j = 2 * i;
-      } else {
-        break;
-      }
+    void Init() {
+        N = 0;
     }
-  }
-  void Up(int low, int hi) {
-    // 向上调整。
-    int i = hi;
-    int j = i / 2;
-    while (j >= low) {
-      if (data[j] > data[i]) {
-        // 父亲更大。
-        swap(data[j], data[i]);
-        i = j;
-        j = i / 2;
-      } else {
-        break;
-      }
+    void Down(int low, int hi) {
+        // 向下调整。
+        int i = low;
+        int j = i * 2;
+        while (j <= hi) {
+            if (j + 1 <= hi && data[j + 1] < data[j]) { j++; }
+            if (data[j] < data[i]) {
+                // 孩子更小。
+                swap(data[j], data[i]);
+                i = j;
+                j = 2 * i;
+            } else {
+                break;
+            }
+        }
     }
-  }
-  void Insert(int x) {
-    data[++N] = x;
-    Up(1, N);
-  }
-  void DeleteTop() {
-    data[1] = data[N--];
-    Down(1, N);
-  }
-  int Top() { return data[1]; }
+    void Up(int low, int hi) {
+        // 向上调整。
+        int i = hi;
+        int j = i / 2;
+        while (j >= low) {
+            if (data[j] > data[i]) {
+                // 父亲更大。
+                swap(data[j], data[i]);
+                i = j;
+                j = i / 2;
+            } else {
+                break;
+            }
+        }
+    }
+    void Insert(int x) {
+        data[++N] = x;
+        Up(1, N);
+    }
+    void DeleteTop() {
+        data[1] = data[N--];
+        Down(1, N);
+    }
+    int Top() {
+        return data[1];
+    }
 };
 
 Heap heap;
-int N; // 总果子数。
+int N;  // 总果子数。
 
-int main(int argc, char **argv) {
-  while (scanf("%d", &N) != EOF) {
-    heap.Init();
-    for (int i = 0; i < N; ++i) {
-      int x;
-      scanf("%d", &x);
-      heap.Insert(x);
+int main(int argc, char** argv) {
+    while (scanf("%d", &N) != EOF) {
+        heap.Init();
+        for (int i = 0; i < N; ++i) {
+            int x;
+            scanf("%d", &x);
+            heap.Insert(x);
+        }
+        int ans = 0;
+        while (heap.N > 1) {
+            int a = heap.Top();
+            heap.DeleteTop();
+            int b = heap.Top();
+            heap.DeleteTop();
+            int cost = a + b;
+            ans += cost;
+            heap.Insert(cost);
+        }
+        printf("%d\n", ans);
     }
-    int ans = 0;
-    while (heap.N > 1) {
-      int a = heap.Top();
-      heap.DeleteTop();
-      int b = heap.Top();
-      heap.DeleteTop();
-      int cost = a + b;
-      ans += cost;
-      heap.Insert(cost);
-    }
-    printf("%d\n", ans);
-  }
-  return 0;
+    return 0;
 }

@@ -18,43 +18,41 @@ using namespace std;
 删点用一个hash数组表示某点被删了。
 */
 
-int N, M, K; // 节点数，边数，删点数。
+int N, M, K;  // 节点数，边数，删点数。
 
-#define MAXN 1005 // 节点下标1--N。
+#define MAXN 1005  // 节点下标1--N。
 
 bool G[MAXN][MAXN];
-bool vis[MAXN]; // DFS必备。
+bool vis[MAXN];  // DFS必备。
 // bool Del[MAXN];
 int Del;
 
 // 求联通分量用DFS即可。
 
 void DFS(int u) {
-  vis[u] = true;
-  for (int v = 1; v <= N; ++v) {
-    if (!vis[v] && G[u][v] && v != Del) {
-      DFS(v);
+    vis[u] = true;
+    for (int v = 1; v <= N; ++v) {
+        if (!vis[v] && G[u][v] && v != Del) { DFS(v); }
     }
-  }
 }
 
 // 删掉Q点，返回需要添加的边数。
 int DFSTrave() {
-  int ans = 0; // 联通分量数。
-  // BUG点：
-  // 注意下标1-N对fill的影响！
-  // 实际上要把[1--N]都设为false.
-  fill(vis + 1, vis + N + 1, false);
+    int ans = 0;  // 联通分量数。
+    // BUG点：
+    // 注意下标1-N对fill的影响！
+    // 实际上要把[1--N]都设为false.
+    fill(vis + 1, vis + N + 1, false);
 
-  for (int v = 1; v <= N; ++v) {
-    if (!vis[v] && v != Del) {
-      // 既不访问死点，也不重复访问。
-      ++ans;
-      DFS(v);
+    for (int v = 1; v <= N; ++v) {
+        if (!vis[v] && v != Del) {
+            // 既不访问死点，也不重复访问。
+            ++ans;
+            DFS(v);
+        }
     }
-  }
-  assert(ans >= 0);
-  return ans - 1;
+    assert(ans >= 0);
+    return ans - 1;
 }
 
 /*
@@ -62,18 +60,18 @@ int DFSTrave() {
 O(KV)
 */
 
-int main(int argc, char **argv) {
-  scanf("%d%d%d", &N, &M, &K);
-  while (M--) {
-    int i, j;
-    scanf("%d%d", &i, &j);
-    G[i][j] = G[j][i] = true;
-  }
-  while (K--) {
-    // 查询。
-    scanf("%d", &Del);
-    int ans = DFSTrave();
-    printf("%d\n", ans);
-  }
-  return 0;
+int main(int argc, char** argv) {
+    scanf("%d%d%d", &N, &M, &K);
+    while (M--) {
+        int i, j;
+        scanf("%d%d", &i, &j);
+        G[i][j] = G[j][i] = true;
+    }
+    while (K--) {
+        // 查询。
+        scanf("%d", &Del);
+        int ans = DFSTrave();
+        printf("%d\n", ans);
+    }
+    return 0;
 }

@@ -25,36 +25,39 @@
 
 typedef struct Node Node;
 struct Node {
-  int data;
-  Node *child; // 第一个孩子
-  Node *sibl;  // 下一个兄弟。
+    int data;
+    Node* child;  // 第一个孩子
+    Node* sibl;   // 下一个兄弟。
 };
 
 // 节点的度就是孩子数。
-int NodeDegree(Node *n) {
-  int sum = 0;
-  Node *ch;
-  for (ch = n->child; ch; ch = ch->sibl) {
-    ++sum;
-  }
-  return sum;
+int NodeDegree(Node* n) {
+    int sum = 0;
+    Node* ch;
+    for (ch = n->child; ch; ch = ch->sibl) {
+        ++sum;
+    }
+    return sum;
 }
 
-int NodeCount(Node *n) {
-  int sum = 0;
-  Node *ch;
+int NodeCount(Node* n) {
+    int sum = 0;
+    Node* ch;
 
-  if (!n)
-    return 0;
-  for (ch = n->child; ch; ch = ch->sibl) {
-    sum += NodeCount(ch);
-  }
-  return sum + 1;
+    if (!n) return 0;
+    for (ch = n->child; ch; ch = ch->sibl) {
+        sum += NodeCount(ch);
+    }
+    return sum + 1;
 }
 
-int EdgeCount(Node *n) { return NodeCount(n) - 1; }
+int EdgeCount(Node* n) {
+    return NodeCount(n) - 1;
+}
 
 /*
 判断一棵树是否为空。
 */
-int IsEmpty(Node *n) { return 0 == NodeCount(n); }
+int IsEmpty(Node* n) {
+    return 0 == NodeCount(n);
+}

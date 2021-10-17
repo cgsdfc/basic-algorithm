@@ -16,38 +16,38 @@
 */
 
 static void BubbleSort(int a[], int size) {
-  int i, j;
+    int i, j;
 
-  // i 枚举每一趟的结束位置。
-  for (i = size - 1; i >= 1; --i) {
-    // j 枚举子序列的当前元素。
-    // 因为要看j右边的数， 所以j不去到子序列的最后一个元素。
-    for (j = 0; j <= i - 1; ++j) {
-      if (a[j] > a[j + 1]) {
-        // 左边的数大。
-        int tmp = a[j];
-        a[j] = a[j + 1];
-        a[j + 1] = tmp;
-      }
+    // i 枚举每一趟的结束位置。
+    for (i = size - 1; i >= 1; --i) {
+        // j 枚举子序列的当前元素。
+        // 因为要看j右边的数， 所以j不去到子序列的最后一个元素。
+        for (j = 0; j <= i - 1; ++j) {
+            if (a[j] > a[j + 1]) {
+                // 左边的数大。
+                int tmp = a[j];
+                a[j] = a[j + 1];
+                a[j + 1] = tmp;
+            }
+        }
+
+        //		WriteArray(stdout, a, size);
     }
-
-    //		WriteArray(stdout, a, size);
-  }
 }
 
 #define MAXN 100
 
-int main(int argc, char *argv[]) {
-  int a[MAXN];
-  int n;
+int main(int argc, char* argv[]) {
+    int a[MAXN];
+    int n;
 
-  n = 10;
-  RandArray(a, n);
-  //	n=ReadArray(stdin, a, MAXN);
-  WriteArray(stdout, a, n);
+    n = 10;
+    RandArray(a, n);
+    //	n=ReadArray(stdin, a, MAXN);
+    WriteArray(stdout, a, n);
 
-  BubbleSort(a, n);
-  WriteArray(stdout, a, n);
+    BubbleSort(a, n);
+    WriteArray(stdout, a, n);
 
-  return 0;
+    return 0;
 }

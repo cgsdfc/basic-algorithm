@@ -8,21 +8,19 @@
 char str[MAXN], str2[MAXN];
 int hashtable[256];
 
-int main(int argc, char *argv[]) {
-  int i, len;
+int main(int argc, char* argv[]) {
+    int i, len;
 
-  gets(str);  // S1
-  gets(str2); // S2
+    gets(str);   // S1
+    gets(str2);  // S2
 
-  for (i = 0, len = strlen(str2); i < len; ++i) {
-    hashtable[str2[i]] = 1;
-  }
-  // S1-S2
-  for (i = 0, len = strlen(str); i < len; ++i) {
-    if (!hashtable[str[i]]) {
-      putchar(str[i]);
+    for (i = 0, len = strlen(str2); i < len; ++i) {
+        hashtable[str2[i]] = 1;
     }
-  }
-  putchar('\n');
-  return 0;
+    // S1-S2
+    for (i = 0, len = strlen(str); i < len; ++i) {
+        if (!hashtable[str[i]]) { putchar(str[i]); }
+    }
+    putchar('\n');
+    return 0;
 }

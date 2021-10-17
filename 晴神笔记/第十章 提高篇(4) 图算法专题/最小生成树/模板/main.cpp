@@ -43,110 +43,111 @@ S，V-S。每次从V-S中选取到S集合的节点的距离最小的节点，加入S中，
 Prim可以堆优化。
 */
 
-#define MAXN 505 // 节点上限。
+#define MAXN 505  // 节点上限。
 
-int G[MAXN][MAXN]; // Prim适合点多的图，所以邻接矩阵是不合适的。
+int G[MAXN][MAXN];  // Prim适合点多的图，所以邻接矩阵是不合适的。
 
 // 邻接表的元素，终点和边权。
 struct Node {
-  int v, dis;
-  Node(int vv, int dd) : v(vv), dis(dd) {}
-  friend bool operator<(Node a, Node b) { return a.dis > b.dis; }
+    int v, dis;
+    Node(int vv, int dd): v(vv), dis(dd) {}
+    friend bool operator<(Node a, Node b) {
+        return a.dis > b.dis;
+    }
 };
 
 vector<Node> Adj[MAXN];
 bool vis[MAXN];
 int d[MAXN];
-int pre[MAXN]; // 记录MST本身，通过父亲表示法。
+int pre[MAXN];  // 记录MST本身，通过父亲表示法。
 const int INF = 1e9;
 
-int N, M; // 节点数，边数。
+int N, M;  // 节点数，边数。
 
 /*
 s：选定的树根，作为S集合的初始节点。
 返回是否存在最小生成树，和最小边权和。同时记录MST本身。
 */
-bool Prim(int s, int &ans) {
-  fill(vis, vis + MAXN, false);
-  fill(d, d + MAXN, INF);
-  d[s] = 0;
-  ans = 0;
-  for (int i = 0; i < N; ++i) {
-    pre[i] = i;
-  }
-  for (int i = 0; i < N; ++i) {
-    // N轮循环，每次增加一个节点，一条边（根的边权为0）。
-    // 查找d最小的u。
-    int u = -1;
-    int MIN = INF;
-    for (int j = 0; j < N; ++j) {
-      if (!vis[j] && d[j] < MIN) {
-        u = j;
-        MIN = d[j];
-      }
+bool Prim(int s, int& ans) {
+    fill(vis, vis + MAXN, false);
+    fill(d, d + MAXN, INF);
+    d[s] = 0;
+    ans = 0;
+    for (int i = 0; i < N; ++i) {
+        pre[i] = i;
     }
-    if (u == -1) {
-      // 不连通。MST不存在。
-      /*
-      注意，Dijkstra这里的逻辑作用是提前退出，而不是判定最短路不存在。
-      事实上，Dijkstra的设定下，最短路总是存在的，因为它假设负环不存在。
-      */
-      return false;
+    for (int i = 0; i < N; ++i) {
+        // N轮循环，每次增加一个节点，一条边（根的边权为0）。
+        // 查找d最小的u。
+        int u = -1;
+        int MIN = INF;
+        for (int j = 0; j < N; ++j) {
+            if (!vis[j] && d[j] < MIN) {
+                u = j;
+                MIN = d[j];
+            }
+        }
+        if (u == -1) {
+            // 不连通。MST不存在。
+            /*
+            注意，Dijkstra这里的逻辑作用是提前退出，而不是判定最短路不存在。
+            事实上，Dijkstra的设定下，最短路总是存在的，因为它假设负环不存在。
+            */
+            return false;
+        }
+        vis[u] = true;  // 加入集合S。
+        ans += d[u];    // 累计边权。
+        // 松弛操作。
+        for (int j = 0; j < Adj[u].size(); ++j) {
+            int v = Adj[u][j].v;
+            int dis = Adj[u][j].dis;
+            if (!vis[v] && dis < d[v]) {
+                d[v] = dis;  // d数组的元素是边权。
+                pre[v] = u;  // 因为离S最近的未选中节点将被选择，
+                             // 所以使v到S的距离变近的u作为v的父节点。
+            }
+        }
     }
-    vis[u] = true; // 加入集合S。
-    ans += d[u];   // 累计边权。
-    // 松弛操作。
-    for (int j = 0; j < Adj[u].size(); ++j) {
-      int v = Adj[u][j].v;
-      int dis = Adj[u][j].dis;
-      if (!vis[v] && dis < d[v]) {
-        d[v] = dis; // d数组的元素是边权。
-        pre[v] = u; // 因为离S最近的未选中节点将被选择，
-                    // 所以使v到S的距离变近的u作为v的父节点。
-      }
-    }
-  }
-  return true;
+    return true;
 }
 
 /*
 堆优化的Prim。
 */
-bool Prim2(int s, int &ans) {
-  fill(vis, vis + MAXN, false);
-  fill(d, d + MAXN, INF);
-  d[s] = 0; // 注意这里。
-  ans = 0;
-  priority_queue<Node> Q;
-  Q.push(Node(s, 0));
-  for (int i = 0; i < N; ++i) {
-    pre[i] = i;
-  }
-  while (!Q.empty()) {
-    int u = Q.top().v;
-    Q.pop();
-    if (vis[u])
-      continue;
-    // 注意，d[u]不可能为INF，因为不可达的节点不可能入队。
-    vis[u] = true;
-    ans += d[u];
-    for (int i = 0; i < Adj[u].size(); ++i) {
-      int v = Adj[u][i].v;
-      int dis = Adj[u][i].dis;
-      if (!vis[v] && dis < d[v]) {
-        d[v] = dis;
-        pre[v] = u;
-        Q.push(Node(v, d[v]));
-      }
+bool Prim2(int s, int& ans) {
+    fill(vis, vis + MAXN, false);
+    fill(d, d + MAXN, INF);
+    d[s] = 0;  // 注意这里。
+    ans = 0;
+    priority_queue<Node> Q;
+    Q.push(Node(s, 0));
+    for (int i = 0; i < N; ++i) {
+        pre[i] = i;
     }
-  }
-  for (int i = 0; i < N; ++i) {
-    if (d[i] == INF) {
-      // 节点不可达。
-      return false;
+    while (!Q.empty()) {
+        int u = Q.top().v;
+        Q.pop();
+        if (vis[u]) continue;
+        // 注意，d[u]不可能为INF，因为不可达的节点不可能入队。
+        vis[u] = true;
+        ans += d[u];
+        for (int i = 0; i < Adj[u].size(); ++i) {
+            int v = Adj[u][i].v;
+            int dis = Adj[u][i].dis;
+            if (!vis[v] && dis < d[v]) {
+                d[v] = dis;
+                pre[v] = u;
+                Q.push(Node(v, d[v]));
+            }
+        }
     }
-  }
-  return true;
+    for (int i = 0; i < N; ++i) {
+        if (d[i] == INF) {
+            // 节点不可达。
+            return false;
+        }
+    }
+    return true;
 }
 
 /*
@@ -168,58 +169,60 @@ bool Prim2(int s, int &ans) {
 */
 
 struct Edge {
-  int u, v, dis;
-  Edge(int uu, int vv, int dd) : u(uu), v(vv), dis(dd) {}
-  friend bool operator<(Edge a, Edge b) {
-    return a.dis < b.dis; // 排序。
-  }
+    int u, v, dis;
+    Edge(int uu, int vv, int dd): u(uu), v(vv), dis(dd) {}
+    friend bool operator<(Edge a, Edge b) {
+        return a.dis < b.dis;  // 排序。
+    }
 };
 
 #define MAXM 105
 
 Edge edge[MAXM];
-int father[MAXN]; // 并查集。
+int father[MAXN];  // 并查集。
 
 // 并查集找根。
 int Find(int x) {
-  int a = x;
-  while (x != father[x]) {
-    x = father[x];
-  }
-  while (a != father[a]) {
-    int temp = father[a];
-    father[a] = x;
-    a = temp;
-  }
-  return x;
+    int a = x;
+    while (x != father[x]) {
+        x = father[x];
+    }
+    while (a != father[a]) {
+        int temp = father[a];
+        father[a] = x;
+        a = temp;
+    }
+    return x;
 }
 
-bool Kruskal(int &ans) {
-  ans = 0;
-  // 初始化并查集。
-  for (int i = 0; i < N; ++i) {
-    father[i] = i;
-  }
-  int num = 0; // 当前的MST边数。
-  // 边排序，贪心策略。
-  sort(edge, edge + M);
-  for (int i = 0; i < M; ++i) {
-    int faU = Find(edge[i].u);
-    int faV = Find(edge[i].v);
-    if (faU != faV) {
-      // 合并，并且加入新边。
-      ++num;
-      ans += edge[i].dis;
-      if (num == N - 1) {
-        // 已经得到树了。算法提前退出。
-        return true;
-      }
+bool Kruskal(int& ans) {
+    ans = 0;
+    // 初始化并查集。
+    for (int i = 0; i < N; ++i) {
+        father[i] = i;
     }
-  }
-  return num == N - 1;
+    int num = 0;  // 当前的MST边数。
+    // 边排序，贪心策略。
+    sort(edge, edge + M);
+    for (int i = 0; i < M; ++i) {
+        int faU = Find(edge[i].u);
+        int faV = Find(edge[i].v);
+        if (faU != faV) {
+            // 合并，并且加入新边。
+            ++num;
+            ans += edge[i].dis;
+            if (num == N - 1) {
+                // 已经得到树了。算法提前退出。
+                return true;
+            }
+        }
+    }
+    return num == N - 1;
 }
 
 /* run this program using the console pauser or add your own getch,
  * system("pause") or input loop */
 
-int main(int argc, char **argv) { return 0; }
+int main(int argc, char** argv) {
+    return 0;
+}

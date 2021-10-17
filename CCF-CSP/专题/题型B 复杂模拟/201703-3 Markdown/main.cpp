@@ -16,20 +16,19 @@ int N;
  * system("pause") or input loop */
 
 // 判断空行。
-bool Empty(string &str) {
-  for (int i = 0; i < str.length(); ++i) {
-    if (!isspace(str[i]))
-      return false;
-  }
-  return true;
+bool Empty(string& str) {
+    for (int i = 0; i < str.length(); ++i) {
+        if (!isspace(str[i])) return false;
+    }
+    return true;
 }
 
 void Read() {
-  // 输入所有的行。
-  string line;
-  while (getline(cin, line)) {
-    lines.push_back(line);
-  }
+    // 输入所有的行。
+    string line;
+    while (getline(cin, line)) {
+        lines.push_back(line);
+    }
 }
 
 /*
@@ -41,129 +40,129 @@ void Read() {
 注意抠强调的时候，遇到第一个下划线后要加一，再找第二个下划线。
 */
 
-void ParseBlock(string &str, int L, int R);
+void ParseBlock(string& str, int L, int R);
 
-void ParseLink(string &str, int L1, int R1, int L2, int R2) {
-  printf("<a href=\"");
-  // link
-  ParseBlock(str, L2 + 1, R2 - 1);
-  printf("\">");
-  // text
-  ParseBlock(str, L1 + 1, R1 - 1);
-  printf("</a>");
+void ParseLink(string& str, int L1, int R1, int L2, int R2) {
+    printf("<a href=\"");
+    // link
+    ParseBlock(str, L2 + 1, R2 - 1);
+    printf("\">");
+    // text
+    ParseBlock(str, L1 + 1, R1 - 1);
+    printf("</a>");
 }
 
-void ParseEm(string &str, int L, int R) {
-  assert(str[L] == '_');
-  assert(str[R] == '_');
-  printf("<em>");
-  ParseBlock(str, L + 1, R - 1);
-  printf("</em>");
+void ParseEm(string& str, int L, int R) {
+    assert(str[L] == '_');
+    assert(str[R] == '_');
+    printf("<em>");
+    ParseBlock(str, L + 1, R - 1);
+    printf("</em>");
 }
 
-void ParseBlock(string &str, int L, int R) {
-  int i = L;
-  while (i <= R) {
-    char ch = str[i];
-    if (ch == '_') {
-      int j = i + 1; // 注意，i本身就是下划线，要找i后面的第一个下划线。
-      while (j <= R && str[j] != '_') {
-        ++j;
-      }
-      ParseEm(str, i, j);
-      i = j + 1;
-    } else if (ch == '[') {
-      int j = i;
-      while (j <= R && str[j] != ']') {
-        ++j;
-      }
-      assert(j <= R && str[j] == ']');
-      assert(j + 1 <= R && str[j + 1] == '(');
-      int k = j;
-      while (k <= R && str[k] != ')') {
-        ++k;
-      }
-      assert(k <= R && str[k] == ')');
-      ParseLink(str, i, j, j + 1, k);
-      i = k + 1;
-    } else {
-      // 普通字符，直接输出。
-      putchar(ch);
-      ++i;
+void ParseBlock(string& str, int L, int R) {
+    int i = L;
+    while (i <= R) {
+        char ch = str[i];
+        if (ch == '_') {
+            int j = i + 1;  // 注意，i本身就是下划线，要找i后面的第一个下划线。
+            while (j <= R && str[j] != '_') {
+                ++j;
+            }
+            ParseEm(str, i, j);
+            i = j + 1;
+        } else if (ch == '[') {
+            int j = i;
+            while (j <= R && str[j] != ']') {
+                ++j;
+            }
+            assert(j <= R && str[j] == ']');
+            assert(j + 1 <= R && str[j + 1] == '(');
+            int k = j;
+            while (k <= R && str[k] != ')') {
+                ++k;
+            }
+            assert(k <= R && str[k] == ')');
+            ParseLink(str, i, j, j + 1, k);
+            i = k + 1;
+        } else {
+            // 普通字符，直接输出。
+            putchar(ch);
+            ++i;
+        }
     }
-  }
 }
 
 // 处理一行，结尾不输出回车。
-void Block(string &str, int pos) { ParseBlock(str, pos, str.length() - 1); }
-
-void Clean(string &str, int &i) {
-  // 从i开始去掉连续的空格。
-  while (i < str.length() && str[i] == ' ') {
-    ++i;
-  }
+void Block(string& str, int pos) {
+    ParseBlock(str, pos, str.length() - 1);
 }
 
-void Title(string &str) {
-  int i = 0;
-  while (i < str.length() && str[i] == '#') {
-    ++i;
-  }
-  int n = i; // 等级。
-  Clean(str, i);
-  printf("<h%d>", n);
-  Block(str, i);
-  printf("</h%d>\n", n);
+void Clean(string& str, int& i) {
+    // 从i开始去掉连续的空格。
+    while (i < str.length() && str[i] == ' ') {
+        ++i;
+    }
 }
 
-void Ulist(int &i) {
-  puts("<ul>");
-  while (i < N && lines[i].size() && lines[i][0] == '*') {
-    string &str = lines[i];
-    int j = 1;
-    Clean(str, j);
-    printf("<li>");
-    Block(str, j);
-    printf("</li>\n");
-    ++i;
-  }
-  puts("</ul>");
+void Title(string& str) {
+    int i = 0;
+    while (i < str.length() && str[i] == '#') {
+        ++i;
+    }
+    int n = i;  // 等级。
+    Clean(str, i);
+    printf("<h%d>", n);
+    Block(str, i);
+    printf("</h%d>\n", n);
 }
 
-void Para(int &i) {
-  printf("<p>");
-  Block(lines[i], 0);
-  // 先输出首行。
-  ++i;
-  while (i < N && !Empty(lines[i])) {
-    printf("\n");
+void Ulist(int& i) {
+    puts("<ul>");
+    while (i < N && lines[i].size() && lines[i][0] == '*') {
+        string& str = lines[i];
+        int j = 1;
+        Clean(str, j);
+        printf("<li>");
+        Block(str, j);
+        printf("</li>\n");
+        ++i;
+    }
+    puts("</ul>");
+}
+
+void Para(int& i) {
+    printf("<p>");
     Block(lines[i], 0);
+    // 先输出首行。
     ++i;
-  }
-  printf("</p>\n");
+    while (i < N && !Empty(lines[i])) {
+        printf("\n");
+        Block(lines[i], 0);
+        ++i;
+    }
+    printf("</p>\n");
 }
 
-int main(int argc, char **argv) {
-  Read();
-  N = lines.size();
-  int i = 0;
-  while (i < N) {
-    while (i < N && Empty(lines[i])) {
-      ++i;
+int main(int argc, char** argv) {
+    Read();
+    N = lines.size();
+    int i = 0;
+    while (i < N) {
+        while (i < N && Empty(lines[i])) {
+            ++i;
+        }
+        if (i >= N) { break; }
+        string& str = lines[i];
+        assert(str.length());
+        if (str[0] == '#') {
+            Title(str);
+            ++i;
+        } else if (str[0] == '*') {
+            Ulist(i);
+        } else {
+            Para(i);
+        }
     }
-    if (i >= N) {
-      break;
-    }
-    string &str = lines[i];
-    assert(str.length());
-    if (str[0] == '#') {
-      Title(str);
-      ++i;
-    } else if (str[0] == '*') {
-      Ulist(i);
-    } else {
-      Para(i);
-    }
-  }
-  return 0;
+    return 0;
 }

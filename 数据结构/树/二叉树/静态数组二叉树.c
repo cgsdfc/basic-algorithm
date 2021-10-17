@@ -7,10 +7,10 @@
 #include <string.h>
 
 typedef struct Node {
-  int data;
-  // 下面三个域都是数组下标，为-1时，表示NULL。
-  int left, right;
-  int parent;
+    int data;
+    // 下面三个域都是数组下标，为-1时，表示NULL。
+    int left, right;
+    int parent;
 } Node;
 
 #define MAXN 100
@@ -27,61 +27,57 @@ typedef struct Node {
  */
 
 int ReadTree(Node t[]) {
-  int N;
-  int i;
-  int root;
+    int N;
+    int i;
+    int root;
 
-  scanf("%d", &N);
-  // 把所有指针域置为-1.
-  for (i = 0; i < N; ++i) {
-    t[i].left = t[i].right = t[i].parent = -1;
-  }
-  for (i = 0; i < N; ++i) {
-    // 如果left或right为NULL，则假设输入数据就是-1，不用特殊处理。
-    int x, left, right;
-    scanf("%d%d%d", &x, &left, &right);
-    t[x].left = left;
-    t[x].right = right;
-    t[x].data = x;
-
-    // 设置父节点。
-    if (left != -1) {
-      t[left].parent = x;
+    scanf("%d", &N);
+    // 把所有指针域置为-1.
+    for (i = 0; i < N; ++i) {
+        t[i].left = t[i].right = t[i].parent = -1;
     }
-    if (right != -1) {
-      t[right].parent = x;
-    }
-  }
+    for (i = 0; i < N; ++i) {
+        // 如果left或right为NULL，则假设输入数据就是-1，不用特殊处理。
+        int x, left, right;
+        scanf("%d%d%d", &x, &left, &right);
+        t[x].left = left;
+        t[x].right = right;
+        t[x].data = x;
 
-  //	for (i=0;i<N;++i) {
-  //		printf("%d %d %d %d\n", t[i].data, t[i].left, t[i].right,
-  //t[i].parent);
-  //	}
-
-  // 没有父节点的节点，就是根节点。
-  root = -1;
-  for (i = 0; i < N; ++i) {
-    if (t[i].parent == -1) {
-      root = i;
-      break;
+        // 设置父节点。
+        if (left != -1) { t[left].parent = x; }
+        if (right != -1) { t[right].parent = x; }
     }
-  }
-  assert(root != -1);
-  return root;
+
+    //	for (i=0;i<N;++i) {
+    //		printf("%d %d %d %d\n", t[i].data, t[i].left, t[i].right,
+    // t[i].parent);
+    //	}
+
+    // 没有父节点的节点，就是根节点。
+    root = -1;
+    for (i = 0; i < N; ++i) {
+        if (t[i].parent == -1) {
+            root = i;
+            break;
+        }
+    }
+    assert(root != -1);
+    return root;
 }
 
 void PreOrderTraversal(Node t[], int root) {
-  if (root != -1) {
-    printf("%d ", t[root].data);
-    PreOrderTraversal(t, t[root].left);
-    PreOrderTraversal(t, t[root].right);
-  }
+    if (root != -1) {
+        printf("%d ", t[root].data);
+        PreOrderTraversal(t, t[root].left);
+        PreOrderTraversal(t, t[root].right);
+    }
 }
 
 void TestStaticBinTree(void) {
-  int root;
-  Node t[MAXN];
+    int root;
+    Node t[MAXN];
 
-  root = ReadTree(t);
-  PreOrderTraversal(t, root);
+    root = ReadTree(t);
+    PreOrderTraversal(t, root);
 }

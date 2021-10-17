@@ -14,9 +14,9 @@ using namespace std;
 算法复杂度：O(M+NlogN)，M是总字符数，N是总单词数。
 */
 
-const int MAXL = 100000 + 5; // 一行。
-const int MAXN = 1000 + 5;   // 单词总数。
-const int MAXS = 100 + 5;    // 单词长度。
+const int MAXL = 100000 + 5;  // 一行。
+const int MAXN = 1000 + 5;    // 单词总数。
+const int MAXS = 100 + 5;     // 单词长度。
 
 char line[MAXL];
 
@@ -28,56 +28,56 @@ int index;
 // 每个单词的id，排序时只对id排序。
 int id[MAXN];
 
-bool cmp(int a, int b) { return strcmp(words[a], words[b]) < 0; }
+bool cmp(int a, int b) {
+    return strcmp(words[a], words[b]) < 0;
+}
 
 // 增加一个单词。
 void Add(char str[]) {
-  strcpy(words[index], str);
-  id[index] = index;
-  ++index;
+    strcpy(words[index], str);
+    id[index] = index;
+    ++index;
 }
 
 void ParseLine(char str[], int len) {
-  // 一个单词的buf。
-  char buf[MAXS];
-  int blen = 0;
+    // 一个单词的buf。
+    char buf[MAXS];
+    int blen = 0;
 
-  int i = 0;
-  while (i < len) {
-    // 单词是小写字母组成。
-    while (i < len && !islower(str[i])) {
-      ++i;
+    int i = 0;
+    while (i < len) {
+        // 单词是小写字母组成。
+        while (i < len && !islower(str[i])) {
+            ++i;
+        }
+        if (i >= len) { break; }  // 是这里保证了buf非空。
+        blen = 0;
+        while (i < len && islower(str[i])) {
+            buf[blen++] = str[i++];
+        }
+        buf[blen] = 0;
+        Add(buf);
     }
-    if (i >= len) {
-      break;
-    } // 是这里保证了buf非空。
-    blen = 0;
-    while (i < len && islower(str[i])) {
-      buf[blen++] = str[i++];
-    }
-    buf[blen] = 0;
-    Add(buf);
-  }
 }
 
-int main(int argc, char **argv) {
-  // 读入行直到EOF。
-  while (gets(line)) {
-    ParseLine(line, strlen(line));
-  }
-  sort(id, id + index, cmp);
-  // 去重输出。
-  int i = 0;
-  while (i < index) {
-    int v = id[i];
-    puts(words[v]);
-    int j = i;
-    // 跳过相同的单词。
-    while (j < index && !strcmp(words[v], words[id[j]])) {
-      ++j;
+int main(int argc, char** argv) {
+    // 读入行直到EOF。
+    while (gets(line)) {
+        ParseLine(line, strlen(line));
     }
-    i = j;
-  }
+    sort(id, id + index, cmp);
+    // 去重输出。
+    int i = 0;
+    while (i < index) {
+        int v = id[i];
+        puts(words[v]);
+        int j = i;
+        // 跳过相同的单词。
+        while (j < index && !strcmp(words[v], words[id[j]])) {
+            ++j;
+        }
+        i = j;
+    }
 
-  return 0;
+    return 0;
 }

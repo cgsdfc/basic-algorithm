@@ -18,9 +18,9 @@ printf的%.mf是截断式的，不是四舍五入。
 当n=1时，不会四舍五入，不知道为什么？
 */
 void PrintFloat(double x, int n) {
-  cout.flags(ios::fixed);
-  cout.precision(n);
-  cout << x;
+    cout.flags(ios::fixed);
+    cout.precision(n);
+    cout << x;
 }
 
 /*
@@ -28,18 +28,18 @@ void PrintFloat(double x, int n) {
 Round实现四舍五入保留n位，但是输出要自己用printf。
 */
 double Round(double x, int n) {
-  double p = pow(10, n);
-  x = round(x * p) / p;
-  return x;
+    double p = pow(10, n);
+    x = round(x * p) / p;
+    return x;
 }
 
-int main(int argc, char **argv) {
-  double x;
-  int n;
+int main(int argc, char** argv) {
+    double x;
+    int n;
 
-  while (cin >> x >> n) {
-    PrintFloat(x, n);
-    puts("");
-  }
-  return 0;
+    while (cin >> x >> n) {
+        PrintFloat(x, n);
+        puts("");
+    }
+    return 0;
 }

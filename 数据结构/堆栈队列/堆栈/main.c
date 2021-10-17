@@ -8,7 +8,7 @@ void TestLinkStack(void);
 void TestArrayStack(void);
 void TestDoubleStack(void);
 
-int main(int argc, char *argv[]) {
-  TestDoubleStack();
-  return 0;
+int main(int argc, char* argv[]) {
+    TestDoubleStack();
+    return 0;
 }

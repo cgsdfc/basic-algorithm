@@ -11,18 +11,18 @@
 const double eps = 1e-5;
 
 double f(double x) {
-  return x * x - 2; // 计算f的值。
+    return x * x - 2;  // 计算f的值。
 }
 
 double solve(double left, double right) {
-  double mid;
-  while (right - left > eps) {
-    mid = (left + right) / 2;
-    if (f(mid) > 0) {
-      right = mid;
-    } else {
-      left = mid;
+    double mid;
+    while (right - left > eps) {
+        mid = (left + right) / 2;
+        if (f(mid) > 0) {
+            right = mid;
+        } else {
+            left = mid;
+        }
     }
-  }
-  return mid;
+    return mid;
 }

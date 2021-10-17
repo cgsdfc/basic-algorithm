@@ -26,83 +26,87 @@
 */
 
 typedef struct QueueImpl {
-  int data[MAXSIZE];
-  int front;
-  int rear;
-  // int size;
+    int data[MAXSIZE];
+    int front;
+    int rear;
+    // int size;
 } * Queue;
 
 static Queue Create(void) {
-  Queue q = malloc(sizeof(struct QueueImpl));
-  /*
-  front和rear的初值不能是-1，因为当front==-1，而rear>=0时，(rear+1) % MAXSIZE
-  恒为整数，所以Full恒不成立。这样判断队满的逻辑就失效了。
-  空出来的元素是data[0]。
-  */
-  q->front = q->rear = 0;
-  return q;
+    Queue q = malloc(sizeof(struct QueueImpl));
+    /*
+    front和rear的初值不能是-1，因为当front==-1，而rear>=0时，(rear+1) % MAXSIZE
+    恒为整数，所以Full恒不成立。这样判断队满的逻辑就失效了。
+    空出来的元素是data[0]。
+    */
+    q->front = q->rear = 0;
+    return q;
 }
 
-static int Empty(Queue q) { return q->front == q->rear; }
+static int Empty(Queue q) {
+    return q->front == q->rear;
+}
 
-static int Full(Queue q) { return (q->rear + 1) % MAXSIZE == q->front; }
+static int Full(Queue q) {
+    return (q->rear + 1) % MAXSIZE == q->front;
+}
 
 static void PushQueue(Queue q, int item) {
-  assert(!Full(q));
-  q->rear = (q->rear + 1) % MAXSIZE;
-  q->data[q->rear] = item;
+    assert(!Full(q));
+    q->rear = (q->rear + 1) % MAXSIZE;
+    q->data[q->rear] = item;
 }
 
 static int PopQueue(Queue q) {
-  assert(!Empty(q));
-  q->front = (q->front + 1) % MAXSIZE;
-  return q->data[q->front];
+    assert(!Empty(q));
+    q->front = (q->front + 1) % MAXSIZE;
+    return q->data[q->front];
 }
 
 static int Front(Queue q) {
-  assert(!Empty(q));
-  return q->data[(q->front + 1) % MAXSIZE];
+    assert(!Empty(q));
+    return q->data[(q->front + 1) % MAXSIZE];
 }
 
 static int Rear(Queue q) {
-  assert(!Empty(q));
-  return q->data[q->rear];
+    assert(!Empty(q));
+    return q->data[q->rear];
 }
 
 static int Size(Queue q) {
-  // 见王道数据结构P79
-  return (q->rear - q->front + MAXSIZE) % MAXSIZE;
+    // 见王道数据结构P79
+    return (q->rear - q->front + MAXSIZE) % MAXSIZE;
 }
 
 static void Print(Queue q) {
-  printf("front=%d\n", q->front);
-  printf("rear=%d\n", q->rear);
+    printf("front=%d\n", q->front);
+    printf("rear=%d\n", q->rear);
 }
 
 void TestArrayQueue(void) {
-  int i;
-  Queue q = Create();
+    int i;
+    Queue q = Create();
 
-  assert(Empty(q));
-  for (i = 1; i <= MAXSIZE - 1; ++i) {
-    PushQueue(q, 1);
-  }
-  Print(q);
+    assert(Empty(q));
+    for (i = 1; i <= MAXSIZE - 1; ++i) {
+        PushQueue(q, 1);
+    }
+    Print(q);
 
-  assert(Full(q));
-  for (i = 1; i <= MAXSIZE - 1; ++i) {
-    PopQueue(q);
-  }
-  Print(q);
+    assert(Full(q));
+    for (i = 1; i <= MAXSIZE - 1; ++i) {
+        PopQueue(q);
+    }
+    Print(q);
 
-  assert(Empty(q));
+    assert(Empty(q));
 
-  for (i = 1; i <= 3; ++i) {
-    PushQueue(q, i);
-  }
-  assert(Size(q) == 3);
+    for (i = 1; i <= 3; ++i) {
+        PushQueue(q, i);
+    }
+    assert(Size(q) == 3);
 
-  for (i = 1; i <= 3; ++i) {
-    assert(PopQueue(q) == i);
-  }
+    for (i = 1; i <= 3; ++i) {
+        assert(PopQueue(q) == i);
+    }
 }

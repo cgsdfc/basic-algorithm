@@ -6,7 +6,7 @@
 #include <vector>
 using namespace std;
 
-#define MAXN 505 // 最大节点数。
+#define MAXN 505  // 最大节点数。
 
 map<string, int> mp1;
 string mp2[MAXN];
@@ -21,24 +21,24 @@ int father[MAXN];
 int depth[MAXN];
 
 // 字符串转编号。
-int Map(string &str) {
-  if (mp1.count(str)) {
-    return mp1[str];
-  } else {
-    mp1[str] = index;
-    mp2[index] = str;
-    return index++;
-  }
+int Map(string& str) {
+    if (mp1.count(str)) {
+        return mp1[str];
+    } else {
+        mp1[str] = index;
+        mp2[index] = str;
+        return index++;
+    }
 }
 
 // 获取从根节点到v的路径。
-void GetPath(int v, vector<int> &p) {
-  while (v != -1) {
-    p.push_back(v);
-    v = father[v];
-  }
-  // 从根节点开始。
-  reverse(p.begin(), p.end());
+void GetPath(int v, vector<int>& p) {
+    while (v != -1) {
+        p.push_back(v);
+        v = father[v];
+    }
+    // 从根节点开始。
+    reverse(p.begin(), p.end());
 }
 
 /*
@@ -48,20 +48,20 @@ void GetPath(int v, vector<int> &p) {
 这样当ab都比较深，但是ab比较接近时更快。事实上，复杂度等于ab的LCA的高度，而与深度无关。
 */
 void Solve2(int a, int b) {
-  // 层次差。
-  int diff = abs(depth[a] - depth[b]);
-  while (depth[a] > depth[b]) {
-    a = father[a];
-  }
-  while (depth[b] > depth[a]) {
-    b = father[b];
-  }
-  while (a != b) {
-    a = father[a];
-    b = father[b];
-  }
-  int lca = a;
-  printf("%s %d\n", mp2[lca].c_str(), diff);
+    // 层次差。
+    int diff = abs(depth[a] - depth[b]);
+    while (depth[a] > depth[b]) {
+        a = father[a];
+    }
+    while (depth[b] > depth[a]) {
+        b = father[b];
+    }
+    while (a != b) {
+        a = father[a];
+        b = father[b];
+    }
+    int lca = a;
+    printf("%s %d\n", mp2[lca].c_str(), diff);
 }
 
 /*
@@ -73,49 +73,49 @@ void Solve2(int a, int b) {
 算法的复杂度：是两个节点的深度之和的线性函数。
 */
 void Solve(int a, int b) {
-  GetPath(a, P1);
-  GetPath(b, P2);
-  // 找两个路径的公共前缀。
-  int i = 0;
-  while (i < P1.size() && i < P2.size() && P1[i] == P2[i]) {
-    ++i;
-  }
-  int lca = P1[i - 1];
-  int diff = P1.size() - P2.size();
-  // 好像有绝对值的味道。。
-  printf("%s %d\n", mp2[lca].c_str(), abs(diff));
+    GetPath(a, P1);
+    GetPath(b, P2);
+    // 找两个路径的公共前缀。
+    int i = 0;
+    while (i < P1.size() && i < P2.size() && P1[i] == P2[i]) {
+        ++i;
+    }
+    int lca = P1[i - 1];
+    int diff = P1.size() - P2.size();
+    // 好像有绝对值的味道。。
+    printf("%s %d\n", mp2[lca].c_str(), abs(diff));
 }
 
 /* run this program using the console pauser or add your own getch,
  * system("pause") or input loop */
 
-int main(int argc, char **argv) {
-  fill(father, father + MAXN, -1);
-  fill(depth, depth + MAXN, 0);
+int main(int argc, char** argv) {
+    fill(father, father + MAXN, -1);
+    fill(depth, depth + MAXN, 0);
 
-  /*
-  输入没有N进行提示，只能每次输入2个字符串，然后判断是否能
-  连续输入三个。
-  这个输入方式用C也是一样的，一次输入两个字符串scanf("%s%s")，然后看看是否能输入
-  第三个字符串。
-  */
-  string s1, s2, s3;
-  int a, b;
-  while (cin >> s1 >> s2) {
-    if (cin >> s3) {
-      // 有第三个字符串说明三个一组，这是树的输入。
-      int fa = Map(s1);
-      int u = Map(s2);
-      int v = Map(s3);
-      father[u] = father[v] = fa;
-      depth[u] = depth[v] = depth[fa] + 1;
-    } else {
-      // 查询的输入。
-      a = Map(s1);
-      b = Map(s2);
+    /*
+    输入没有N进行提示，只能每次输入2个字符串，然后判断是否能
+    连续输入三个。
+    这个输入方式用C也是一样的，一次输入两个字符串scanf("%s%s")，然后看看是否能输入
+    第三个字符串。
+    */
+    string s1, s2, s3;
+    int a, b;
+    while (cin >> s1 >> s2) {
+        if (cin >> s3) {
+            // 有第三个字符串说明三个一组，这是树的输入。
+            int fa = Map(s1);
+            int u = Map(s2);
+            int v = Map(s3);
+            father[u] = father[v] = fa;
+            depth[u] = depth[v] = depth[fa] + 1;
+        } else {
+            // 查询的输入。
+            a = Map(s1);
+            b = Map(s2);
+        }
     }
-  }
-  Solve2(a, b);
+    Solve2(a, b);
 
-  return 0;
+    return 0;
 }

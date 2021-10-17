@@ -15,22 +15,22 @@
 #define MAXN (10000000)
 
 int father[MAXN + 5];
-int num[MAXN + 5]; // 统计以i为根的分量的大小，如果i不是根则为0.
+int num[MAXN + 5];  // 统计以i为根的分量的大小，如果i不是根则为0.
 
-int N;       // 边数。
-int ans = 1; // 最小值是1.
+int N;        // 边数。
+int ans = 1;  // 最小值是1.
 
 int Find(int x) {
-  int a = x;
-  while (father[x] != x) {
-    x = father[x];
-  }
-  while (father[a] != a) {
-    int temp = father[a];
-    father[a] = x;
-    a = temp;
-  }
-  return x;
+    int a = x;
+    while (father[x] != x) {
+        x = father[x];
+    }
+    while (father[a] != a) {
+        int temp = father[a];
+        father[a] = x;
+        a = temp;
+    }
+    return x;
 }
 
 /*
@@ -41,17 +41,17 @@ int Find(int x) {
 */
 
 void Union(int a, int b) {
-  int faA = Find(a);
-  int faB = Find(b);
-  if (faA != faB) {
-    father[faA] = faB;
-    num[faB] += num[faA];
-    num[faA] = 0;
-    if (num[faB] > ans) {
-      // 最大的联通分量一定在合并中产生。
-      ans = num[faB];
+    int faA = Find(a);
+    int faB = Find(b);
+    if (faA != faB) {
+        father[faA] = faB;
+        num[faB] += num[faA];
+        num[faA] = 0;
+        if (num[faB] > ans) {
+            // 最大的联通分量一定在合并中产生。
+            ans = num[faB];
+        }
     }
-  }
 }
 
 /*
@@ -60,20 +60,20 @@ void Union(int a, int b) {
 不要依赖V。
 */
 
-int main(int argc, char **argv) {
-  while (scanf("%d", &N) != EOF) {
-    ans = 1; // 初始化！！
-    for (int i = 1; i <= MAXN; ++i) {
-      father[i] = i;
-      num[i] = 1;
+int main(int argc, char** argv) {
+    while (scanf("%d", &N) != EOF) {
+        ans = 1;  // 初始化！！
+        for (int i = 1; i <= MAXN; ++i) {
+            father[i] = i;
+            num[i] = 1;
+        }
+        while (N--) {
+            int A, B;
+            scanf("%d%d", &A, &B);
+            Union(A, B);
+        }
+        assert(ans > 0);
+        printf("%d\n", ans);
     }
-    while (N--) {
-      int A, B;
-      scanf("%d%d", &A, &B);
-      Union(A, B);
-    }
-    assert(ans > 0);
-    printf("%d\n", ans);
-  }
-  return 0;
+    return 0;
 }

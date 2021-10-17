@@ -11,7 +11,7 @@ using namespace std;
 
 const int root = 1;
 
-int N; // 节点数。
+int N;  // 节点数。
 
 // void Init() {
 //	fill(parent, parent+MAXN, -1);
@@ -57,31 +57,31 @@ DFS 可以求树高度，
 */
 
 int DFS(int root) {
-  if (node[root].empty()) {
-    // 叶节点。边界。
-    return 1;
-  }
-  int ans = -1;
-  for (int i = 0; i < node[root].size(); ++i) {
-    int h = DFS(node[root][i]);
-    ans = max(ans, h);
-  }
-  return ans + 1;
+    if (node[root].empty()) {
+        // 叶节点。边界。
+        return 1;
+    }
+    int ans = -1;
+    for (int i = 0; i < node[root].size(); ++i) {
+        int h = DFS(node[root][i]);
+        ans = max(ans, h);
+    }
+    return ans + 1;
 }
 
-int main(int argc, char **argv) {
-  //	Init();
-  scanf("%d", &N);
-  int a, b;
-  while (scanf("%d%d", &a, &b) != EOF) {
-    // b是a的子节点。
-    //		parent[b]=a;
-    //		leaf[a]=false;
-    node[a].push_back(b);
-  }
-  //	int ans=TreeHeight();
-  int ans = DFS(root);
-  printf("%d\n", ans);
+int main(int argc, char** argv) {
+    //	Init();
+    scanf("%d", &N);
+    int a, b;
+    while (scanf("%d%d", &a, &b) != EOF) {
+        // b是a的子节点。
+        //		parent[b]=a;
+        //		leaf[a]=false;
+        node[a].push_back(b);
+    }
+    //	int ans=TreeHeight();
+    int ans = DFS(root);
+    printf("%d\n", ans);
 
-  return 0;
+    return 0;
 }

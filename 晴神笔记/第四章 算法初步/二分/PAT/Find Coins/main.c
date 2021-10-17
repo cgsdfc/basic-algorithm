@@ -28,25 +28,27 @@ int a[MAXN];
 当i到达最后一个元素时，已经不存在下一个元素了，因此i不必到达最后一个。
 */
 
-int CMP(const void *_a, const void *_b) { return *(int *)_a - *(int *)_b; }
+int CMP(const void* _a, const void* _b) {
+    return *(int*) _a - *(int*) _b;
+}
 
-int main(int argc, char *argv[]) {
-  int i;
+int main(int argc, char* argv[]) {
+    int i;
 
-  scanf("%d%d", &N, &M);
-  for (i = 0; i < N; ++i) {
-    scanf("%d", &a[i]);
-  }
-  qsort(a, N, sizeof(int), CMP);
-  for (i = 0; i < N - 1; ++i) {
-    int x = M - a[i];
-    int *res = bsearch(&x, a + i + 1, N - i - 1, sizeof(int), CMP);
-    if (res) {
-      printf("%d %d\n", a[i], x);
-      return 0;
+    scanf("%d%d", &N, &M);
+    for (i = 0; i < N; ++i) {
+        scanf("%d", &a[i]);
     }
-  }
-  puts("No Solution");
+    qsort(a, N, sizeof(int), CMP);
+    for (i = 0; i < N - 1; ++i) {
+        int x = M - a[i];
+        int* res = bsearch(&x, a + i + 1, N - i - 1, sizeof(int), CMP);
+        if (res) {
+            printf("%d %d\n", a[i], x);
+            return 0;
+        }
+    }
+    puts("No Solution");
 
-  return 0;
+    return 0;
 }

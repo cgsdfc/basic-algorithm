@@ -15,29 +15,29 @@ using namespace std;
 char s1[MAXN];
 char s2[MAXN];
 
-int main(int argc, char **argv) {
-  scanf("%s", s1);
-  int len1 = strlen(s1);
-  int N = 0, M = 0; // 正序数，逆序数。
-  int len2 = 0;
-  /*
-  注意N=0，则M=0, 0是0的多少倍？
-  这没有意义。因为可以说是1,2,3，倍。
-  */
+int main(int argc, char** argv) {
+    scanf("%s", s1);
+    int len1 = strlen(s1);
+    int N = 0, M = 0;  // 正序数，逆序数。
+    int len2 = 0;
+    /*
+    注意N=0，则M=0, 0是0的多少倍？
+    这没有意义。因为可以说是1,2,3，倍。
+    */
 
-  for (int i = 0; i < len1; ++i) {
-    char d = s1[i];
-    char d2 = s1[len1 - i - 1];
-    s2[len2++] = d2;
-    N = N * 10 + d - '0';
-    M = M * 10 + d2 - '0';
-  }
-  s2[len2] = 0;
-  if (M % N == 0) {
-    int k = M / N;
-    printf("%d*%d=%d\n", N, k, M);
-  } else {
-    printf("%s %s\n", s1, s2);
-  }
-  return 0;
+    for (int i = 0; i < len1; ++i) {
+        char d = s1[i];
+        char d2 = s1[len1 - i - 1];
+        s2[len2++] = d2;
+        N = N * 10 + d - '0';
+        M = M * 10 + d2 - '0';
+    }
+    s2[len2] = 0;
+    if (M % N == 0) {
+        int k = M / N;
+        printf("%d*%d=%d\n", N, k, M);
+    } else {
+        printf("%s %s\n", s1, s2);
+    }
+    return 0;
 }

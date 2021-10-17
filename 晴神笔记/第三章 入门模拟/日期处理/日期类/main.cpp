@@ -14,34 +14,36 @@
 const int Days[13] = {0, 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
 
 struct Time {
-  int yy, mm, dd;
+    int yy, mm, dd;
 
-  // 加一天。
-  void Add() {
-    ++dd;
-    if (dd == Days[mm] + 1) {
-      dd = 1;
-      ++mm;
+    // 加一天。
+    void Add() {
+        ++dd;
+        if (dd == Days[mm] + 1) {
+            dd = 1;
+            ++mm;
+        }
+        if (mm == 13) {
+            mm = 1;
+            ++yy;
+        }
     }
-    if (mm == 13) {
-      mm = 1;
-      ++yy;
-    }
-  }
 
-  void Print() { printf("%04d-%02d-%02d\n", yy, mm, dd); }
+    void Print() {
+        printf("%04d-%02d-%02d\n", yy, mm, dd);
+    }
 };
 
-int main(int argc, char *argv[]) {
-  int m;
+int main(int argc, char* argv[]) {
+    int m;
 
-  while (scanf("%d", &m) != EOF) {
-    while (m--) {
-      Time t;
-      scanf("%d%d%d", &t.yy, &t.mm, &t.dd);
-      t.Add();
-      t.Print();
+    while (scanf("%d", &m) != EOF) {
+        while (m--) {
+            Time t;
+            scanf("%d%d%d", &t.yy, &t.mm, &t.dd);
+            t.Add();
+            t.Print();
+        }
     }
-  }
-  return 0;
+    return 0;
 }

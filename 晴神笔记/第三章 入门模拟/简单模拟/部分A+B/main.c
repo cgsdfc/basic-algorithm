@@ -10,30 +10,28 @@ typedef long long LL;
 #define MAXN 20
 
 LL func(char s[], int n, char x) {
-  int i = 0;
-  char buf[MAXN];
-  int k = 0;
-  LL res;
+    int i = 0;
+    char buf[MAXN];
+    int k = 0;
+    LL res;
 
-  for (i = 0; i < n; ++i) {
-    if (s[i] == x) {
-      buf[k++] = x;
+    for (i = 0; i < n; ++i) {
+        if (s[i] == x) { buf[k++] = x; }
     }
-  }
-  buf[k] = 0;
-  sscanf(buf, "%lld", &res);
-  return res;
+    buf[k] = 0;
+    sscanf(buf, "%lld", &res);
+    return res;
 }
 
-int main(int argc, char *argv[]) {
-  char a[MAXN], b[MAXN];
-  char da[2], db[2];
-  LL pa, pb, res;
+int main(int argc, char* argv[]) {
+    char a[MAXN], b[MAXN];
+    char da[2], db[2];
+    LL pa, pb, res;
 
-  scanf("%s%s%s%s", a, da, b, db);
-  pa = func(a, strlen(a), da[0]);
-  pb = func(b, strlen(b), db[0]);
-  res = pa + pb;
-  printf("%lld\n", res);
-  return 0;
+    scanf("%s%s%s%s", a, da, b, db);
+    pa = func(a, strlen(a), da[0]);
+    pb = func(b, strlen(b), db[0]);
+    res = pa + pb;
+    printf("%lld\n", res);
+    return 0;
 }

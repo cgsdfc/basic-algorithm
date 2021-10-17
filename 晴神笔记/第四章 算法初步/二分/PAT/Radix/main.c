@@ -27,11 +27,9 @@
 typedef long long LL;
 
 int Dig(char c) {
-  if ('0' <= c && c <= '9')
-    return c - '0';
-  if ('a' <= c && c <= 'z')
-    return c - 'a' + 10;
-  return -1;
+    if ('0' <= c && c <= '9') return c - '0';
+    if ('a' <= c && c <= 'z') return c - 'a' + 10;
+    return -1;
 }
 
 #define MAXS 15
@@ -41,16 +39,16 @@ int Dig(char c) {
 因为其中一步溢出了，会导致后续结果错误。
 */
 LL To(char str[], int len, LL radix) {
-  LL ans = 0;
-  int i;
-  for (i = 0; i < len; ++i) {
-    int d = Dig(str[i]);
-    if (ans < 0) {
-      return -1; // 溢出。
+    LL ans = 0;
+    int i;
+    for (i = 0; i < len; ++i) {
+        int d = Dig(str[i]);
+        if (ans < 0) {
+            return -1;  // 溢出。
+        }
+        ans = ans * radix + d;
     }
-    ans = ans * radix + d;
-  }
-  return ans;
+    return ans;
 }
 
 /*
@@ -59,102 +57,98 @@ LL To(char str[], int len, LL radix) {
 否则r是唯一的。 所以只需要普通的二分查找即可，不用搞下界。
 */
 LL Search(char str[], int len, LL left, LL right, LL x) {
-  LL mid;
-  LL y;
-  while (left <= right) {
-    mid = (left + right) / 2;
-    y = To(str, len, mid);
+    LL mid;
+    LL y;
+    while (left <= right) {
+        mid = (left + right) / 2;
+        y = To(str, len, mid);
 
-    //		printf("mid %d y %lld\n", mid, y);
+        //		printf("mid %d y %lld\n", mid, y);
 
-    if (y == x)
-      return mid;
-    if (y < 0 || y > x) { // y溢出
-      // 减小radix
-      right = mid - 1;
-    } else {
-      // 增大radix
-      left = mid + 1;
+        if (y == x) return mid;
+        if (y < 0 || y > x) {  // y溢出
+            // 减小radix
+            right = mid - 1;
+        } else {
+            // 增大radix
+            left = mid + 1;
+        }
     }
-  }
-  return -1;
+    return -1;
 }
 
 int IsZero(char str[], int len) {
-  int i;
-  for (i = 0; i < len; ++i) {
-    if (str[i] != '0')
-      return 0;
-  }
-  return 1;
+    int i;
+    for (i = 0; i < len; ++i) {
+        if (str[i] != '0') return 0;
+    }
+    return 1;
 }
 
 // 最大的数位表示最小可能的radix。
 int MinRadix(char str[], int len) {
-  int max = -1;
-  int i;
-  for (i = 0; i < len; ++i) {
-    int d = Dig(str[i]);
-    if (d > max) {
-      max = d;
+    int max = -1;
+    int i;
+    for (i = 0; i < len; ++i) {
+        int d = Dig(str[i]);
+        if (d > max) { max = d; }
     }
-  }
-  return max + 1;
+    return max + 1;
 }
 
 #define Max(a, b) ((a) > (b) ? (a) : (b))
 
-int main(int argc, char *argv[]) {
-  char s1[MAXS];
-  char s2[MAXS];
-  char *str;
-  int len1, len2, len;
-  int tag;
-  int radix;
-  LL x;
-  LL ans;
-  LL left, right;
+int main(int argc, char* argv[]) {
+    char s1[MAXS];
+    char s2[MAXS];
+    char* str;
+    int len1, len2, len;
+    int tag;
+    int radix;
+    LL x;
+    LL ans;
+    LL left, right;
 
-  freopen("./in.txt", "r", stdin);
+    freopen("./in.txt", "r", stdin);
 
-  scanf("%s%s%d%d", s1, s2, &tag, &radix);
-  len1 = strlen(s1);
-  len2 = strlen(s2);
+    scanf("%s%s%d%d", s1, s2, &tag, &radix);
+    len1 = strlen(s1);
+    len2 = strlen(s2);
 
-  if (strcmp(s1, s2) == 0) {
-    // 两数相同
-    printf("%d\n", radix);
+    if (strcmp(s1, s2) == 0) {
+        // 两数相同
+        printf("%d\n", radix);
+        return 0;
+    }
+    if (IsZero(s1, len1) || IsZero(s2, len2)) {
+        // 两数不同，其中一个是0，则无解。
+        puts("Impossible");
+        return 0;
+    }
+
+    if (tag == 1) {
+        x = To(s1, len1, radix);
+        str = s2;
+        len = len2;
+    } else {
+        x = To(s2, len2, radix);
+        str = s1;
+        len = len1;
+    }
+
+    assert(x != -1);  // 第一个数不应该溢出。
+    left = MinRadix(str, len);
+    right = Max(left, x) + 1;  // 所有的r得出的y都比x小。
+
+    //	printf("s1 %s s2 %s tag %d x %lld str %s left %d right %d\n",
+    //	s1, s2, tag, x, str, left, right);
+
+    ans = Search(str, len, left, right, x);
+    if (ans != -1) {
+        printf("%lld\n", ans);
+    } else {
+        puts("Impossible");
+    }
+
     return 0;
-  }
-  if (IsZero(s1, len1) || IsZero(s2, len2)) {
-    // 两数不同，其中一个是0，则无解。
-    puts("Impossible");
-    return 0;
-  }
-
-  if (tag == 1) {
-    x = To(s1, len1, radix);
-    str = s2;
-    len = len2;
-  } else {
-    x = To(s2, len2, radix);
-    str = s1;
-    len = len1;
-  }
-
-  assert(x != -1); // 第一个数不应该溢出。
-  left = MinRadix(str, len);
-  right = Max(left, x) + 1; // 所有的r得出的y都比x小。
-
-  //	printf("s1 %s s2 %s tag %d x %lld str %s left %d right %d\n",
-  //	s1, s2, tag, x, str, left, right);
-
-  ans = Search(str, len, left, right, x);
-  if (ans != -1) {
-    printf("%lld\n", ans);
-  } else {
-    puts("Impossible");
-  }
-
-  return 0;
 }

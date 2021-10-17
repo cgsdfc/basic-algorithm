@@ -49,21 +49,21 @@ ve数组的最大值就是关键路径长度。回想ve的计算方式，其实是计算了一系列路径的长度，
 就记录下来，并且关键路径要输出它们。
 */
 
-#define MAXN 505 // 最大节点数。
+#define MAXN 505  // 最大节点数。
 
 /*
 一条边，可以设置e，l，记录边的e，l数据。
 */
 struct Node {
-  int v; // 终点。
-  int w; // 边权。
-  int e; // 活动最早开始时间。
-  int l; // 活动最晚开始时间。
+    int v;  // 终点。
+    int w;  // 边权。
+    int e;  // 活动最早开始时间。
+    int l;  // 活动最晚开始时间。
 };
 
 vector<Node> Adj[MAXN];
-vector<Node> Ans[MAXN]; // 保存全部关键路径。
-int S, T;               // 唯一源点，唯一汇点。
+vector<Node> Ans[MAXN];  // 保存全部关键路径。
+int S, T;                // 唯一源点，唯一汇点。
 
 int ve[MAXN], vl[MAXN];
 int In[MAXN];
@@ -76,52 +76,46 @@ int In[MAXN];
 因为拓扑序列的逆序列就是逆拓扑序列。
 */
 
-stack<int> topOrder; // 拓扑序列。
+stack<int> topOrder;  // 拓扑序列。
 
 // 求解拓扑序列，顺便求解ve数组，即节点事件的最早开始时间。
 bool TopoSort() {
-  queue<int> Q;
-  for (int i = 0; i < N; ++i) {
-    // 入度为0的点入队。
-    if (!In[i]) {
-      Q.push(i);
+    queue<int> Q;
+    for (int i = 0; i < N; ++i) {
+        // 入度为0的点入队。
+        if (!In[i]) { Q.push(i); }
     }
-  }
-  /*
-  拓扑排序，同时保证了访问一个节点时，它的前驱都被访问过了。
-  计算ve的公式是：
-  j的ve是其前驱的ve加上边权的和的最大值。
-  但是我们的邻接表是保存后继的，对一个节点找它的前驱不方便。
-  所以采取了等价的做法：访问到一个节点时，更新它的所有后继的ve值。
-  为什么正确：访问当前节点时，它的前驱都被访问过了，这意味着它的所有前驱都更新了它，
-  所以它的值是正确的，再用这正确的值去更新后继。
-  注意，这个过程和计算vl不同，vl是需要访问u的全部后继来更新u，这是可以直接完成的。
+    /*
+    拓扑排序，同时保证了访问一个节点时，它的前驱都被访问过了。
+    计算ve的公式是：
+    j的ve是其前驱的ve加上边权的和的最大值。
+    但是我们的邻接表是保存后继的，对一个节点找它的前驱不方便。
+    所以采取了等价的做法：访问到一个节点时，更新它的所有后继的ve值。
+    为什么正确：访问当前节点时，它的前驱都被访问过了，这意味着它的所有前驱都更新了它，
+    所以它的值是正确的，再用这正确的值去更新后继。
+    注意，这个过程和计算vl不同，vl是需要访问u的全部后继来更新u，这是可以直接完成的。
 
-  最后，注意vl和ve的初始化即可。
-  */
-  fill(ve, ve + MAXN, 0);
-  while (!Q.empty()) {
-    int u = Q.front();
-    Q.pop();
-    topOrder.push(u);
-    // 更新后继的ve。
-    for (int i = 0; i < Adj[u].size(); ++i) {
-      int v = Adj[u][i].v;
-      int w = Adj[u][i].w;
-      --In[v];
-      if (!In[v]) {
-        Q.push(v);
-      }
-      if (ve[u] + w > ve[v]) {
-        ve[v] = ve[u] + w;
-      }
+    最后，注意vl和ve的初始化即可。
+    */
+    fill(ve, ve + MAXN, 0);
+    while (!Q.empty()) {
+        int u = Q.front();
+        Q.pop();
+        topOrder.push(u);
+        // 更新后继的ve。
+        for (int i = 0; i < Adj[u].size(); ++i) {
+            int v = Adj[u][i].v;
+            int w = Adj[u][i].w;
+            --In[v];
+            if (!In[v]) { Q.push(v); }
+            if (ve[u] + w > ve[v]) { ve[v] = ve[u] + w; }
+        }
     }
-  }
-  // 无环返回true，排序成功，有环返回false，排序失败，
-  // 这说明题图不是DAG，不存在关键路径。这里的逻辑是：
-  // 给定一个AOE（就是DAG），它的关键路径是最长简单路径，
-  // 如果不是DAG，则不存在关键路径，因为关键路径的前提是AOE。
-  return N == topOrder.size();
+    // 无环返回true，排序成功，有环返回false，排序失败，
+    // 这说明题图不是DAG，不存在关键路径。这里的逻辑是：
+    // 给定一个AOE（就是DAG），它的关键路径是最长简单路径，
+    // 如果不是DAG，则不存在关键路径，因为关键路径的前提是AOE。
+    return N == topOrder.size();
 }
 
 /*
@@ -129,55 +123,49 @@ bool TopoSort() {
 如果关键路径不存在，返回-1，否则返回关键路径长度。
 */
 int CriticalPath() {
-  // 先求拓扑序列和ve数组。
-  if (!TopoSort()) {
-    return -1;
-  }
-  int maxLen = 0; // 关键路径长度，等于ve数组的最大值。
-  // 也等于唯一汇点的ve值。
-  for (int i = 0; i < N; ++i) {
-    if (ve[i] > maxLen) {
-      maxLen = ve[i];
+    // 先求拓扑序列和ve数组。
+    if (!TopoSort()) { return -1; }
+    int maxLen = 0;  // 关键路径长度，等于ve数组的最大值。
+    // 也等于唯一汇点的ve值。
+    for (int i = 0; i < N; ++i) {
+        if (ve[i] > maxLen) { maxLen = ve[i]; }
     }
-  }
-  // 求解vl数组。
-  // vl数组的初始化，是maxLen。
-  fill(vl, vl + MAXN, maxLen);
-  // 逆拓扑序列，遍历后继取最小值。
-  while (!topOrder.empty()) {
-    int u = topOrder.top();
-    topOrder.pop();
-    // 所有后继。
-    for (int i = 0; i < Adj[u].size(); ++i) {
-      int v = Adj[u][i].v; // 后继。
-      int w = Adj[u][i].w;
-      // 后继的vl减去边权，最小化。
-      if (vl[v] - w < vl[u]) {
-        vl[u] = vl[v] - w;
-      }
+    // 求解vl数组。
+    // vl数组的初始化，是maxLen。
+    fill(vl, vl + MAXN, maxLen);
+    // 逆拓扑序列，遍历后继取最小值。
+    while (!topOrder.empty()) {
+        int u = topOrder.top();
+        topOrder.pop();
+        // 所有后继。
+        for (int i = 0; i < Adj[u].size(); ++i) {
+            int v = Adj[u][i].v;  // 后继。
+            int w = Adj[u][i].w;
+            // 后继的vl减去边权，最小化。
+            if (vl[v] - w < vl[u]) { vl[u] = vl[v] - w; }
+        }
     }
-  }
-  // 有了ve 和vl，就遍历全部边，求每条边的e和l。
-  for (int u = 0; u < N; ++u) {
-    for (int i = 0; i < Adj[u].size(); ++i) {
-      int v = Adj[u][i].v;
-      int w = Adj[u][i].w;
-      // 边的最早等于前驱的最早。
-      int e = ve[u];
-      // 边的最晚等于后继的最晚减去边权。
-      int l = vl[v] - w;
-      Adj[u][i].e = e;
-      Adj[u][i].l = l;
-      if (e == l) {
-        // 我是关键边。
-        // 记录关键路径，整条边复制过去。
-        Ans[u].push_back(Adj[u][i]);
-        printf("%d->%d\n", u, v);
-      }
+    // 有了ve 和vl，就遍历全部边，求每条边的e和l。
+    for (int u = 0; u < N; ++u) {
+        for (int i = 0; i < Adj[u].size(); ++i) {
+            int v = Adj[u][i].v;
+            int w = Adj[u][i].w;
+            // 边的最早等于前驱的最早。
+            int e = ve[u];
+            // 边的最晚等于后继的最晚减去边权。
+            int l = vl[v] - w;
+            Adj[u][i].e = e;
+            Adj[u][i].l = l;
+            if (e == l) {
+                // 我是关键边。
+                // 记录关键路径，整条边复制过去。
+                Ans[u].push_back(Adj[u][i]);
+                printf("%d->%d\n", u, v);
+            }
+        }
     }
-  }
-  // 返回关键路径长度。
-  return maxLen;
+    // 返回关键路径长度。
+    return maxLen;
 }
 
 /*
@@ -190,4 +178,6 @@ int CriticalPath() {
 /* run this program using the console pauser or add your own getch,
  * system("pause") or input loop */
 
-int main(int argc, char **argv) { return 0; }
+int main(int argc, char** argv) {
+    return 0;
+}

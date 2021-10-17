@@ -9,20 +9,22 @@
  * system("pause") or input loop */
 
 typedef struct PolyNode {
-  int exp;
-  int cof;
-  struct PolyNode *next;
+    int exp;
+    int cof;
+    struct PolyNode* next;
 } PolyNode;
 
-int Compare(int a, int b) { return a == b ? 0 : (a > b ? 1 : -1); }
+int Compare(int a, int b) {
+    return a == b ? 0 : (a > b ? 1 : -1);
+}
 
-void Append(int c, int e, PolyNode **rear) {
-  PolyNode *n = malloc(sizeof(PolyNode));
-  n->cof = c;
-  n->exp = e;
-  n->next = NULL;
-  (*rear)->next = n;
-  *rear = n;
+void Append(int c, int e, PolyNode** rear) {
+    PolyNode* n = malloc(sizeof(PolyNode));
+    n->cof = c;
+    n->exp = e;
+    n->next = NULL;
+    (*rear)->next = n;
+    *rear = n;
 }
 
 /*
@@ -39,45 +41,45 @@ a,b 按照指数有序。
 */
 
 // 这里约定多项式是指数递减的。
-PolyNode *Add(PolyNode *a, PolyNode *b) {
-  PolyNode *front;
-  PolyNode *rear;
-  PolyNode *temp;
-  front = rear = malloc(sizeof(PolyNode));
-  int sum;
+PolyNode* Add(PolyNode* a, PolyNode* b) {
+    PolyNode* front;
+    PolyNode* rear;
+    PolyNode* temp;
+    front = rear = malloc(sizeof(PolyNode));
+    int sum;
 
-  while (a && b) {
-    switch (Compare(a->exp, b->exp)) {
-    case 1:
-      // a>b
-      Append(a->cof, a->exp, &rear);
-      a = a->next;
-      break;
-    case -1:
-      // b>a
-      Append(b->cof, b->exp, &rear);
-      b = b->next;
-      break;
-    case 0:
-      sum = a->cof + b->cof;
-      if (sum) {
-        Append(sum, a->exp, &rear);
-      }
-      a = a->next;
-      b = b->next;
-      break;
+    while (a && b) {
+        switch (Compare(a->exp, b->exp)) {
+            case 1:
+                // a>b
+                Append(a->cof, a->exp, &rear);
+                a = a->next;
+                break;
+            case -1:
+                // b>a
+                Append(b->cof, b->exp, &rear);
+                b = b->next;
+                break;
+            case 0:
+                sum = a->cof + b->cof;
+                if (sum) { Append(sum, a->exp, &rear); }
+                a = a->next;
+                b = b->next;
+                break;
+        }
     }
-  }
-  for (; a; a = a->next)
-    Append(a->cof, a->exp, &rear);
-  for (; b; b = b->next)
-    Append(b->cof, b->exp, &rear);
-  rear->next = NULL;
-  // 去掉头节点。
-  temp = front;
-  front = front->next;
-  free(temp);
-  return front;
+    for (; a; a = a->next)
+        Append(a->cof, a->exp, &rear);
+    for (; b; b = b->next)
+        Append(b->cof, b->exp, &rear);
+    rear->next = NULL;
+    // 去掉头节点。
+    temp = front;
+    front = front->next;
+    free(temp);
+    return front;
 }
 
-int main(int argc, char *argv[]) { return 0; }
+int main(int argc, char* argv[]) {
+    return 0;
+}

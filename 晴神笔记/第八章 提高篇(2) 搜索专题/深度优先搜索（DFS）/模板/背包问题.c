@@ -17,14 +17,14 @@
 */
 #define MAXN 100
 struct {
-  int data[MAXN];
-  int len;
+    int data[MAXN];
+    int len;
 } ans, temp;
 
-int N;                // 物品总数。
-int V;                // 最大体积。
-int MaxValue = 0;     // 全局最大价值。
-int W[MAXN], C[MAXN]; // 物品的体积 ，价值。
+int N;                 // 物品总数。
+int V;                 // 最大体积。
+int MaxValue = 0;      // 全局最大价值。
+int W[MAXN], C[MAXN];  // 物品的体积 ，价值。
 
 /*
 按照物品的下标，从大到小考虑每一件物品，对于每一件物品index有两种选择：
@@ -41,18 +41,18 @@ nowC：当前已选物品的总价值。
 */
 
 void DFS(int index, int nowW, int nowC) {
-  if (index == N) {
-    if (nowW <= V && nowC > MaxValue) {
-      MaxValue = nowC;
-      ans = temp;
+    if (index == N) {
+        if (nowW <= V && nowC > MaxValue) {
+            MaxValue = nowC;
+            ans = temp;
+        }
+        return;
     }
-    return;
-  }
-  DFS(index + 1, nowW, nowC); // 不选 index 物品。
+    DFS(index + 1, nowW, nowC);  // 不选 index 物品。
 
-  temp.data[temp.len++] = index;
-  DFS(index + 1, nowW + W[index], nowC + C[index]); // 选 index 物品。
-  --temp.len;
+    temp.data[temp.len++] = index;
+    DFS(index + 1, nowW + W[index], nowC + C[index]);  // 选 index 物品。
+    --temp.len;
 }
 
 /*
@@ -60,36 +60,34 @@ void DFS(int index, int nowW, int nowC) {
 */
 
 void DFS2(int index, int nowW, int nowC) {
-  if (index == N) {
-    return; // 注意：每选一件物品就会更新最大价值，而不是等一个完整方案出来再更新。
-            // 故此处不必更新。
-  }
-  DFS2(index + 1, nowW, nowC); // 不选，则两个参数都不用更新，但是index要更新。
-  /*
-  剪枝逻辑：
-  在走岔道之前，先判定一下这条岔道是否是没有结果的，
-  即先预判，如果现在做这个选择，则会不会违反限制条件。
-  */
-  if (nowW + W[index] <= V) {
-    if (nowC + C[index] > MaxValue) {
-      MaxValue = nowC + C[index];
+    if (index == N) {
+        return;  // 注意：每选一件物品就会更新最大价值，而不是等一个完整方案出来再更新。
+                 // 故此处不必更新。
     }
-    DFS2(index + 1, nowW + W[index], nowC + C[index]);
-  }
+    DFS2(index + 1, nowW, nowC);  // 不选，则两个参数都不用更新，但是index要更新。
+    /*
+    剪枝逻辑：
+    在走岔道之前，先判定一下这条岔道是否是没有结果的，
+    即先预判，如果现在做这个选择，则会不会违反限制条件。
+    */
+    if (nowW + W[index] <= V) {
+        if (nowC + C[index] > MaxValue) { MaxValue = nowC + C[index]; }
+        DFS2(index + 1, nowW + W[index], nowC + C[index]);
+    }
 }
 
 void Solve1(void) {
-  int i;
-  scanf("%d%d", &N, &V);
-  for (i = 0; i < N; ++i) {
-    scanf("%d", &W[i]);
-  }
-  for (i = 0; i < N; ++i) {
-    scanf("%d", &C[i]);
-  }
-  DFS(0, 0, 0);
-  printf("%d\n", MaxValue);
-  for (i = 0; i < ans.len; ++i) {
-    printf("%d%s", ans.data[i], i == ans.len - 1 ? "\n" : " ");
-  }
+    int i;
+    scanf("%d%d", &N, &V);
+    for (i = 0; i < N; ++i) {
+        scanf("%d", &W[i]);
+    }
+    for (i = 0; i < N; ++i) {
+        scanf("%d", &C[i]);
+    }
+    DFS(0, 0, 0);
+    printf("%d\n", MaxValue);
+    for (i = 0; i < ans.len; ++i) {
+        printf("%d%s", ans.data[i], i == ans.len - 1 ? "\n" : " ");
+    }
 }

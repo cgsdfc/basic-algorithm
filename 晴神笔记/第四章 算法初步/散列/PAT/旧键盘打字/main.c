@@ -19,51 +19,40 @@ int hashtable[MAXN];
 可以直接开256的数组，不用写这个散列函数。
 */
 int Hash(char c) {
-  switch (c) {
-  case '_':
-    return 0;
-  case ',':
-    return 1;
-  case '.':
-    return 2;
-  case '-':
-    return 3;
-  case '+':
-    return 4;
-  default:
-    if (isdigit(c)) {
-      return c - '0' + 5;
+    switch (c) {
+        case '_': return 0;
+        case ',': return 1;
+        case '.': return 2;
+        case '-': return 3;
+        case '+': return 4;
+        default:
+            if (isdigit(c)) { return c - '0' + 5; }
+            if (islower(c)) { return c - 'a' + 15; }
+            assert(isupper(c));
+            return c - 'A' + 15;
     }
-    if (islower(c)) {
-      return c - 'a' + 15;
-    }
-    assert(isupper(c));
-    return c - 'A' + 15;
-  }
 }
 
 // 坏字符最多只有这么多。
 char bad[MAXN];
 char input[MAXS];
 
-int main(int argc, char *argv[]) {
-  int i, len;
-  int shif; // 上档键好的。
+int main(int argc, char* argv[]) {
+    int i, len;
+    int shif;  // 上档键好的。
 
-  gets(bad);
-  gets(input);
-  for (i = 0, len = strlen(bad); i < len; ++i) {
-    int h = Hash(bad[i]);
-    hashtable[h] = 1;
-  }
-  shif = (hashtable[Hash('+')] == 0);
-  for (i = 0, len = strlen(input); i < len; ++i) {
-    char ch = input[i];
-    int h = Hash(ch);
-    if (hashtable[h] == 0 && (!isupper(ch) || shif)) {
-      putchar(ch);
+    gets(bad);
+    gets(input);
+    for (i = 0, len = strlen(bad); i < len; ++i) {
+        int h = Hash(bad[i]);
+        hashtable[h] = 1;
     }
-  }
-  putchar('\n');
-  return 0;
+    shif = (hashtable[Hash('+')] == 0);
+    for (i = 0, len = strlen(input); i < len; ++i) {
+        char ch = input[i];
+        int h = Hash(ch);
+        if (hashtable[h] == 0 && (!isupper(ch) || shif)) { putchar(ch); }
+    }
+    putchar('\n');
+    return 0;
 }

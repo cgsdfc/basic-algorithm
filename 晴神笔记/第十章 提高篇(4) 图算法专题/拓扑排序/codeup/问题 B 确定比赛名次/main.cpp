@@ -13,40 +13,36 @@ int In[MAXN];
 vector<int> Adj[MAXN];
 
 void TopoSort() {
-  priority_queue<int, vector<int>, greater<int>> Q;
-  for (int v = 1; v <= N; ++v) {
-    if (!In[v]) {
-      Q.push(v);
+    priority_queue<int, vector<int>, greater<int>> Q;
+    for (int v = 1; v <= N; ++v) {
+        if (!In[v]) { Q.push(v); }
     }
-  }
-  int i = 0;
-  while (!Q.empty()) {
-    int u = Q.top();
-    Q.pop();
-    printf("%d%s", u, i == N - 1 ? "\n" : " ");
-    ++i;
-    for (int j = 0; j < Adj[u].size(); ++j) {
-      int v = Adj[u][j];
-      --In[v];
-      if (!In[v]) {
-        Q.push(v);
-      }
+    int i = 0;
+    while (!Q.empty()) {
+        int u = Q.top();
+        Q.pop();
+        printf("%d%s", u, i == N - 1 ? "\n" : " ");
+        ++i;
+        for (int j = 0; j < Adj[u].size(); ++j) {
+            int v = Adj[u][j];
+            --In[v];
+            if (!In[v]) { Q.push(v); }
+        }
     }
-  }
 }
 
-int main(int argc, char **argv) {
-  while (scanf("%d%d", &N, &M), (N || M)) {
-    fill(In, In + MAXN, 0);
-    fill(Adj, Adj + MAXN, vector<int>());
+int main(int argc, char** argv) {
+    while (scanf("%d%d", &N, &M), (N || M)) {
+        fill(In, In + MAXN, 0);
+        fill(Adj, Adj + MAXN, vector<int>());
 
-    while (M--) {
-      int u, v;
-      scanf("%d%d", &u, &v); // u->v
-      Adj[u].push_back(v);
-      In[v]++;
+        while (M--) {
+            int u, v;
+            scanf("%d%d", &u, &v);  // u->v
+            Adj[u].push_back(v);
+            In[v]++;
+        }
+        TopoSort();
     }
-    TopoSort();
-  }
-  return 0;
+    return 0;
 }

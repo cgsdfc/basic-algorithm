@@ -25,22 +25,22 @@ bbb is equal long to ccc
 
 #define MAXN 60
 
-int main(int argc, char *argv[]) {
-  int m;
-  scanf("%d", &m);
-  while (m--) {
-    char a[MAXN], b[MAXN];
-    int cmp;
+int main(int argc, char* argv[]) {
+    int m;
+    scanf("%d", &m);
+    while (m--) {
+        char a[MAXN], b[MAXN];
+        int cmp;
 
-    scanf("%s%s", a, b);
-    cmp = strlen(a) - strlen(b);
-    if (cmp == 0) {
-      printf("%s is equal long to %s\n", a, b);
-    } else if (cmp > 0) {
-      printf("%s is longer than %s\n", a, b);
-    } else {
-      printf("%s is shorter than %s\n", a, b);
+        scanf("%s%s", a, b);
+        cmp = strlen(a) - strlen(b);
+        if (cmp == 0) {
+            printf("%s is equal long to %s\n", a, b);
+        } else if (cmp > 0) {
+            printf("%s is longer than %s\n", a, b);
+        } else {
+            printf("%s is shorter than %s\n", a, b);
+        }
     }
-  }
-  return 0;
+    return 0;
 }

@@ -17,23 +17,23 @@
 
 #define MAXN 35
 
-int main(int argc, char *argv[]) {
-  int a, b, d;
-  int c;
-  int ans[MAXN];
-  int k;
+int main(int argc, char* argv[]) {
+    int a, b, d;
+    int c;
+    int ans[MAXN];
+    int k;
 
-  scanf("%d%d%d", &a, &b, &d);
-  c = a + b;
-  k = 0;
-  do {
-    ans[k++] = c % d;
-    c /= d;
-  } while (c);
+    scanf("%d%d%d", &a, &b, &d);
+    c = a + b;
+    k = 0;
+    do {
+        ans[k++] = c % d;
+        c /= d;
+    } while (c);
 
-  while (k--) {
-    printf("%d", ans[k]);
-  }
-  putchar('\n');
-  return 0;
+    while (k--) {
+        printf("%d", ans[k]);
+    }
+    putchar('\n');
+    return 0;
 }

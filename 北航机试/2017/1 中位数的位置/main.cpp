@@ -8,13 +8,12 @@ using namespace std;
 const int MAXN = 1000000 + 5;
 
 struct Node {
-  int data;
-  int index;
-  friend bool operator<(Node a, Node b) {
-    if (a.data != b.data)
-      return a.data < b.data;
-    return a.index < b.index;
-  }
+    int data;
+    int index;
+    friend bool operator<(Node a, Node b) {
+        if (a.data != b.data) return a.data < b.data;
+        return a.index < b.index;
+    }
 } node[MAXN];
 
 /*
@@ -25,23 +24,25 @@ struct Node {
 À´ÅÅ¡£
 */
 
-void Print(int i) { printf("%d %d\n", node[i].data, node[i].index); }
+void Print(int i) {
+    printf("%d %d\n", node[i].data, node[i].index);
+}
 
-int main(int argc, char **argv) {
-  int N;
-  scanf("%d", &N);
-  for (int i = 0; i < N; ++i) {
-    scanf("%d", &node[i].data);
-    node[i].index = i + 1;
-  }
-  sort(node, node + N);
-  if (N & 1) {
-    // odd:
-    Print(N / 2);
-  } else {
-    // even:
-    Print(N / 2 - 1);
-    Print(N / 2);
-  }
-  return 0;
+int main(int argc, char** argv) {
+    int N;
+    scanf("%d", &N);
+    for (int i = 0; i < N; ++i) {
+        scanf("%d", &node[i].data);
+        node[i].index = i + 1;
+    }
+    sort(node, node + N);
+    if (N & 1) {
+        // odd:
+        Print(N / 2);
+    } else {
+        // even:
+        Print(N / 2 - 1);
+        Print(N / 2);
+    }
+    return 0;
 }

@@ -27,41 +27,41 @@ using namespace std;
 算法复杂度：O(E+V)，每个节点入队最多一次，出队最多一次，每次出队要访问全部邻居。
 */
 
-#define MAXN 505 // 节点数。
+#define MAXN 505  // 节点数。
 
-int in[MAXN]; // 输入图的时候可以记录每个节点的入度。
+int in[MAXN];  // 输入图的时候可以记录每个节点的入度。
 int N;
 vector<int> Adj[MAXN];
 
 bool TopoSort() {
-  queue<int> Q;
-  int num = 0; // 拓扑序列的节点数，判断是否排序成功。
-  // 队列初始时，为入度=0的节点。
-  for (int v = 0; v < N; ++v) {
-    if (!in[v]) {
-      Q.push(v);
+    queue<int> Q;
+    int num = 0;  // 拓扑序列的节点数，判断是否排序成功。
+    // 队列初始时，为入度=0的节点。
+    for (int v = 0; v < N; ++v) {
+        if (!in[v]) { Q.push(v); }
     }
-  }
-  // 主循环
-  while (!Q.empty()) {
-    int u = Q.front();
-    Q.pop();
-    printf("%d\n", u); // 输出当前元素。
-    ++num;             // 计数拓扑序列的元素个数。
-    // 更新后继节点的入度。
-    for (int i = 0; i < Adj[u].size(); ++i) {
-      int v = Adj[u][i];
-      --in[v];
-      if (!in[v]) {
-        // 可以输出了。
-        Q.push(v);
-      }
+    // 主循环
+    while (!Q.empty()) {
+        int u = Q.front();
+        Q.pop();
+        printf("%d\n", u);  // 输出当前元素。
+        ++num;              // 计数拓扑序列的元素个数。
+        // 更新后继节点的入度。
+        for (int i = 0; i < Adj[u].size(); ++i) {
+            int v = Adj[u][i];
+            --in[v];
+            if (!in[v]) {
+                // 可以输出了。
+                Q.push(v);
+            }
+        }
     }
-  }
-  return num == N;
+    return num == N;
 }
 
 /* run this program using the console pauser or add your own getch,
  * system("pause") or input loop */
 
-int main(int argc, char **argv) { return 0; }
+int main(int argc, char** argv) {
+    return 0;
+}

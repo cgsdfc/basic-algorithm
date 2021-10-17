@@ -22,8 +22,8 @@ static int A[MAXN];
 当前枚举出来的子集。
 */
 struct {
-  int data[MAXN];
-  int len;
+    int data[MAXN];
+    int len;
 } ans;
 
 /*
@@ -35,67 +35,67 @@ struct {
 */
 
 static void DFS(int index) {
-  if (index == N) {
-    int i;
-    // 已考虑了所有元素，得到一个子集。
-    printf("len %d data", ans.len);
-    for (i = 0; i < ans.len; ++i) {
-      printf(" %d", ans.data[i]);
+    if (index == N) {
+        int i;
+        // 已考虑了所有元素，得到一个子集。
+        printf("len %d data", ans.len);
+        for (i = 0; i < ans.len; ++i) {
+            printf(" %d", ans.data[i]);
+        }
+        printf("\n");
+        return;
     }
-    printf("\n");
-    return;
-  }
-  // 选 index。
-  ans.data[ans.len++] = A[index];
-  DFS(index + 1);
-  ans.len--;
+    // 选 index。
+    ans.data[ans.len++] = A[index];
+    DFS(index + 1);
+    ans.len--;
 
-  // 不选 index。
-  DFS(index + 1);
+    // 不选 index。
+    DFS(index + 1);
 }
 
 /*
 枚举K阶子集。
 */
 static void DFS2(int index, int nowK) {
-  if (nowK == K) {
-    int i;
-    for (i = 0; i < ans.len; ++i) {
-      printf("%d ", ans.data[i]);
+    if (nowK == K) {
+        int i;
+        for (i = 0; i < ans.len; ++i) {
+            printf("%d ", ans.data[i]);
+        }
+        printf("\n");
+        return;
     }
-    printf("\n");
-    return;
-  }
-  if (index == N) {
-    // 考虑了所有元素，但是子集大小不足K。
-    return;
-  }
+    if (index == N) {
+        // 考虑了所有元素，但是子集大小不足K。
+        return;
+    }
 
-  // 选 index。
-  ans.data[ans.len++] = A[index];
-  DFS2(index + 1, nowK + 1);
-  ans.len--;
+    // 选 index。
+    ans.data[ans.len++] = A[index];
+    DFS2(index + 1, nowK + 1);
+    ans.len--;
 
-  // 不选 index。
-  DFS2(index + 1, nowK);
+    // 不选 index。
+    DFS2(index + 1, nowK);
 }
 
 void PrintAllSubset(void) {
-  int i;
-  scanf("%d", &N);
-  for (i = 0; i < N; ++i) {
-    scanf("%d", &A[i]);
-  }
-  DFS(0);
+    int i;
+    scanf("%d", &N);
+    for (i = 0; i < N; ++i) {
+        scanf("%d", &A[i]);
+    }
+    DFS(0);
 }
 
 void PrintAllSubset2(void) {
-  int i;
-  scanf("%d%d", &N, &K);
-  for (i = 0; i < N; ++i) {
-    A[i] = i;
-  }
-  DFS2(0, 0);
+    int i;
+    scanf("%d%d", &N, &K);
+    for (i = 0; i < N; ++i) {
+        A[i] = i;
+    }
+    DFS2(0, 0);
 }
 
 /*
@@ -112,32 +112,30 @@ void PrintAllSubset2(void) {
 */
 
 static int NextSubset(char bit[], int N) {
-  int i;
-  int carry = 1;
+    int i;
+    int carry = 1;
 
-  ans.len = 0;
-  for (i = 0; i < N; ++i) {
-    int a = bit[i];
-    bit[i] = a ^ carry;
-    carry &= a;
-    if (bit[i]) {
-      ans.data[ans.len++] = i;
+    ans.len = 0;
+    for (i = 0; i < N; ++i) {
+        int a = bit[i];
+        bit[i] = a ^ carry;
+        carry &= a;
+        if (bit[i]) { ans.data[ans.len++] = i; }
     }
-  }
-  return !carry;
+    return !carry;
 }
 
 static void FindAllSubsets(int N) {
-  char bit[MAXN] = {};
-  memset(&ans, 0, sizeof(ans));
-  do {
-    int i;
-    printf("len %d data ", ans.len);
-    for (i = 0; i < ans.len; ++i) {
-      printf("%d ", ans.data[i]);
-    }
-    printf("\n");
-  } while (NextSubset(bit, N));
+    char bit[MAXN] = {};
+    memset(&ans, 0, sizeof(ans));
+    do {
+        int i;
+        printf("len %d data ", ans.len);
+        for (i = 0; i < ans.len; ++i) {
+            printf("%d ", ans.data[i]);
+        }
+        printf("\n");
+    } while (NextSubset(bit, N));
 }
 
 /*
@@ -145,38 +143,36 @@ static void FindAllSubsets(int N) {
 只需要在枚举全部子集的基础上，保留大小刚好为K的子集即可。
 */
 static void FindAllSubsets2(int N, int K) {
-  char bit[MAXN] = {}; // 初始为空集。
-  int count = 0;
+    char bit[MAXN] = {};  // 初始为空集。
+    int count = 0;
 
-  memset(&ans, 0, sizeof(ans));
-  do {
-    int i;
-    if (ans.len != K) {
-      continue;
-    }
-    for (i = 0; i < ans.len; ++i) {
-      printf("%d ", ans.data[i]);
-    }
-    printf("\n");
-    ++count;
-  } while (NextSubset(bit, N));
-  printf("%d\n", count);
+    memset(&ans, 0, sizeof(ans));
+    do {
+        int i;
+        if (ans.len != K) { continue; }
+        for (i = 0; i < ans.len; ++i) {
+            printf("%d ", ans.data[i]);
+        }
+        printf("\n");
+        ++count;
+    } while (NextSubset(bit, N));
+    printf("%d\n", count);
 }
 
 void PrintAllSubset3(void) {
-  int i;
-  scanf("%d", &N);
-  for (i = 0; i < N; ++i) {
-    A[i] = i;
-  }
-  FindAllSubsets(N);
+    int i;
+    scanf("%d", &N);
+    for (i = 0; i < N; ++i) {
+        A[i] = i;
+    }
+    FindAllSubsets(N);
 }
 
 void PrintAllSubset4(void) {
-  int i;
-  scanf("%d%d", &N, &K);
-  for (i = 0; i < N; ++i) {
-    A[i] = i;
-  }
-  FindAllSubsets2(N, K);
+    int i;
+    scanf("%d%d", &N, &K);
+    for (i = 0; i < N; ++i) {
+        A[i] = i;
+    }
+    FindAllSubsets2(N, K);
 }

@@ -11,31 +11,31 @@
 二叉树的链表结构。
 */
 struct Node {
-  int data;
-  Node *lchild; // left
-  Node *rchild; // right
+    int data;
+    Node* lchild;  // left
+    Node* rchild;  // right
 };
 
 // 新建节点。
-Node *newNode(int v) {
-  Node *p = new Node;
-  p->data = v;
-  p->lchild = p->rchild = NULL; // 这行很重要。
-  return p;
+Node* newNode(int v) {
+    Node* p = new Node;
+    p->data = v;
+    p->lchild = p->rchild = NULL;  // 这行很重要。
+    return p;
 }
 
 // 查找数据域等于x的节点，将其数据修改为newdata。
-void search(Node *root, int x, int newdata) {
-  if (!root) {
-    return; // 空树为递归边界（一般）。
-  }
-  if (root->data == x) {
-    // 查找成功。
-    root->data = newdata;
-  }
-  // 继续修改左子树，右子树。
-  search(root->lchild, x, newdata);
-  search(root->rchild, x, newdata);
+void search(Node* root, int x, int newdata) {
+    if (!root) {
+        return;  // 空树为递归边界（一般）。
+    }
+    if (root->data == x) {
+        // 查找成功。
+        root->data = newdata;
+    }
+    // 继续修改左子树，右子树。
+    search(root->lchild, x, newdata);
+    search(root->rchild, x, newdata);
 }
 
 /*
@@ -51,17 +51,17 @@ void search(Node *root, int x, int newdata) {
 root：树根。
 x：新元素的数据。
 */
-void insert(Node *&root, int x) {
-  if (!root) {
-    // 查找失败，即插入的位置（边界）。
-    root = newNode(x);
-    return;
-  }
-  if (/* 由二叉树的性质，x应该插在左子树*/ 1) {
-    insert(root->lchild, x);
-  } else {
-    insert(root->rchild, x);
-  }
+void insert(Node*& root, int x) {
+    if (!root) {
+        // 查找失败，即插入的位置（边界）。
+        root = newNode(x);
+        return;
+    }
+    if (/* 由二叉树的性质，x应该插在左子树*/ 1) {
+        insert(root->lchild, x);
+    } else {
+        insert(root->rchild, x);
+    }
 }
 
 /*
@@ -76,32 +76,32 @@ void insert(Node *&root, int x) {
 
 */
 
-Node *insert2(Node *root, int x) {
-  if (!root) {
-    // 空树插入，返回新根。
-    return newNode(x);
-  }
-  if (/* 由二叉树的性质，x应该插在左子树*/ 1) {
-    // 插入左树，更新左树根。
-    root->lchild = insert2(root->lchild, x);
-  } else {
-    root->rchild = insert2(root->rchild, x);
-  }
-  // 记得返回。
-  return root;
+Node* insert2(Node* root, int x) {
+    if (!root) {
+        // 空树插入，返回新根。
+        return newNode(x);
+    }
+    if (/* 由二叉树的性质，x应该插在左子树*/ 1) {
+        // 插入左树，更新左树根。
+        root->lchild = insert2(root->lchild, x);
+    } else {
+        root->rchild = insert2(root->rchild, x);
+    }
+    // 记得返回。
+    return root;
 }
 
 /*
 建树，即往空树上插入节点。
 传入数据数组，但也可以边输入边插入。
 */
-Node *Create(int data[], int len) {
-  Node *root = NULL;
-  for (int i = 0; i < len; ++i) {
-    insert(root, data[i]);
-    //		root=insert2(root, data[i]);
-  }
-  return root;
+Node* Create(int data[], int len) {
+    Node* root = NULL;
+    for (int i = 0; i < len; ++i) {
+        insert(root, data[i]);
+        //		root=insert2(root, data[i]);
+    }
+    return root;
 }
 
 /*
@@ -112,36 +112,44 @@ Node *Create(int data[], int len) {
 #define MAXN 100
 
 struct Tree {
-  int data[MAXN]; // 保存数据域。
-  int N;          // 节点数。注意数组有效长度为 N+1。
-  // 因为0号空置，1--N 分别保存了所有合法节点。
+    int data[MAXN];  // 保存数据域。
+    int N;           // 节点数。注意数组有效长度为 N+1。
+    // 因为0号空置，1--N 分别保存了所有合法节点。
 
-  void Print() {
-    for (int i = 1; i <= N; ++i) {
-      printf("%d ", data[i]);
+    void Print() {
+        for (int i = 1; i <= N; ++i) {
+            printf("%d ", data[i]);
+        }
+        printf("\n");
     }
-    printf("\n");
-  }
-  bool Has(int i) {
-    // 判定某号是否为合法节点。
-    return 1 <= i && i <= N;
-  }
-  // 左孩子的编号。
-  int lchild(int i) { return 2 * i; }
-  // 右孩子的编号。
-  int rchild(int i) { return 2 * i + 1; }
-  // 父亲的编号。
-  int parent(int i) { return i / 2; }
-  bool IsLeaf(int i) {
-    // 判定某号是否为叶节点，注意，应判定左孩子是否存在。
-    assert(Has(i));
-    return Has(lchild(i));
-  }
-  int Root() {
-    assert(Has(1));
-    // 根节点必须在数组1号。
-    return data[1];
-  }
+    bool Has(int i) {
+        // 判定某号是否为合法节点。
+        return 1 <= i && i <= N;
+    }
+    // 左孩子的编号。
+    int lchild(int i) {
+        return 2 * i;
+    }
+    // 右孩子的编号。
+    int rchild(int i) {
+        return 2 * i + 1;
+    }
+    // 父亲的编号。
+    int parent(int i) {
+        return i / 2;
+    }
+    bool IsLeaf(int i) {
+        // 判定某号是否为叶节点，注意，应判定左孩子是否存在。
+        assert(Has(i));
+        return Has(lchild(i));
+    }
+    int Root() {
+        assert(Has(1));
+        // 根节点必须在数组1号。
+        return data[1];
+    }
 };
 
-int main(int argc, char **argv) { return 0; }
+int main(int argc, char** argv) {
+    return 0;
+}

@@ -21,27 +21,39 @@ const double eps = 1e-8;
 */
 
 // a 落在区间 (b-eps, b+eps)，则认为 a == b 。
-int Equal(double a, double b) { return fabs(a - b) < eps; }
+int Equal(double a, double b) {
+    return fabs(a - b) < eps;
+}
 
 // a 落在区间 (b+eps, +inf)，则认为 a > b 。
-int More(double a, double b) { return a - b > eps; }
+int More(double a, double b) {
+    return a - b > eps;
+}
 
-int Less(double a, double b) { return a - b < -eps; }
+int Less(double a, double b) {
+    return a - b < -eps;
+}
 
 // a 大于等于 b，就是 非 a 小于 b 。
-int MoreEq(double a, double b) { return !Less(a, b); }
+int MoreEq(double a, double b) {
+    return !Less(a, b);
+}
 
-int LessEq(double a, double b) { return !More(a, b); }
+int LessEq(double a, double b) {
+    return !More(a, b);
+}
 
-int NotEq(double a, double b) { return !Equal(a, b); }
+int NotEq(double a, double b) {
+    return !Equal(a, b);
+}
 
-int main(int argc, char *argv[]) {
-  // sin(pi/4)=sqrt(2)/2
-  // sin(pi/3)=sqrt(3)/2
-  // sin(pi/6)=1/2
-  assert(Equal(4 * asin(sqrt(2) / 2), 3 * asin(sqrt(3) / 2)));
+int main(int argc, char* argv[]) {
+    // sin(pi/4)=sqrt(2)/2
+    // sin(pi/3)=sqrt(3)/2
+    // sin(pi/6)=1/2
+    assert(Equal(4 * asin(sqrt(2) / 2), 3 * asin(sqrt(3) / 2)));
 
-  // 注意 1/2 == 0 要得到 0.5，必须是 1.0/2 。
-  assert(Equal(6 * asin(1.0 / 2), 4 * asin(sqrt(2) / 2)));
-  return 0;
+    // 注意 1/2 == 0 要得到 0.5，必须是 1.0/2 。
+    assert(Equal(6 * asin(1.0 / 2), 4 * asin(sqrt(2) / 2)));
+    return 0;
 }

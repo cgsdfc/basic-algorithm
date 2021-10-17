@@ -17,73 +17,68 @@ N皇后问题
 int N;
 int ans[MAXN];
 int hashtable[MAXN];
-int has; // 是否有解。
+int has;  // 是否有解。
 
 /*
 检查当前排列是否满足对角线原则。
 */
 int OK(void) {
-  int i;
-  for (i = 0; i < N - 1; ++i) {
-    int j;
-    for (j = i + 1; j < N; ++j) {
-      /*
-      条件：行号之差的绝对值等于列号之差的绝对值，
-      则两个皇后在一条对角线。
-      */
-      if (abs(i - j) == abs(ans[i] - ans[j]))
-        return 0;
+    int i;
+    for (i = 0; i < N - 1; ++i) {
+        int j;
+        for (j = i + 1; j < N; ++j) {
+            /*
+            条件：行号之差的绝对值等于列号之差的绝对值，
+            则两个皇后在一条对角线。
+            */
+            if (abs(i - j) == abs(ans[i] - ans[j])) return 0;
+        }
     }
-  }
-  return 1;
+    return 1;
 }
 
 void DFS(int index) {
-  int i;
-  if (index == N && OK()) {
-    for (i = 0; i < N; ++i) {
-      printf("%d%s", ans[i], i == N - 1 ? "\n" : " ");
-    }
-    has = 1;
-    return;
-  }
-  if (index == N) {
-    return;
-  }
-  // 剩下就是全排列的逻辑了。
-  for (i = 1; i <= N; ++i) {
-    /*
-    找到当前没用过的最小数。
-    */
-    if (!hashtable[i]) {
-      /*
-      检查一下放i是否会和之前的皇后冲突。
-      */
-      int ok = 1;
-      int j;
-      for (j = 0; j < index; ++j) {
-        if (abs(index - j) == abs(i - ans[j])) {
-          ok = 0;
-          break;
+    int i;
+    if (index == N && OK()) {
+        for (i = 0; i < N; ++i) {
+            printf("%d%s", ans[i], i == N - 1 ? "\n" : " ");
         }
-      }
-      if (ok) {
-        hashtable[i] = 1;
-        ans[index] = i;
-        DFS(index + 1);
-        hashtable[i] = 0;
-      }
+        has = 1;
+        return;
     }
-  }
+    if (index == N) { return; }
+    // 剩下就是全排列的逻辑了。
+    for (i = 1; i <= N; ++i) {
+        /*
+        找到当前没用过的最小数。
+        */
+        if (!hashtable[i]) {
+            /*
+            检查一下放i是否会和之前的皇后冲突。
+            */
+            int ok = 1;
+            int j;
+            for (j = 0; j < index; ++j) {
+                if (abs(index - j) == abs(i - ans[j])) {
+                    ok = 0;
+                    break;
+                }
+            }
+            if (ok) {
+                hashtable[i] = 1;
+                ans[index] = i;
+                DFS(index + 1);
+                hashtable[i] = 0;
+            }
+        }
+    }
 }
 
-int main(int argc, char *argv[]) {
-  while (scanf("%d", &N) != EOF) {
-    has = 0;
-    DFS(0);
-    if (!has) {
-      puts("no solute!");
+int main(int argc, char* argv[]) {
+    while (scanf("%d", &N) != EOF) {
+        has = 0;
+        DFS(0);
+        if (!has) { puts("no solute!"); }
     }
-  }
-  return 0;
+    return 0;
 }

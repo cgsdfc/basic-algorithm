@@ -17,21 +17,19 @@ F是一棵树的叶子节点数。
 F(N)和N是树和叶子节点的关系，没有明确的数学递推式。
 */
 void F(int n) {
-  if (n == 0) {
-    ++sum;
-    return;
-  }
-  if (n >= 2) {
-    F(n - 2);
-  }
-  assert(n >= 1);
-  F(n - 1);
+    if (n == 0) {
+        ++sum;
+        return;
+    }
+    if (n >= 2) { F(n - 2); }
+    assert(n >= 1);
+    F(n - 1);
 }
-int main(int argc, char *argv[]) {
-  while (scanf("%d", &N) != EOF) {
-    sum = 0;
-    F(N);
-    printf("%d\n", sum);
-  }
-  return 0;
+int main(int argc, char* argv[]) {
+    while (scanf("%d", &N) != EOF) {
+        sum = 0;
+        F(N);
+        printf("%d\n", sum);
+    }
+    return 0;
 }

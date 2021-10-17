@@ -7,31 +7,31 @@
 #define MAXN 20
 int a[MAXN];
 
-int main(int argc, char *argv[]) {
-  int m;
-  while (scanf("%d", &m) != EOF) {
-    while (m--) {
-      int n;
-      int i;
-      int x;
-      int ans = 0;
+int main(int argc, char* argv[]) {
+    int m;
+    while (scanf("%d", &m) != EOF) {
+        while (m--) {
+            int n;
+            int i;
+            int x;
+            int ans = 0;
 
-      scanf("%d", &n);
-      for (i = 0; i <= n; ++i) {
-        // n+1
-        scanf("%d", &a[i]);
-      }
+            scanf("%d", &n);
+            for (i = 0; i <= n; ++i) {
+                // n+1
+                scanf("%d", &a[i]);
+            }
 
-      //			for (i=0;i<=n;++i) {
-      //				printf("%d%s", a[i], i==n?"\n":" ");
-      //			}
-      //
-      scanf("%d", &x);
-      for (i = n; i >= 0; --i) {
-        ans = ans * x + a[i];
-      }
-      printf("%d\n", ans);
+            //			for (i=0;i<=n;++i) {
+            //				printf("%d%s", a[i], i==n?"\n":" ");
+            //			}
+            //
+            scanf("%d", &x);
+            for (i = n; i >= 0; --i) {
+                ans = ans * x + a[i];
+            }
+            printf("%d\n", ans);
+        }
     }
-  }
-  return 0;
+    return 0;
 }

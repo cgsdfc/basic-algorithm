@@ -8,60 +8,58 @@ const char Msg[] = "There are %d accounts and no account is modified\n";
 const char MsgOne[] = "There is 1 account and no account is modified\n";
 
 void PrintMsg(int n) {
-  if (n == 1)
-    printf(MsgOne);
-  else
-    printf(Msg, n);
+    if (n == 1)
+        printf(MsgOne);
+    else
+        printf(Msg, n);
 }
 
 const char Repl[][4] = {"1@", "0%", "lL", "Oo"};
 
 int Modify(char str[], int len) {
-  int i;
-  int res = 0;
-  int j;
+    int i;
+    int res = 0;
+    int j;
 
-  for (i = 0; i < len; ++i) {
-    for (j = 0; j < 4; ++j) {
-      if (str[i] == Repl[j][0]) {
-        res = 1;
-        str[i] = Repl[j][1];
-        break;
-      }
+    for (i = 0; i < len; ++i) {
+        for (j = 0; j < 4; ++j) {
+            if (str[i] == Repl[j][0]) {
+                res = 1;
+                str[i] = Repl[j][1];
+                break;
+            }
+        }
     }
-  }
-  return res;
+    return res;
 }
 
 typedef struct Acc {
-  char name[15];
-  char pass[15];
+    char name[15];
+    char pass[15];
 } Acc;
 
 #define MAXN 1005
 
 Acc Changed[MAXN];
 
-int main(int argc, char *argv[]) {
-  int k = 0;
-  int n;
-  int i;
+int main(int argc, char* argv[]) {
+    int k = 0;
+    int n;
+    int i;
 
-  scanf("%d", &n);
-  for (i = 0; i < n; ++i) {
-    Acc a;
-    scanf("%s%s", a.name, a.pass);
-    if (Modify(a.pass, strlen(a.pass))) {
-      Changed[k++] = a;
+    scanf("%d", &n);
+    for (i = 0; i < n; ++i) {
+        Acc a;
+        scanf("%s%s", a.name, a.pass);
+        if (Modify(a.pass, strlen(a.pass))) { Changed[k++] = a; }
     }
-  }
-  if (k) {
-    printf("%d\n", k);
-    for (i = 0; i < k; ++i) {
-      printf("%s %s\n", Changed[i].name, Changed[i].pass);
+    if (k) {
+        printf("%d\n", k);
+        for (i = 0; i < k; ++i) {
+            printf("%s %s\n", Changed[i].name, Changed[i].pass);
+        }
+    } else {
+        PrintMsg(n);
     }
-  } else {
-    PrintMsg(n);
-  }
-  return 0;
+    return 0;
 }

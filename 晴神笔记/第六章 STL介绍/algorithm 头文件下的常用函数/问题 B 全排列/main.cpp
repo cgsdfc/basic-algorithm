@@ -23,13 +23,13 @@ using namespace std;
         原地修改为第一个排列，即回到原点。
 */
 
-int main(int argc, char **argv) {
-  string str;
-  while (cin >> str) {
-    do {
-      printf("%s\n", str.c_str());
-    } while (next_permutation(str.begin(), str.end()));
-    printf("\n");
-  }
-  return 0;
+int main(int argc, char** argv) {
+    string str;
+    while (cin >> str) {
+        do {
+            printf("%s\n", str.c_str());
+        } while (next_permutation(str.begin(), str.end()));
+        printf("\n");
+    }
+    return 0;
 }

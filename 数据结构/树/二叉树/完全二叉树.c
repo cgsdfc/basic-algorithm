@@ -17,33 +17,37 @@
 #define MAXN 100
 
 typedef struct Node {
-  int data;
+    int data;
 } Node;
 
 // 所有的节点编号为0到size-1.
 typedef struct Tree {
-  Node node[MAXN];
-  int size;
+    Node node[MAXN];
+    int size;
 } Tree;
 
 // 带上下标检查，防止越界。
-Node *GetNode(Tree *tr, int i) {
-  assert(0 <= i && i < tr->size);
-  return &tr->node[i];
+Node* GetNode(Tree* tr, int i) {
+    assert(0 <= i && i < tr->size);
+    return &tr->node[i];
 }
 
 // 左孩子在2i+1
-Node *Left(Tree *tr, int i) { return GetNode(tr, 2 * i + 1); }
-
-int HasLeft(Tree *tr, int i) {
-  int v = 2 * i + 1;
-  return 0 <= v && v < tr->size;
+Node* Left(Tree* tr, int i) {
+    return GetNode(tr, 2 * i + 1);
 }
 
-Node *Right(Tree *tr, int i) { return GetNode(tr, 2 * i); }
+int HasLeft(Tree* tr, int i) {
+    int v = 2 * i + 1;
+    return 0 <= v && v < tr->size;
+}
 
-Node *Parent(Tree *tr, int i) {
-  // 0号是根，没有父节点。
-  assert(i != 0);
-  return GetNode(tr, i / 2);
+Node* Right(Tree* tr, int i) {
+    return GetNode(tr, 2 * i);
+}
+
+Node* Parent(Tree* tr, int i) {
+    // 0号是根，没有父节点。
+    assert(i != 0);
+    return GetNode(tr, i / 2);
 }

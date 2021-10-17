@@ -9,36 +9,34 @@
 int a[MAXN];
 
 int Partition(int a[], int L, int R) {
-  int temp;
+    int temp;
 
-  temp = a[L];
-  while (L < R) {
-    while (L < R && a[R] > temp)
-      --R;
-    a[L] = a[R];
-    while (L < R && a[L] <= temp)
-      ++L;
-    a[R] = a[L];
-  }
-  a[L] = temp;
-  return L;
+    temp = a[L];
+    while (L < R) {
+        while (L < R && a[R] > temp)
+            --R;
+        a[L] = a[R];
+        while (L < R && a[L] <= temp)
+            ++L;
+        a[R] = a[L];
+    }
+    a[L] = temp;
+    return L;
 }
 
 int Select(int a[], int L, int R, int K) {
-  int p;
-  int M;
+    int p;
+    int M;
 
-  if (L == R)
-    return a[L];
-  p = Partition(a, L, R);
-  M = p - L + 1;
-  if (M == K)
-    return a[p];
-  if (K < M) {
-    return Select(a, L, p - 1, K);
-  } else {
-    return Select(a, p + 1, R, K - M);
-  }
+    if (L == R) return a[L];
+    p = Partition(a, L, R);
+    M = p - L + 1;
+    if (M == K) return a[p];
+    if (K < M) {
+        return Select(a, L, p - 1, K);
+    } else {
+        return Select(a, p + 1, R, K - M);
+    }
 }
 
 /*
@@ -57,21 +55,21 @@ int Select(int a[], int L, int R, int K) {
 另外：K一般从1开始。
 */
 
-int main(int argc, char *argv[]) {
-  int N, K;
+int main(int argc, char* argv[]) {
+    int N, K;
 
-  //	while (scanf("%d%d", &N, &K) != EOF) {
+    //	while (scanf("%d%d", &N, &K) != EOF) {
 
-  int i;
-  int ans;
+    int i;
+    int ans;
 
-  scanf("%d%d", &N, &K);
+    scanf("%d%d", &N, &K);
 
-  for (i = 0; i < N; ++i) {
-    scanf("%d", &a[i]);
-  }
-  ans = Select(a, 0, N - 1, N - K + 1);
-  printf("%d\n", ans);
-  //	}
-  return 0;
+    for (i = 0; i < N; ++i) {
+        scanf("%d", &a[i]);
+    }
+    ans = Select(a, 0, N - 1, N - K + 1);
+    printf("%d\n", ans);
+    //	}
+    return 0;
 }

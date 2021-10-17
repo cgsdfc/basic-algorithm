@@ -26,11 +26,11 @@ their registration numbers.
 */
 
 typedef struct Student {
-  char id[15];
-  int score;
-  int final_rank;
-  int loc;
-  int local_rank;
+    char id[15];
+    int score;
+    int final_rank;
+    int loc;
+    int local_rank;
 } Student;
 
 #define MAXN 30010
@@ -38,68 +38,61 @@ typedef struct Student {
 Student stu[MAXN];
 int N;
 
-int CMP(const void *_a, const void *_b) {
-  Student *a = (Student *)_a;
-  Student *b = (Student *)_b;
-  if (a->score != b->score) {
-    return b->score - a->score;
-  }
-  return strcmp(a->id, b->id);
+int CMP(const void* _a, const void* _b) {
+    Student* a = (Student*) _a;
+    Student* b = (Student*) _b;
+    if (a->score != b->score) { return b->score - a->score; }
+    return strcmp(a->id, b->id);
 }
 
-int main(int argc, char *argv[]) {
-  int n;
-  int i;
-  int r;
-
-  scanf("%d", &n);
-  for (i = 0; i < n; ++i) {
-    int k;
-    int j;
+int main(int argc, char* argv[]) {
+    int n;
+    int i;
     int r;
-    Student *base;
 
-    /*
-    输入本考场的信息。记录基本信息。
-    */
-    scanf("%d", &k);
-    for (j = 0; j < k; ++j) {
-      scanf("%s%d", stu[N].id, &stu[N].score);
-      stu[N].loc = i + 1;
-      ++N;
+    scanf("%d", &n);
+    for (i = 0; i < n; ++i) {
+        int k;
+        int j;
+        int r;
+        Student* base;
+
+        /*
+        输入本考场的信息。记录基本信息。
+        */
+        scanf("%d", &k);
+        for (j = 0; j < k; ++j) {
+            scanf("%s%d", stu[N].id, &stu[N].score);
+            stu[N].loc = i + 1;
+            ++N;
+        }
+        base = stu + N - k;
+        qsort(base, k, sizeof(Student), CMP);
+
+        /*
+        计算local rank。
+        */
+        r = 1;
+        for (j = 0; j < k; ++j) {
+            if (j > 0 && base[j].score != base[j - 1].score) { r = j + 1; }
+            base[j].local_rank = r;
+        }
     }
-    base = stu + N - k;
-    qsort(base, k, sizeof(Student), CMP);
 
     /*
-    计算local rank。
+    所有考生录入完毕，开始计算final rank。
     */
+    printf("%d\n", N);
+    qsort(stu, N, sizeof(Student), CMP);
     r = 1;
-    for (j = 0; j < k; ++j) {
-      if (j > 0 && base[j].score != base[j - 1].score) {
-        r = j + 1;
-      }
-      base[j].local_rank = r;
+    for (i = 0; i < N; ++i) {
+        if (i > 0 && stu[i].score != stu[i - 1].score) { r = i + 1; }
+        stu[i].final_rank = r;
+        // registration_number final_rank location_number local_rank
+        printf("%s %d %d %d\n", stu[i].id, stu[i].final_rank, stu[i].loc, stu[i].local_rank);
     }
-  }
 
-  /*
-  所有考生录入完毕，开始计算final rank。
-  */
-  printf("%d\n", N);
-  qsort(stu, N, sizeof(Student), CMP);
-  r = 1;
-  for (i = 0; i < N; ++i) {
-    if (i > 0 && stu[i].score != stu[i - 1].score) {
-      r = i + 1;
-    }
-    stu[i].final_rank = r;
-    // registration_number final_rank location_number local_rank
-    printf("%s %d %d %d\n", stu[i].id, stu[i].final_rank, stu[i].loc,
-           stu[i].local_rank);
-  }
-
-  return 0;
+    return 0;
 }
 
 /*

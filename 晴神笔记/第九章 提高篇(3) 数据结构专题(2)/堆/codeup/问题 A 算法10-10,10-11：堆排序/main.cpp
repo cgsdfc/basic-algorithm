@@ -14,46 +14,44 @@ int data[MAXN];
  * system("pause") or input loop */
 
 void DownAdjust(int low, int hi) {
-  int i = low;
-  int j = 2 * i;
-  while (j <= hi) {
-    if (j + 1 <= hi && data[j + 1] > data[j]) {
-      ++j;
+    int i = low;
+    int j = 2 * i;
+    while (j <= hi) {
+        if (j + 1 <= hi && data[j + 1] > data[j]) { ++j; }
+        if (data[j] > data[i]) {
+            swap(data[i], data[j]);
+            i = j;
+            j = 2 * i;
+        } else {
+            break;
+        }
     }
-    if (data[j] > data[i]) {
-      swap(data[i], data[j]);
-      i = j;
-      j = 2 * i;
-    } else {
-      break;
-    }
-  }
 }
 
 void CreateHeap() {
-  for (int i = N / 2; i >= 1; --i) {
-    DownAdjust(i, N);
-  }
+    for (int i = N / 2; i >= 1; --i) {
+        DownAdjust(i, N);
+    }
 }
 
 void HeapSort() {
-  CreateHeap();
-  for (int i = N; i > 1; --i) {
-    swap(data[1], data[i]);
-    DownAdjust(1, i - 1);
-  }
+    CreateHeap();
+    for (int i = N; i > 1; --i) {
+        swap(data[1], data[i]);
+        DownAdjust(1, i - 1);
+    }
 }
 
-int main(int argc, char **argv) {
-  while (scanf("%d", &N) != EOF) {
-    for (int i = 1; i <= N; ++i) {
-      scanf("%d", &data[i]);
+int main(int argc, char** argv) {
+    while (scanf("%d", &N) != EOF) {
+        for (int i = 1; i <= N; ++i) {
+            scanf("%d", &data[i]);
+        }
+        HeapSort();
+        for (int i = 1; i <= N; ++i) {
+            printf("%d ", data[i]);
+        }
+        printf("\n");
     }
-    HeapSort();
-    for (int i = 1; i <= N; ++i) {
-      printf("%d ", data[i]);
-    }
-    printf("\n");
-  }
-  return 0;
+    return 0;
 }

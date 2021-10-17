@@ -11,33 +11,31 @@
 3. 当前小于6公里，不换车直到到达。
 */
 double Cost(int n) {
-  double ans;
-  if (n <= 4)
-    return 10;
-  if (n <= 8)
-    return 10 + 2 * (n - 4);
-  // 前两阶段结束。
-  ans = 18;
-  n -= 8;
-  assert(n > 0);
-  while (n > 0) {
-    if (n >= 6) {
-      // 做6公里以上的车，则换车后更便宜。
-      if (n <= 8) {
-        // 直接到达了。
-        ans += 10 + (n - 4) * 2;
-        break;
-      } else {
-        ans += 18;
-        n -= 8;
-      }
-    } else {
-      // 不足6公里了，换车不能更便宜。
-      ans += n * 2.4;
-      break;
+    double ans;
+    if (n <= 4) return 10;
+    if (n <= 8) return 10 + 2 * (n - 4);
+    // 前两阶段结束。
+    ans = 18;
+    n -= 8;
+    assert(n > 0);
+    while (n > 0) {
+        if (n >= 6) {
+            // 做6公里以上的车，则换车后更便宜。
+            if (n <= 8) {
+                // 直接到达了。
+                ans += 10 + (n - 4) * 2;
+                break;
+            } else {
+                ans += 18;
+                n -= 8;
+            }
+        } else {
+            // 不足6公里了，换车不能更便宜。
+            ans += n * 2.4;
+            break;
+        }
     }
-  }
-  return ans;
+    return ans;
 }
 
 /*
@@ -51,38 +49,36 @@ double Cost(int n) {
 2. n大于等于5时，换车。
 */
 double Cost2(int n) {
-  double ans;
+    double ans;
 
-  if (n <= 4)
-    return 10;
-  if (n <= 8)
-    return 10 + 2 * (n - 4);
-  // 可以从0开始，因为这样包括了首个8公里。
-  ans = 0;
-  while (n >= 8) {
-    ans += 18;
-    n -= 8;
-  }
-  if (n < 5) {
-    ans += n * 2.4;
-  } else {
-    ans += 10 + (n - 4) * 2;
-  }
-  return ans;
+    if (n <= 4) return 10;
+    if (n <= 8) return 10 + 2 * (n - 4);
+    // 可以从0开始，因为这样包括了首个8公里。
+    ans = 0;
+    while (n >= 8) {
+        ans += 18;
+        n -= 8;
+    }
+    if (n < 5) {
+        ans += n * 2.4;
+    } else {
+        ans += 10 + (n - 4) * 2;
+    }
+    return ans;
 }
 
-int main(int argc, char *argv[]) {
-  int n;
+int main(int argc, char* argv[]) {
+    int n;
 
-  freopen("./in.txt", "r", stdin);
+    freopen("./in.txt", "r", stdin);
 
-  while (scanf("%d", &n), n != 0) {
-    double ans = Cost2(n);
-    if ((int)ans == ans) {
-      printf("%d\n", (int)ans);
-    } else {
-      printf("%.1f\n", ans);
+    while (scanf("%d", &n), n != 0) {
+        double ans = Cost2(n);
+        if ((int) ans == ans) {
+            printf("%d\n", (int) ans);
+        } else {
+            printf("%.1f\n", ans);
+        }
     }
-  }
-  return 0;
+    return 0;
 }

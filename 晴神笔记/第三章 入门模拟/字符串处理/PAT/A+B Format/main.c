@@ -22,37 +22,35 @@
 前缀的选取使得后缀长度必定是3的倍数。
 */
 void Method2(int val) {
-  int n;
-  int i;
+    int n;
+    int i;
 
-  // 用于获取val的各位数字。
-  char buf[MAXN];
-  int len;
+    // 用于获取val的各位数字。
+    char buf[MAXN];
+    int len;
 
-  if (val < 0) {
-    putchar('-');
-    val = -val;
-  }
-  do {
-    buf[len++] = '0' + val % 10;
-    val /= 10;
-  } while (val);
+    if (val < 0) {
+        putchar('-');
+        val = -val;
+    }
+    do {
+        buf[len++] = '0' + val % 10;
+        val /= 10;
+    } while (val);
 
-  // n是第一组数字，可能不满三个，输出了第一组后，剩下的每组数字的
-  // 输出更有规律，就是先输出逗号，再输出一组。
-  n = len % 3;
-  if (!n)
-    n = 3;
-  // 先输出前n个高位数字。
-  for (i = 0; i < n; ++i) {
-    putchar(buf[len - i - 1]);
-  }
-  // 剩下的数字，每三个一组，每组前面输出逗号。
-  for (i = n; i < len; ++i) {
-    if ((i - n) % 3 == 0)
-      putchar(',');
-    putchar(buf[len - i - 1]);
-  }
+    // n是第一组数字，可能不满三个，输出了第一组后，剩下的每组数字的
+    // 输出更有规律，就是先输出逗号，再输出一组。
+    n = len % 3;
+    if (!n) n = 3;
+    // 先输出前n个高位数字。
+    for (i = 0; i < n; ++i) {
+        putchar(buf[len - i - 1]);
+    }
+    // 剩下的数字，每三个一组，每组前面输出逗号。
+    for (i = n; i < len; ++i) {
+        if ((i - n) % 3 == 0) putchar(',');
+        putchar(buf[len - i - 1]);
+    }
 }
 
 /*
@@ -62,41 +60,37 @@ void Method2(int val) {
 完成后，检查数组尾部，若是一个逗号，则删除，因为最高位前面不应有逗号。
 */
 void Method1(int sum) {
-  char buf[MAXN];
-  int len = 0;
-  int i = 0;
+    char buf[MAXN];
+    int len = 0;
+    int i = 0;
 
-  if (sum < 0) {
-    putchar('-');
-    sum = -sum;
-  }
-  i = 1;
-  do {
-    // 转换成字符。
-    buf[len++] = sum % 10 + '0';
-    // 每隔三个数字，输出一个逗号，若最后发现最后一个字符是逗号则删之。
-    if (i % 3 == 0) {
-      buf[len++] = ',';
+    if (sum < 0) {
+        putchar('-');
+        sum = -sum;
     }
-    ++i;
-    sum /= 10;
-  } while (sum);
-  if (buf[len - 1] == ',') {
-    --len;
-  }
-  for (i = len - 1; i >= 0; --i) {
-    putchar(buf[i]);
-  }
+    i = 1;
+    do {
+        // 转换成字符。
+        buf[len++] = sum % 10 + '0';
+        // 每隔三个数字，输出一个逗号，若最后发现最后一个字符是逗号则删之。
+        if (i % 3 == 0) { buf[len++] = ','; }
+        ++i;
+        sum /= 10;
+    } while (sum);
+    if (buf[len - 1] == ',') { --len; }
+    for (i = len - 1; i >= 0; --i) {
+        putchar(buf[i]);
+    }
 }
 
-int main(int argc, char *argv[]) {
-  int a, b, sum;
+int main(int argc, char* argv[]) {
+    int a, b, sum;
 
-  scanf("%d%d", &a, &b);
-  sum = a + b;
+    scanf("%d%d", &a, &b);
+    sum = a + b;
 
-  Method2(sum);
-  putchar('\n');
+    Method2(sum);
+    putchar('\n');
 
-  return 0;
+    return 0;
 }

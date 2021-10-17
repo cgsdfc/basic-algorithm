@@ -5,30 +5,30 @@
  * system("pause") or input loop */
 
 void Move(int a[], int n, int m) {
-  int i;
-  int j = 0;
+    int i;
+    int j = 0;
 
-  m = m % n;
-  for (i = n - m; i < n; ++i, ++j) {
-    printf("%d", a[i]);
-    printf("%s", j == n - 1 ? "\n" : " ");
-  }
-  for (i = 0; i < n - m; ++i, ++j) {
-    printf("%d", a[i]);
-    printf("%s", j == n - 1 ? "\n" : " ");
-  }
+    m = m % n;
+    for (i = n - m; i < n; ++i, ++j) {
+        printf("%d", a[i]);
+        printf("%s", j == n - 1 ? "\n" : " ");
+    }
+    for (i = 0; i < n - m; ++i, ++j) {
+        printf("%d", a[i]);
+        printf("%s", j == n - 1 ? "\n" : " ");
+    }
 }
 
-int main(int argc, char *argv[]) {
-  int n, m;
-  int a[105];
-  int i;
+int main(int argc, char* argv[]) {
+    int n, m;
+    int a[105];
+    int i;
 
-  scanf("%d%d", &n, &m);
-  for (i = 0; i < n; ++i) {
-    scanf("%d", &a[i]);
-  }
-  Move(a, n, m);
+    scanf("%d%d", &n, &m);
+    for (i = 0; i < n; ++i) {
+        scanf("%d", &a[i]);
+    }
+    Move(a, n, m);
 
-  return 0;
+    return 0;
 }

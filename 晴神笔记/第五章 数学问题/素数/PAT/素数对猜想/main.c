@@ -18,34 +18,34 @@ int pNum;
 */
 
 void FindPrime(int N) {
-  int i;
-  int j;
-  for (i = 2; i < MAXN && i <= N; ++i) {
-    if (p[i] == 0) {
-      prime[pNum++] = i;
-      for (j = 2 * i; j < MAXN; j += i) {
-        p[j] = 1;
-      }
+    int i;
+    int j;
+    for (i = 2; i < MAXN && i <= N; ++i) {
+        if (p[i] == 0) {
+            prime[pNum++] = i;
+            for (j = 2 * i; j < MAXN; j += i) {
+                p[j] = 1;
+            }
+        }
     }
-  }
 }
 
-int main(int argc, char *argv[]) {
-  int i;
-  int N;
-  int ans = 0;
+int main(int argc, char* argv[]) {
+    int i;
+    int N;
+    int ans = 0;
 
-  scanf("%d", &N);
-  FindPrime(N);
+    scanf("%d", &N);
+    FindPrime(N);
 
-  for (i = 0; i < pNum - 1; ++i) {
-    if (prime[i + 1] - prime[i] == 2) {
-      //			printf("%d %d\n", prime[i], prime[i+1]);
-      ++ans;
+    for (i = 0; i < pNum - 1; ++i) {
+        if (prime[i + 1] - prime[i] == 2) {
+            //			printf("%d %d\n", prime[i], prime[i+1]);
+            ++ans;
+        }
+        //		printf("%d\n", prime[i]);
     }
-    //		printf("%d\n", prime[i]);
-  }
-  printf("%d\n", ans);
+    printf("%d\n", ans);
 
-  return 0;
+    return 0;
 }

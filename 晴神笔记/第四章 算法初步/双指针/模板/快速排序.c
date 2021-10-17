@@ -32,33 +32,33 @@ right]的整数（用round取整）。
 */
 
 static int Partition(int A[], int left, int right) {
-  int temp;
-  // 先把主元保存起来。
-  temp = A[left];
-  // left right 相遇时算法结束。
-  while (left < right) {
-    // 右指针，大于就左移。
-    while (left < right && A[right] > temp)
-      right--;
-    // 元素扔到左边去。
-    A[left] = A[right];
-    // 左指针，小于等于就右移。
-    while (left < right && A[left] <= temp)
-      left++;
-    // 元素扔到右边去。
-    A[right] = A[left];
-    // 双指针，向中间逼近。
-  }
-  // 主元归中。
-  A[left] = temp;
-  return left;
+    int temp;
+    // 先把主元保存起来。
+    temp = A[left];
+    // left right 相遇时算法结束。
+    while (left < right) {
+        // 右指针，大于就左移。
+        while (left < right && A[right] > temp)
+            right--;
+        // 元素扔到左边去。
+        A[left] = A[right];
+        // 左指针，小于等于就右移。
+        while (left < right && A[left] <= temp)
+            left++;
+        // 元素扔到右边去。
+        A[right] = A[left];
+        // 双指针，向中间逼近。
+    }
+    // 主元归中。
+    A[left] = temp;
+    return left;
 }
 
 static void QuickSort(int A[], int left, int right) {
-  if (left < right) {
-    // 当前区间长度大于1，则需要递归排序。
-    int mid = Partition(A, left, right);
-    QuickSort(A, left, mid - 1);
-    QuickSort(A, mid + 1, right);
-  }
+    if (left < right) {
+        // 当前区间长度大于1，则需要递归排序。
+        int mid = Partition(A, left, right);
+        QuickSort(A, left, mid - 1);
+        QuickSort(A, mid + 1, right);
+    }
 }

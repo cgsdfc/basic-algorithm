@@ -13,73 +13,77 @@ int N, M;
 #define MAXN 105
 
 int Pow(int n) {
-  // 计算 2^n MOD M.
-  int ans = 1;
-  while (n--) {
-    ans = (2 * ans) % MOD;
-  }
-  return ans;
+    // 计算 2^n MOD M.
+    int ans = 1;
+    while (n--) {
+        ans = (2 * ans) % MOD;
+    }
+    return ans;
 }
 
 /*
 二进制整数。
 */
 struct Int {
-  set<int, greater<int>> data; // 记录非零位，从大到小。
-  typedef set<int, greater<int>>::iterator It;
-  // 初始化为无穷大。
-  void Inf() {
-    data.clear();
-    data.insert(INF);
-  }
-  // 初始化为0.
-  void Zero() { data.clear(); }
-  friend bool operator<(const Int &a, const Int &b) {
-    // 字典序比较各个非零位。
-    It pa = a.data.begin();
-    It pb = b.data.begin();
-    while (pa != a.data.end() && pb != b.data.end()) {
-      if (*pa != *pb) {
-        return *pa < *pb;
-      }
-      ++pa;
-      ++pb;
+    set<int, greater<int>> data;  // 记录非零位，从大到小。
+    typedef set<int, greater<int>>::iterator It;
+    // 初始化为无穷大。
+    void Inf() {
+        data.clear();
+        data.insert(INF);
     }
-    return pa == a.data.end() && pb != b.data.end();
-  }
-  // 加入一位。
-  void Add(int b) { data.insert(b); }
-  // 计算最终结果。
-  int change() {
-    int ans = 0;
-    if (data.size() == 1 && *data.begin() == INF) {
-      return -1; // 不可达。
+    // 初始化为0.
+    void Zero() {
+        data.clear();
     }
-    for (It it = data.begin(); it != data.end(); ++it) {
-      int p = Pow(*it);
-      ans = (ans + p) % MOD;
+    friend bool operator<(const Int& a, const Int& b) {
+        // 字典序比较各个非零位。
+        It pa = a.data.begin();
+        It pb = b.data.begin();
+        while (pa != a.data.end() && pb != b.data.end()) {
+            if (*pa != *pb) { return *pa < *pb; }
+            ++pa;
+            ++pb;
+        }
+        return pa == a.data.end() && pb != b.data.end();
     }
-    return ans;
-  }
+    // 加入一位。
+    void Add(int b) {
+        data.insert(b);
+    }
+    // 计算最终结果。
+    int change() {
+        int ans = 0;
+        if (data.size() == 1 && *data.begin() == INF) {
+            return -1;  // 不可达。
+        }
+        for (It it = data.begin(); it != data.end(); ++it) {
+            int p = Pow(*it);
+            ans = (ans + p) % MOD;
+        }
+        return ans;
+    }
 };
 
 // 邻接表用。
 struct Node {
-  int v;
-  int dis;
-  Node(int _v, int _dis) : v(_v), dis(_dis) {}
+    int v;
+    int dis;
+    Node(int _v, int _dis): v(_v), dis(_dis) {}
 };
 
 // 堆用。
 struct Node2 {
-  int v;
-  Int dis;
-  // dis为0.
-  Node2(int _v) : v(_v) { dis.Zero(); }
-  Node2(int _v, Int _dis) : v(_v), dis(_dis) {}
-  friend bool operator<(const Node2 &a, const Node2 &b) {
-    return b.dis < a.dis;
-  }
+    int v;
+    Int dis;
+    // dis为0.
+    Node2(int _v): v(_v) {
+        dis.Zero();
+    }
+    Node2(int _v, Int _dis): v(_v), dis(_dis) {}
+    friend bool operator<(const Node2& a, const Node2& b) {
+        return b.dis < a.dis;
+    }
 };
 
 vector<Node> Adj[MAXN];
@@ -104,53 +108,51 @@ n，所以两者的大小关系不能互相推导， 算法自然是错的。
 */
 
 void Dijkstra(int s) {
-  for (int i = 0; i < N; ++i) {
-    d[i].Inf();
-    vis[i] = false;
-  }
-  d[s].Zero();
-  priority_queue<Node2> Q;
-  Q.push(Node2(s));
-  while (!Q.empty()) {
-    int u = Q.top().v;
-    Q.pop();
-    if (vis[u]) {
-      continue;
+    for (int i = 0; i < N; ++i) {
+        d[i].Inf();
+        vis[i] = false;
     }
-    vis[u] = true;
-    for (int i = 0; i < Adj[u].size(); ++i) {
-      int v = Adj[u][i].v;
-      // 2的幂保存为int。
-      int dis = Adj[u][i].dis;
-      Int du = d[u];
-      du.Add(dis);
-      if (!vis[v] && du < d[v]) {
-        d[v] = du;
-        Q.push(Node2(v, du));
-      }
+    d[s].Zero();
+    priority_queue<Node2> Q;
+    Q.push(Node2(s));
+    while (!Q.empty()) {
+        int u = Q.top().v;
+        Q.pop();
+        if (vis[u]) { continue; }
+        vis[u] = true;
+        for (int i = 0; i < Adj[u].size(); ++i) {
+            int v = Adj[u][i].v;
+            // 2的幂保存为int。
+            int dis = Adj[u][i].dis;
+            Int du = d[u];
+            du.Add(dis);
+            if (!vis[v] && du < d[v]) {
+                d[v] = du;
+                Q.push(Node2(v, du));
+            }
+        }
     }
-  }
 }
 
 /*
 堆优化的Dijkstra，单源非负权最短路。
 */
 
-int main(int argc, char **argv) {
-  while (scanf("%d%d", &N, &M) != EOF) {
-    fill(Adj, Adj + MAXN, vector<Node>());
-    for (int i = 0; i < M; ++i) {
-      int a, b;
-      scanf("%d%d", &a, &b);
-      int w = i;
-      Adj[a].push_back(Node(b, w));
-      Adj[b].push_back(Node(a, w));
+int main(int argc, char** argv) {
+    while (scanf("%d%d", &N, &M) != EOF) {
+        fill(Adj, Adj + MAXN, vector<Node>());
+        for (int i = 0; i < M; ++i) {
+            int a, b;
+            scanf("%d%d", &a, &b);
+            int w = i;
+            Adj[a].push_back(Node(b, w));
+            Adj[b].push_back(Node(a, w));
+        }
+        Dijkstra(0);
+        for (int i = 1; i < N; ++i) {
+            int ans = d[i].change();
+            printf("%d\n", ans);
+        }
     }
-    Dijkstra(0);
-    for (int i = 1; i < N; ++i) {
-      int ans = d[i].change();
-      printf("%d\n", ans);
-    }
-  }
-  return 0;
+    return 0;
 }

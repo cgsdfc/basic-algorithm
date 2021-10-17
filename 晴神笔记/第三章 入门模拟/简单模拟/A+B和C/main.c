@@ -6,16 +6,16 @@
 
 typedef long long LL;
 
-int main(int argc, char *argv[]) {
-  int T;
-  int i;
+int main(int argc, char* argv[]) {
+    int T;
+    int i;
 
-  scanf("%d", &T);
-  i = 1;
-  while (T--) {
-    LL a, b, c;
-    scanf("%lld%lld%lld", &a, &b, &c);
-    printf("Case #%d: %s\n", i, (a + b > c) ? "true" : "false");
-    i++;
-  }
+    scanf("%d", &T);
+    i = 1;
+    while (T--) {
+        LL a, b, c;
+        scanf("%lld%lld%lld", &a, &b, &c);
+        printf("Case #%d: %s\n", i, (a + b > c) ? "true" : "false");
+        i++;
+    }
 }

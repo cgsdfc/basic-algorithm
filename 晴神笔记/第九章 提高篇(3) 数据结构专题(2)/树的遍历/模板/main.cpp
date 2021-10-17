@@ -26,60 +26,60 @@ using namespace std;
 在所有表示法中，-1表示NULL。
 */
 
-#define MAXN 100 // 这是节点数上限。
+#define MAXN 100  // 这是节点数上限。
 
 struct Node {
-  int data;
-  vector<int> child;
+    int data;
+    vector<int> child;
 };
 
 int index;
-Node node[MAXN]; // 静态的节点数组。
+Node node[MAXN];  // 静态的节点数组。
 
 int NewNode(int v) {
-  node[index].data = v;
-  node[index].child.clear(); // 空的child表示没有孩子，不需要-1了。
-  return index++;
+    node[index].data = v;
+    node[index].child.clear();  // 空的child表示没有孩子，不需要-1了。
+    return index++;
 }
 
 void AddChild(int root, int i) {
-  // vector 直接尾插。
-  node[root].child.push_back(i);
+    // vector 直接尾插。
+    node[root].child.push_back(i);
 }
 
-#define MAXC 10 // 已知的，子节点的最大数量。
+#define MAXC 10  // 已知的，子节点的最大数量。
 struct Node2 {
-  int data;
-  int child[MAXC];
-  int len; // len=0表示没有孩子。
+    int data;
+    int child[MAXC];
+    int len;  // len=0表示没有孩子。
 };
 
 Node2 node2[MAXN];
 
 int NewNode2(int v) {
-  node2[index].data = v;
-  node2[index].len = 0;
-  return index++;
+    node2[index].data = v;
+    node2[index].len = 0;
+    return index++;
 }
 
 void AddChild2(int root, int i) {
-  // 尾插。
-  node2[root].child[node2[root].len++] = i;
+    // 尾插。
+    node2[root].child[node2[root].len++] = i;
 }
 
 // 孩子-兄弟 表示法
 struct Node3 {
-  int data;
-  int child; // 第一个孩子。
-  int next;  // 下一个兄弟。
+    int data;
+    int child;  // 第一个孩子。
+    int next;   // 下一个兄弟。
 };
 
 Node3 node3[MAXN];
 
 int NewNode3(int v) {
-  node3[index].data = v;
-  node3[index].child = node3[index].next = -1;
-  return index++;
+    node3[index].data = v;
+    node3[index].child = node3[index].next = -1;
+    return index++;
 }
 
 /*
@@ -93,18 +93,18 @@ int NewNode3(int v) {
 2. 二叉树的写法决定了左右两个指针可能为空，所以保存了空节点。
 */
 void PreOrder3(int root) {
-  printf("%d ", node3[root].data);
-  // 要遍历root的所有孩子，就是遍历它的第一个孩子，以及所有的兄弟。
-  for (int i = node3[root].child; i != -1; i = node3[i].next) {
-    PreOrder3(i);
-  }
+    printf("%d ", node3[root].data);
+    // 要遍历root的所有孩子，就是遍历它的第一个孩子，以及所有的兄弟。
+    for (int i = node3[root].child; i != -1; i = node3[i].next) {
+        PreOrder3(i);
+    }
 }
 
 // 为root节点添加一个孩子，实际上是链表头插法，注意链表操作。
 void AddChild3(int root, int i) {
-  // 注意头插法是不用特判的。
-  node3[i].next = node3[root].child;
-  node3[root].child = i;
+    // 注意头插法是不用特判的。
+    node3[i].next = node3[root].child;
+    node3[root].child = i;
 }
 
 /*
@@ -157,10 +157,10 @@ DFS 写法的优点：
 2. 比BFS来的简洁。
 */
 void DFS(int root, int deep) {
-  printf("%d deep %d\n", root, deep);
-  for (int i = 0; i < node[root].child.size(); ++i) {
-    DFS(node[root].child[i], deep + 1);
-  }
+    printf("%d deep %d\n", root, deep);
+    for (int i = 0; i < node[root].child.size(); ++i) {
+        DFS(node[root].child[i], deep + 1);
+    }
 }
 
 /*
@@ -175,33 +175,35 @@ DFS 枚举路径
 */
 
 struct {
-  int data[MAXN];
-  int len;
+    int data[MAXN];
+    int len;
 } path;
 
 void DFS2(int root) {
-  // 把 root加入当前路径。
-  // 注意在多叉树的写法中，root不会有非法值如-1.
-  path.data[path.len++] = root;
-  // 检查是否到达叶子，即边界。
-  if (node[root].child.empty()) {
-    // 得到一条完整的路径，输出。
-    // 也检查路径是否满足题目条件。
-    for (int i = 0; i < path.len; ++i) {
-      printf("%d%s", path.data[i], i == path.len - 1 ? "\n" : " ");
+    // 把 root加入当前路径。
+    // 注意在多叉树的写法中，root不会有非法值如-1.
+    path.data[path.len++] = root;
+    // 检查是否到达叶子，即边界。
+    if (node[root].child.empty()) {
+        // 得到一条完整的路径，输出。
+        // 也检查路径是否满足题目条件。
+        for (int i = 0; i < path.len; ++i) {
+            printf("%d%s", path.data[i], i == path.len - 1 ? "\n" : " ");
+        }
+        // 还不能返回，因为要恢复path。
+    } else {
+        // 继续访问子节点。
+        for (int i = 0; i < node[root].child.size(); ++i) {
+            DFS2(node[root].child[i]);
+        }
     }
-    // 还不能返回，因为要恢复path。
-  } else {
-    // 继续访问子节点。
-    for (int i = 0; i < node[root].child.size(); ++i) {
-      DFS2(node[root].child[i]);
-    }
-  }
-  // DFS 对全局状态做的变化，在返回前一定要恢复。
-  --path.len;
+    // DFS 对全局状态做的变化，在返回前一定要恢复。
+    --path.len;
 }
 
 /* run this program using the console pauser or add your own getch,
  * system("pause") or input loop */
 
-int main(int argc, char **argv) { return 0; }
+int main(int argc, char** argv) {
+    return 0;
+}

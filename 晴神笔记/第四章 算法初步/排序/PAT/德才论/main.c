@@ -15,51 +15,44 @@
 int L, H;
 
 typedef struct Student {
-  char id[10];
-  int de;
-  int cai;
+    char id[10];
+    int de;
+    int cai;
 } Student;
 
 #define MAXN 100010
 
 Student stu[MAXN];
 
-int Kind(Student *t) {
-  if (t->de >= H && t->cai >= H)
-    return 1;
-  if (t->de >= H)
-    return 2;
-  if (t->de >= t->cai)
-    return 3;
-  return 4;
+int Kind(Student* t) {
+    if (t->de >= H && t->cai >= H) return 1;
+    if (t->de >= H) return 2;
+    if (t->de >= t->cai) return 3;
+    return 4;
 }
 
-int Sum(Student *t) { return t->de + t->cai; }
+int Sum(Student* t) {
+    return t->de + t->cai;
+}
 
-int CMP(const void *_a, const void *_b) {
-  Student *a = (Student *)_a;
-  Student *b = (Student *)_b;
-  int ak, bk;
-  int as, bs;
+int CMP(const void* _a, const void* _b) {
+    Student* a = (Student*) _a;
+    Student* b = (Student*) _b;
+    int ak, bk;
+    int as, bs;
 
-  // 按类从低到高。
-  ak = Kind(a);
-  bk = Kind(b);
-  if (ak != bk) {
-    return ak - bk;
-  }
-  // 按总分从高到低。
-  as = Sum(a);
-  bs = Sum(b);
-  if (as != bs) {
-    return bs - as;
-  }
-  // 按德分从高到低。
-  if (a->de != b->de) {
-    return b->de - a->de;
-  }
-  // 按准考证从低到高。
-  return strcmp(a->id, b->id);
+    // 按类从低到高。
+    ak = Kind(a);
+    bk = Kind(b);
+    if (ak != bk) { return ak - bk; }
+    // 按总分从高到低。
+    as = Sum(a);
+    bs = Sum(b);
+    if (as != bs) { return bs - as; }
+    // 按德分从高到低。
+    if (a->de != b->de) { return b->de - a->de; }
+    // 按准考证从低到高。
+    return strcmp(a->id, b->id);
 }
 
 /*
@@ -80,24 +73,22 @@ int CMP(const void *_a, const void *_b) {
 10000014 66 60
 */
 
-int main(int argc, char *argv[]) {
-  int i;
-  int M = 0;
-  int N;
+int main(int argc, char* argv[]) {
+    int i;
+    int M = 0;
+    int N;
 
-  scanf("%d%d%d", &N, &L, &H);
-  for (i = 0; i < N; ++i) {
-    // 不达线的人丢弃。
-    Student t;
-    scanf("%s%d%d", t.id, &t.de, &t.cai);
-    if (t.de >= L && t.cai >= L) {
-      stu[M++] = t;
+    scanf("%d%d%d", &N, &L, &H);
+    for (i = 0; i < N; ++i) {
+        // 不达线的人丢弃。
+        Student t;
+        scanf("%s%d%d", t.id, &t.de, &t.cai);
+        if (t.de >= L && t.cai >= L) { stu[M++] = t; }
     }
-  }
-  printf("%d\n", M);
-  qsort(stu, M, sizeof(Student), CMP);
-  for (i = 0; i < M; ++i) {
-    printf("%s %d %d\n", stu[i].id, stu[i].de, stu[i].cai);
-  }
-  return 0;
+    printf("%d\n", M);
+    qsort(stu, M, sizeof(Student), CMP);
+    for (i = 0; i < M; ++i) {
+        printf("%s %d %d\n", stu[i].id, stu[i].de, stu[i].cai);
+    }
+    return 0;
 }

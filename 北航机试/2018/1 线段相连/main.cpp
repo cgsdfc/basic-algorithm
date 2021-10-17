@@ -38,66 +38,64 @@ Point mp2[MAXP];
 int index;
 int N;
 vector<int> Adj[MAXP];
-int In[MAXP]; // 节点的入度。
+int In[MAXP];  // 节点的入度。
 
 int Map(Point p) {
-  if (mp.count(p)) {
-    return mp[p];
-  } else {
-    mp[p] = index;
-    mp2[index] = p;
-    return index++;
-  }
+    if (mp.count(p)) {
+        return mp[p];
+    } else {
+        mp[p] = index;
+        mp2[index] = p;
+        return index++;
+    }
 }
 
 Point Read() {
-  Point p;
-  scanf("%d%d", &p.first, &p.second);
-  return p;
+    Point p;
+    scanf("%d%d", &p.first, &p.second);
+    return p;
 }
 
 // 求从源点出发到达汇点的路径的最大长度。
-void DFS(int s, int len, int &maxLen) {
-  if (Adj[s].empty()) {
-    // s是汇点，出度为0.
-    if (len > maxLen) {
-      maxLen = len;
+void DFS(int s, int len, int& maxLen) {
+    if (Adj[s].empty()) {
+        // s是汇点，出度为0.
+        if (len > maxLen) { maxLen = len; }
+        return;
     }
-    return;
-  }
-  for (int i = 0; i < Adj[s].size(); ++i) {
-    int v = Adj[s][i];
-    DFS(v, len + 1, maxLen);
-  }
+    for (int i = 0; i < Adj[s].size(); ++i) {
+        int v = Adj[s][i];
+        DFS(v, len + 1, maxLen);
+    }
 }
 
-int main(int argc, char **argv) {
-  scanf("%d", &N);
-  while (N--) {
-    // 输入一条线段的两个端点。
-    Point a = Read();
-    Point b = Read();
-    int u = Map(a);
-    int v = Map(b);
-    Adj[u].push_back(v);
-    In[v]++;
-  }
-
-  int ans = 0;
-  int v;
-  for (int i = 0; i < index; ++i) {
-    // 求所有源点到所有汇点的路径。
-    if (!In[i]) {
-      int s = i;
-      int maxLen = 0;
-      DFS(s, 0, maxLen);
-      if (maxLen > ans) {
-        ans = maxLen;
-        v = s;
-      }
+int main(int argc, char** argv) {
+    scanf("%d", &N);
+    while (N--) {
+        // 输入一条线段的两个端点。
+        Point a = Read();
+        Point b = Read();
+        int u = Map(a);
+        int v = Map(b);
+        Adj[u].push_back(v);
+        In[v]++;
     }
-  }
-  printf("%d %d %d\n", ans, mp2[v].first, mp2[v].second);
 
-  return 0;
+    int ans = 0;
+    int v;
+    for (int i = 0; i < index; ++i) {
+        // 求所有源点到所有汇点的路径。
+        if (!In[i]) {
+            int s = i;
+            int maxLen = 0;
+            DFS(s, 0, maxLen);
+            if (maxLen > ans) {
+                ans = maxLen;
+                v = s;
+            }
+        }
+    }
+    printf("%d %d %d\n", ans, mp2[v].first, mp2[v].second);
+
+    return 0;
 }

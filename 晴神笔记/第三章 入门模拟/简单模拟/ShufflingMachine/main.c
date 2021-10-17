@@ -15,38 +15,38 @@
 #define MAXN 54
 
 char Color(int i) {
-  char color[] = "SHCDJ";
-  int k = i / 13;
+    char color[] = "SHCDJ";
+    int k = i / 13;
 
-  assert(0 <= k && k < strlen(color));
-  return color[k];
+    assert(0 <= k && k < strlen(color));
+    return color[k];
 }
 
-int main(int argc, char *argv[]) {
-  int k;
-  int a[MAXN];
-  int b[MAXN];
-  int ord[MAXN];
-  int i;
+int main(int argc, char* argv[]) {
+    int k;
+    int a[MAXN];
+    int b[MAXN];
+    int ord[MAXN];
+    int i;
 
-  for (i = 0; i < MAXN; ++i) {
-    a[i] = i;
-  }
-
-  scanf("%d", &k);
-  for (i = 0; i < MAXN; ++i) {
-    scanf("%d", &ord[i]);
-  }
-  while (k--) {
     for (i = 0; i < MAXN; ++i) {
-      b[ord[i] - 1] = a[i];
+        a[i] = i;
     }
-    memcpy(a, b, sizeof(a));
-  }
-  for (i = 0; i < MAXN; ++i) {
-    int x = a[i];
-    printf("%c%d", Color(x), (x % 13) + 1);
-    printf("%s", i == MAXN - 1 ? "\n" : " ");
-  }
-  return 0;
+
+    scanf("%d", &k);
+    for (i = 0; i < MAXN; ++i) {
+        scanf("%d", &ord[i]);
+    }
+    while (k--) {
+        for (i = 0; i < MAXN; ++i) {
+            b[ord[i] - 1] = a[i];
+        }
+        memcpy(a, b, sizeof(a));
+    }
+    for (i = 0; i < MAXN; ++i) {
+        int x = a[i];
+        printf("%c%d", Color(x), (x % 13) + 1);
+        printf("%s", i == MAXN - 1 ? "\n" : " ");
+    }
+    return 0;
 }

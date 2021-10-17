@@ -11,42 +11,40 @@
 bool A[MAXN][MAXN];
 
 struct Point {
-  int X, Y;
+    int X, Y;
 };
 
 struct Retangle {
-  Point up, down;
+    Point up, down;
 
-  void Draw() {
-    // 注意，一个单位方格用它左下角的点坐标表示。
-    for (int i = down.X; i < up.X; ++i) {
-      for (int j = down.Y; j < up.Y; ++j) {
-        A[i][j] = true;
-      }
+    void Draw() {
+        // 注意，一个单位方格用它左下角的点坐标表示。
+        for (int i = down.X; i < up.X; ++i) {
+            for (int j = down.Y; j < up.Y; ++j) {
+                A[i][j] = true;
+            }
+        }
     }
-  }
 };
 
 /* run this program using the console pauser or add your own getch,
  * system("pause") or input loop */
 int N;
 
-int main(int argc, char **argv) {
-  scanf("%d", &N);
-  while (N--) {
-    Retangle r;
-    scanf("%d%d%d%d", &r.down.X, &r.down.Y, &r.up.X, &r.up.Y);
-    r.Draw();
-  }
-  int ans = 0;
-  for (int i = 0; i < MAXN; ++i) {
-    for (int j = 0; j < MAXN; ++j) {
-      if (A[i][j]) {
-        ++ans;
-      }
+int main(int argc, char** argv) {
+    scanf("%d", &N);
+    while (N--) {
+        Retangle r;
+        scanf("%d%d%d%d", &r.down.X, &r.down.Y, &r.up.X, &r.up.Y);
+        r.Draw();
     }
-  }
-  printf("%d\n", ans);
+    int ans = 0;
+    for (int i = 0; i < MAXN; ++i) {
+        for (int j = 0; j < MAXN; ++j) {
+            if (A[i][j]) { ++ans; }
+        }
+    }
+    printf("%d\n", ans);
 
-  return 0;
+    return 0;
 }

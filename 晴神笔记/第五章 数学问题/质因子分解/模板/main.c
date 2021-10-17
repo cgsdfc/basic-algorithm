@@ -22,7 +22,7 @@
 
 #define MAXN 100000
 int p[MAXN];
-int prime[MAXN]; // 从小到大枚举素数，需要素数的确定数值。
+int prime[MAXN];  // 从小到大枚举素数，需要素数的确定数值。
 int pNum;
 
 /*
@@ -38,15 +38,15 @@ int pNum;
 */
 
 void FindPrime(void) {
-  int i, j;
-  for (i = 2; i < MAXN; ++i) {
-    if (!p[i]) {
-      prime[pNum++] = i;
-      for (j = 2 * i; j < MAXN; j += i) {
-        p[j] = 1;
-      }
+    int i, j;
+    for (i = 2; i < MAXN; ++i) {
+        if (!p[i]) {
+            prime[pNum++] = i;
+            for (j = 2 * i; j < MAXN; j += i) {
+                p[j] = 1;
+            }
+        }
     }
-  }
 }
 
 /*
@@ -55,8 +55,8 @@ void FindPrime(void) {
 N的全部素因子构成了一个素数的多重集合。
 */
 typedef struct Factor {
-  int x;
-  int cnt;
+    int x;
+    int cnt;
 } Factor;
 
 /*
@@ -78,35 +78,35 @@ typedef struct Factor {
 大于sqrt），那么再增加一个因子。
 */
 int DoFactor(int N, Factor factors[]) {
-  int i;
-  // 决定算法复杂度关键的sqrt，千万不是N。
-  int sqr = sqrt(N);
-  int num = 0;
+    int i;
+    // 决定算法复杂度关键的sqrt，千万不是N。
+    int sqr = sqrt(N);
+    int num = 0;
 
-  assert(pNum);
+    assert(pNum);
 
-  // 枚举小于sqrt的所有素数。
-  for (i = 0; i < pNum && prime[i] <= sqr; ++i) {
-    int p = prime[i];
-    if (N % p == 0) {
-      // 找到一个新的因子。
-      factors[num].x = p;
-      factors[num].cnt = 0;
-      // 把该因子的全部重复找出来。
-      while (N % p == 0) {
-        factors[num].cnt++;
-        N /= p;
-      }
-      ++num; // 记得增加num。
+    // 枚举小于sqrt的所有素数。
+    for (i = 0; i < pNum && prime[i] <= sqr; ++i) {
+        int p = prime[i];
+        if (N % p == 0) {
+            // 找到一个新的因子。
+            factors[num].x = p;
+            factors[num].cnt = 0;
+            // 把该因子的全部重复找出来。
+            while (N % p == 0) {
+                factors[num].cnt++;
+                N /= p;
+            }
+            ++num;  // 记得增加num。
+        }
     }
-  }
-  // 如果第二种因子存在。
-  if (N != 1) {
-    factors[num].x = N;
-    factors[num].cnt = 1;
-    ++num;
-  }
-  return num;
+    // 如果第二种因子存在。
+    if (N != 1) {
+        factors[num].x = N;
+        factors[num].cnt = 1;
+        ++num;
+    }
+    return num;
 }
 
 /*
@@ -116,41 +116,41 @@ int DoFactor(int N, Factor factors[]) {
 只要乘法原理即可。
 */
 int TotalFactors(int N) {
-  int ans = 1;
-  int num;
-  int i;
-  Factor fac[MAXF];
+    int ans = 1;
+    int num;
+    int i;
+    Factor fac[MAXF];
 
-  num = DoFactor(N, fac);
-  for (i = 0; i < num; ++i) {
-    /*
-    对于每一个因子，有cnt+1种选择，即选取0--cnt个。
-    */
-    ans *= fac[i].cnt + 1;
-  }
-  return ans;
+    num = DoFactor(N, fac);
+    for (i = 0; i < num; ++i) {
+        /*
+        对于每一个因子，有cnt+1种选择，即选取0--cnt个。
+        */
+        ans *= fac[i].cnt + 1;
+    }
+    return ans;
 }
 
 /*
 N的所有因子之和。
 */
 int TotalFactorSum(int N) {
-  int ans = 1;
-  int i;
-  int num;
-  Factor fac[MAXF];
+    int ans = 1;
+    int i;
+    int num;
+    Factor fac[MAXF];
 
-  num = DoFactor(N, fac);
-  for (i = 0; i < num; ++i) {
-    int sum = 0;
-    int j;
-    // 计算 1+p+p**2+p**3+...+p**e
-    for (j = 0; j <= fac[i].cnt; ++j) {
-      sum = sum * fac[i].x + 1;
+    num = DoFactor(N, fac);
+    for (i = 0; i < num; ++i) {
+        int sum = 0;
+        int j;
+        // 计算 1+p+p**2+p**3+...+p**e
+        for (j = 0; j <= fac[i].cnt; ++j) {
+            sum = sum * fac[i].x + 1;
+        }
+        ans *= sum;
     }
-    ans *= sum;
-  }
-  return ans;
+    return ans;
 }
 
 /*
@@ -164,57 +164,57 @@ int TotalFactorSum(int N) {
 2. 此算法可以计算因子个数和因子和。
 */
 void AllFactor(int N) {
-  int sqr;
-  int i;
-  int cnt = 0;
-  int sum = 0;
+    int sqr;
+    int i;
+    int cnt = 0;
+    int sum = 0;
 
-  sqr = sqrt(N);
-  for (i = 1; i <= sqr; ++i) {
-    if (N % i == 0) {
-      // i是一个因子。
-      int p = N / i; // p是和i对应的另一个因子。
-      ++cnt;
-      sum += i;
-      printf("%d ", i);
-      if (p != i) {
-        // 这里可以判定p!=N才进入，这样就把N排除了。
-        // 当i=1时，P=N。
-        ++cnt;
-        sum += p;
-        printf("%d ", p);
-      }
+    sqr = sqrt(N);
+    for (i = 1; i <= sqr; ++i) {
+        if (N % i == 0) {
+            // i是一个因子。
+            int p = N / i;  // p是和i对应的另一个因子。
+            ++cnt;
+            sum += i;
+            printf("%d ", i);
+            if (p != i) {
+                // 这里可以判定p!=N才进入，这样就把N排除了。
+                // 当i=1时，P=N。
+                ++cnt;
+                sum += p;
+                printf("%d ", p);
+            }
+        }
     }
-  }
-  putchar('\n');
-  printf("cnt %d sum %d\n", cnt, sum);
+    putchar('\n');
+    printf("cnt %d sum %d\n", cnt, sum);
 }
 
 void TestDoFactor(void) {
-  int N;
+    int N;
 
-  FindPrime();
-  while (scanf("%d", &N) != EOF) {
-    Factor factors[MAXF];
-    int num;
-    int i;
+    FindPrime();
+    while (scanf("%d", &N) != EOF) {
+        Factor factors[MAXF];
+        int num;
+        int i;
 
-    num = DoFactor(N, factors);
-    for (i = 0; i < num; ++i) {
-      printf("%d^%d ", factors[i].x, factors[i].cnt);
+        num = DoFactor(N, factors);
+        for (i = 0; i < num; ++i) {
+            printf("%d^%d ", factors[i].x, factors[i].cnt);
+        }
+        putchar('\n');
     }
-    putchar('\n');
-  }
 }
 
 void TestAllFactor(void) {
-  int N;
-  while (scanf("%d", &N) != EOF) {
-    AllFactor(N);
-  }
+    int N;
+    while (scanf("%d", &N) != EOF) {
+        AllFactor(N);
+    }
 }
 
-int main(int argc, char *argv[]) {
-  TestAllFactor();
-  return 0;
+int main(int argc, char* argv[]) {
+    TestAllFactor();
+    return 0;
 }

@@ -6,40 +6,34 @@ using namespace std;
  * system("pause") or input loop */
 
 char Match(char x) {
-  switch (x) {
-  case '}':
-    return '{';
-  case ']':
-    return '[';
-  case ')':
-    return '(';
-  default:
-    return 0;
-  }
+    switch (x) {
+        case '}': return '{';
+        case ']': return '[';
+        case ')': return '(';
+        default: return 0;
+    }
 }
 
-bool Judge(string &str) {
-  stack<char> s;
-  for (int i = 0; i < str.size(); ++i) {
-    char x = str[i];
-    switch (x) {
-    case '{':
-    case '[':
-    case '(':
-      s.push(x);
-      break;
-    case '}':
-    case ']':
-    case ')':
-      if (!s.empty() && s.top() == Match(x)) {
-        s.pop();
-      } else {
-        return false;
-      }
-      break;
+bool Judge(string& str) {
+    stack<char> s;
+    for (int i = 0; i < str.size(); ++i) {
+        char x = str[i];
+        switch (x) {
+            case '{':
+            case '[':
+            case '(': s.push(x); break;
+            case '}':
+            case ']':
+            case ')':
+                if (!s.empty() && s.top() == Match(x)) {
+                    s.pop();
+                } else {
+                    return false;
+                }
+                break;
+        }
     }
-  }
-  return s.empty();
+    return s.empty();
 }
 
 /*
@@ -48,16 +42,16 @@ bool Judge(string &str) {
 2. 读取整数后要getline，必须先getchar。
 */
 
-int main(int argc, char **argv) {
-  int N;
-  while (scanf("%d", &N) != EOF) {
-    getchar();
-    while (N--) {
-      string str;
-      getline(cin, str);
-      bool ans = Judge(str);
-      printf("%s\n", ans ? "yes" : "no");
+int main(int argc, char** argv) {
+    int N;
+    while (scanf("%d", &N) != EOF) {
+        getchar();
+        while (N--) {
+            string str;
+            getline(cin, str);
+            bool ans = Judge(str);
+            printf("%s\n", ans ? "yes" : "no");
+        }
     }
-  }
-  return 0;
+    return 0;
 }

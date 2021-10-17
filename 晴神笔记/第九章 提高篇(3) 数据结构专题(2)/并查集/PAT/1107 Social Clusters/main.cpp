@@ -2,32 +2,28 @@
 #include <cstdio>
 using namespace std;
 
-#define MAXK (1001) // 爱好最大下标。
-#define MAXN (1001) // 人数 。
+#define MAXK (1001)  // 爱好最大下标。
+#define MAXN (1001)  // 人数 。
 
 struct Hobby {
-  // 遍历所有爱好。
-  int data[MAXK];
-  int len;
-  // 查询某个爱好是否存在。
-  bool hash[MAXK];
+    // 遍历所有爱好。
+    int data[MAXK];
+    int len;
+    // 查询某个爱好是否存在。
+    bool hash[MAXK];
 };
 
 // N个人的爱好信息。
 Hobby hb[MAXN];
 
 bool Has(int a, int b) {
-  // 两个人是否有公共爱好。
-  if (hb[a].len > hb[b].len) {
-    swap(a, b);
-  }
-  for (int i = 0; i < hb[a].len; ++i) {
-    int x = hb[a].data[i];
-    if (hb[b].hash[x]) {
-      return true;
+    // 两个人是否有公共爱好。
+    if (hb[a].len > hb[b].len) { swap(a, b); }
+    for (int i = 0; i < hb[a].len; ++i) {
+        int x = hb[a].data[i];
+        if (hb[b].hash[x]) { return true; }
     }
-  }
-  return false;
+    return false;
 }
 
 /*
@@ -55,82 +51,82 @@ O(N*N*K)，由于N平方已经10e6了，判断有边的逻辑最好快些。
 /* run this program using the console pauser or add your own getch,
  * system("pause") or input loop */
 
-int N; // 总人数。
+int N;  // 总人数。
 
 int father[MAXN];
 int num[MAXN];
 
 int Find(int x) {
-  int a = x;
-  while (x != father[x]) {
-    x = father[x];
-  }
-  while (a != father[a]) {
-    int temp = father[a];
-    father[a] = x;
-    a = temp;
-  }
-  return x;
+    int a = x;
+    while (x != father[x]) {
+        x = father[x];
+    }
+    while (a != father[a]) {
+        int temp = father[a];
+        father[a] = x;
+        a = temp;
+    }
+    return x;
 }
 
 void Union(int a, int b) {
-  int faA = Find(a);
-  int faB = Find(b);
-  if (faA != faB) {
-    father[faA] = faB;
-    num[faB] += num[faA];
-    num[faA] = 0;
-  }
+    int faA = Find(a);
+    int faB = Find(b);
+    if (faA != faB) {
+        father[faA] = faB;
+        num[faB] += num[faA];
+        num[faA] = 0;
+    }
 }
 
-bool cmp(int a, int b) { return a > b; }
+bool cmp(int a, int b) {
+    return a > b;
+}
 
 /*
 数据的特点，每个人的K值比较小，不接近MAXK，即爱好比较稀疏，
 所以O(K)的比较算法不会超时。
 */
 
-int main(int argc, char **argv) {
-  scanf("%d", &N);
-  for (int i = 1; i <= N; ++i) {
-    int k;
-    scanf("%d:", &k);
-    hb[i].len = k;
-    for (int j = 0; j < k; ++j) {
-      int x;
-      scanf("%d", &x);
-      hb[i].data[j] = x;
-      hb[i].hash[x] = true;
+int main(int argc, char** argv) {
+    scanf("%d", &N);
+    for (int i = 1; i <= N; ++i) {
+        int k;
+        scanf("%d:", &k);
+        hb[i].len = k;
+        for (int j = 0; j < k; ++j) {
+            int x;
+            scanf("%d", &x);
+            hb[i].data[j] = x;
+            hb[i].hash[x] = true;
+        }
     }
-  }
-  // 并查集初始化。
-  for (int i = 1; i <= N; ++i) {
-    father[i] = i;
-    num[i] = 1;
-  }
-  // 枚举每一对人。
-  for (int i = 1; i <= N - 1; ++i) {
-    for (int j = i + 1; j <= N; ++j) {
-      if (Has(i, j)) {
-        Union(i, j);
-      }
+    // 并查集初始化。
+    for (int i = 1; i <= N; ++i) {
+        father[i] = i;
+        num[i] = 1;
     }
-  }
-  // num记录了每个分量的大小。
-  sort(num + 1, num + N + 1, cmp);
-  // 统计非零分量，即cluster数量。
-  int len = 0;
-  for (int i = 1; i <= N; ++i) {
-    if (num[i]) {
-      ++len;
-    } else {
-      break;
+    // 枚举每一对人。
+    for (int i = 1; i <= N - 1; ++i) {
+        for (int j = i + 1; j <= N; ++j) {
+            if (Has(i, j)) { Union(i, j); }
+        }
     }
-  }
-  printf("%d\n", len);
-  for (int i = 1; i <= len; ++i) {
-    printf("%d%s", num[i], i == len ? "\n" : " ");
-  }
+    // num记录了每个分量的大小。
+    sort(num + 1, num + N + 1, cmp);
+    // 统计非零分量，即cluster数量。
+    int len = 0;
+    for (int i = 1; i <= N; ++i) {
+        if (num[i]) {
+            ++len;
+        } else {
+            break;
+        }
+    }
+    printf("%d\n", len);
+    for (int i = 1; i <= len; ++i) {
+        printf("%d%s", num[i], i == len ? "\n" : " ");
+    }
 
-  return 0;
+    return 0;
 }

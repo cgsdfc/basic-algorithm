@@ -24,14 +24,14 @@
 */
 
 typedef struct Current {
-  double oil;  // 当前还剩多少油
-  double dis;  // 当前走了多远
-  double cost; // 当前花了多少钱
+    double oil;   // 当前还剩多少油
+    double dis;   // 当前走了多远
+    double cost;  // 当前花了多少钱
 } Current;
 
 typedef struct Station {
-  double price;
-  double dis;
+    double price;
+    double dis;
 } Station;
 
 #define MAXN 505
@@ -41,9 +41,9 @@ typedef struct Station {
 */
 Station stations[MAXN];
 
-int CMP(const void *_a, const void *_b) {
-  Station *a = _a, *b = _b;
-  return a->dis == b->dis ? 0 : (a->dis < b->dis ? -1 : 1);
+int CMP(const void* _a, const void* _b) {
+    Station *a = _a, *b = _b;
+    return a->dis == b->dis ? 0 : (a->dis < b->dis ? -1 : 1);
 }
 
 /*
@@ -82,103 +82,102 @@ int CMP(const void *_a, const void *_b) {
         的情况），因此不是当前油量作为搜索范围。
         */
 
-int main(int argc, char *argv[]) {
-  Current cur = {0, 0, 0};
-  double Cmax, D, Davg;
-  int N;
-  int i;
-  int now;
+int main(int argc, char* argv[]) {
+    Current cur = {0, 0, 0};
+    double Cmax, D, Davg;
+    int N;
+    int i;
+    int now;
 
-  freopen("./in2.txt", "r", stdin);
+    freopen("./in2.txt", "r", stdin);
 
-  scanf("%lf%lf%lf%d", &Cmax, &D, &Davg, &N);
-  //
-  //	printf("Davg %f\n", Davg);
-  //
-  //	printf("D %f\n", D);
-
-  for (i = 0; i < N; ++i) {
-    Station s;
-    scanf("%lf%lf", &s.price, &s.dis);
-    stations[i] = s;
-  }
-  /*
-  把终点当作一个特殊的加油站，使其价格为0，
-  则可以在其他距离等于D的真正加油站中被最优策略选出。
-  */
-  stations[N].dis = D;
-  stations[N].price = 0;
-  qsort(stations, N + 1, sizeof(Station), CMP);
-
-  // 先检查是否存在0号加油站，因为初始油缸没有油。
-  if (stations[0].dis) {
-    // 但并不加油，因为加多少油和下一站的油价有关系。
-    printf("The maximum travel distance = 0.00\n");
-    return 0;
-  }
-
-  now = 0;
-  // 到达最后一站，就说明能够到达终点。
-  while (now < N) {
-    double minprice;
-    int maxdis = Davg * Cmax; // 满油能去的范围。
-    int next = -1;            // 下一站。
-    // 查找下一站，按照最优策略。
-    int j;
-    double oil; // 从当前站到下一站，要多少油。
-
-    // 注意，加入了终点特殊加油站后，总数变为N+1，最后一个站是N.
-    for (j = now + 1; j <= N && stations[j].dis - stations[now].dis <= maxdis;
-         ++j) {
-      double price = stations[j].price;
-      // 情况1：找距离最近的，最小价格的油站。
-      if (j == now + 1 || price < minprice) {
-        next = j;
-        minprice = price;
-        // 情况2：找距离最近的，比现在便宜的油站。
-        if (minprice < stations[now].price) {
-          /*
-          注：若情况2存在，则情况2不一定是最小价格，因为更小的可能在后面。
-          如果情况2不存在，则找到的一定是最小的，并且大于等于now的油价。
-          */
-          break;
-        }
-      }
-    }
-
-    //		printf("now %d next %d\n", now, next);
-
-    if (next == -1) {
-      /*
-      在满油状态找不到加油站，则最多能再开一个满油距离。
-      */
-      printf("The maximum travel distance = %.2f\n", cur.dis + maxdis);
-      return 0;
-    }
-
-    oil = (stations[next].dis - stations[now].dis) / Davg;
-    //		printf("dis %f price %f oil %f\n",
-    //stations[next].dis-stations[now].dis, 		stations[now].price, oil);
+    scanf("%lf%lf%lf%d", &Cmax, &D, &Davg, &N);
     //
-    if (minprice < stations[now].price) {
-      // 情况1，加够到next的油。
-      if (cur.oil < oil) {
-        // 要加油。
-        cur.cost += stations[now].price * (oil - cur.oil); // 补足oil。
-        cur.oil = 0;
-      } else {
-        // 不加油。
-        cur.oil -= oil;
-      }
-    } else {
-      // 加满
-      cur.cost += stations[now].price * (Cmax - cur.oil);
-      cur.oil = Cmax - oil;
-    }
-    //		printf("cost %f\n", cur.cost);
-    now = next;
-  }
+    //	printf("Davg %f\n", Davg);
+    //
+    //	printf("D %f\n", D);
 
-  printf("%.2f\n", cur.cost);
-  return 0;
+    for (i = 0; i < N; ++i) {
+        Station s;
+        scanf("%lf%lf", &s.price, &s.dis);
+        stations[i] = s;
+    }
+    /*
+    把终点当作一个特殊的加油站，使其价格为0，
+    则可以在其他距离等于D的真正加油站中被最优策略选出。
+    */
+    stations[N].dis = D;
+    stations[N].price = 0;
+    qsort(stations, N + 1, sizeof(Station), CMP);
+
+    // 先检查是否存在0号加油站，因为初始油缸没有油。
+    if (stations[0].dis) {
+        // 但并不加油，因为加多少油和下一站的油价有关系。
+        printf("The maximum travel distance = 0.00\n");
+        return 0;
+    }
+
+    now = 0;
+    // 到达最后一站，就说明能够到达终点。
+    while (now < N) {
+        double minprice;
+        int maxdis = Davg * Cmax;  // 满油能去的范围。
+        int next = -1;             // 下一站。
+        // 查找下一站，按照最优策略。
+        int j;
+        double oil;  // 从当前站到下一站，要多少油。
+
+        // 注意，加入了终点特殊加油站后，总数变为N+1，最后一个站是N.
+        for (j = now + 1; j <= N && stations[j].dis - stations[now].dis <= maxdis; ++j) {
+            double price = stations[j].price;
+            // 情况1：找距离最近的，最小价格的油站。
+            if (j == now + 1 || price < minprice) {
+                next = j;
+                minprice = price;
+                // 情况2：找距离最近的，比现在便宜的油站。
+                if (minprice < stations[now].price) {
+                    /*
+                    注：若情况2存在，则情况2不一定是最小价格，因为更小的可能在后面。
+                    如果情况2不存在，则找到的一定是最小的，并且大于等于now的油价。
+                    */
+                    break;
+                }
+            }
+        }
+
+        //		printf("now %d next %d\n", now, next);
+
+        if (next == -1) {
+            /*
+            在满油状态找不到加油站，则最多能再开一个满油距离。
+            */
+            printf("The maximum travel distance = %.2f\n", cur.dis + maxdis);
+            return 0;
+        }
+
+        oil = (stations[next].dis - stations[now].dis) / Davg;
+        //		printf("dis %f price %f oil %f\n",
+        // stations[next].dis-stations[now].dis, 		stations[now].price, oil);
+        //
+        if (minprice < stations[now].price) {
+            // 情况1，加够到next的油。
+            if (cur.oil < oil) {
+                // 要加油。
+                cur.cost += stations[now].price * (oil - cur.oil);  // 补足oil。
+                cur.oil = 0;
+            } else {
+                // 不加油。
+                cur.oil -= oil;
+            }
+        } else {
+            // 加满
+            cur.cost += stations[now].price * (Cmax - cur.oil);
+            cur.oil = Cmax - oil;
+        }
+        //		printf("cost %f\n", cur.cost);
+        now = next;
+    }
+
+    printf("%.2f\n", cur.cost);
+    return 0;
 }

@@ -24,64 +24,66 @@ SPFA可能退化为Bellman的复杂度，即O(VE)。
 故非负边权的图，用Dijkstra好。
 */
 
-#include <queue> // SPFA必备。
+#include <queue>  // SPFA必备。
 #include <vector>
 using namespace std;
 
-#define MAXN 505 // 节点数上界。
+#define MAXN 505  // 节点数上界。
 
 struct Node {
-  int v, dis;
-  Node(int _v, int _dis) : v(_v), dis(_dis) {}
+    int v, dis;
+    Node(int _v, int _dis): v(_v), dis(_dis) {}
 };
 
 vector<Node> Adj[MAXN];
 
-bool inq[MAXN]; // 保证队列内元素唯一性。
-int num[MAXN];  // 计数某节点入队次数，判负环。
-int d[MAXN];    // 最短距离。
+bool inq[MAXN];  // 保证队列内元素唯一性。
+int num[MAXN];   // 计数某节点入队次数，判负环。
+int d[MAXN];     // 最短距离。
 
-int N; // 节点数。
+int N;  // 节点数。
 const int INF = 1e9;
 
 bool SPFA(int s) {
-  fill(d, d + N, INF);
-  fill(inq, inq + N, false);
-  fill(num, num + N, 0);
+    fill(d, d + N, INF);
+    fill(inq, inq + N, false);
+    fill(num, num + N, 0);
 
-  queue<int> Q;
-  // 队列Q跟踪那些节点被松弛了，那么这些节点就要继续扩展。
-  Q.push(s);
-  inq[s] = true;
-  d[s] = 0;
-  num[s]++;
-  while (!Q.empty()) {
-    // 取队首元素。
-    int u = Q.front();
-    Q.pop();
-    // 既然出队了，inq设为false。
-    inq[u] = false;
-    // 遍历u的邻居进行松弛。
-    for (int j = 0; j < Adj[u].size(); j++) {
-      int v = Adj[u][j].v;
-      int dis = Adj[u][j].dis;
-      if (d[u] + dis < d[v]) {
-        d[v] = d[u] + dis;
-        // 注意，更新d数组不受inq的约束。
-        if (!inq[v]) {
-          Q.push(v);
-          inq[v] = true;
-          num[v]++;
-          // 注意，先增加num，然后再检测。
-          if (num[v] >= N) {
-            // 有负环的条件是某节点入队次数超过N-1.
-            return false;
-          }
+    queue<int> Q;
+    // 队列Q跟踪那些节点被松弛了，那么这些节点就要继续扩展。
+    Q.push(s);
+    inq[s] = true;
+    d[s] = 0;
+    num[s]++;
+    while (!Q.empty()) {
+        // 取队首元素。
+        int u = Q.front();
+        Q.pop();
+        // 既然出队了，inq设为false。
+        inq[u] = false;
+        // 遍历u的邻居进行松弛。
+        for (int j = 0; j < Adj[u].size(); j++) {
+            int v = Adj[u][j].v;
+            int dis = Adj[u][j].dis;
+            if (d[u] + dis < d[v]) {
+                d[v] = d[u] + dis;
+                // 注意，更新d数组不受inq的约束。
+                if (!inq[v]) {
+                    Q.push(v);
+                    inq[v] = true;
+                    num[v]++;
+                    // 注意，先增加num，然后再检测。
+                    if (num[v] >= N) {
+                        // 有负环的条件是某节点入队次数超过N-1.
+                        return false;
+                    }
+                }
+            }
         }
-      }
     }
-  }
-  return true;
+    return true;
 }
 
-int main(int argc, char **argv) { return 0; }
+int main(int argc, char** argv) {
+    return 0;
+}

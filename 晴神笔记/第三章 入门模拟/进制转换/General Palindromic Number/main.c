@@ -11,32 +11,31 @@
 #define MAXN 40
 
 int Judge(int a[], int n) {
-  int i;
-  for (i = 0; i < n / 2; ++i) {
-    if (a[i] != a[n - 1 - i])
-      return 0;
-  }
-  return 1;
+    int i;
+    for (i = 0; i < n / 2; ++i) {
+        if (a[i] != a[n - 1 - i]) return 0;
+    }
+    return 1;
 }
 
-int main(int argc, char *argv[]) {
-  int n, b;
-  int a[MAXN];
-  int k = 0;
-  int ans;
+int main(int argc, char* argv[]) {
+    int n, b;
+    int a[MAXN];
+    int k = 0;
+    int ans;
 
-  scanf("%d%d", &n, &b);
-  do {
-    a[k++] = n % b;
-    n /= b;
-  } while (n);
+    scanf("%d%d", &n, &b);
+    do {
+        a[k++] = n % b;
+        n /= b;
+    } while (n);
 
-  ans = Judge(a, k);
-  printf("%s\n", ans ? "Yes" : "No");
-  while (k--) {
-    printf("%d", a[k]);
-    // 最后一轮，k==0
-    printf("%s", k ? " " : "\n");
-  }
-  return 0;
+    ans = Judge(a, k);
+    printf("%s\n", ans ? "Yes" : "No");
+    while (k--) {
+        printf("%d", a[k]);
+        // 最后一轮，k==0
+        printf("%s", k ? " " : "\n");
+    }
+    return 0;
 }

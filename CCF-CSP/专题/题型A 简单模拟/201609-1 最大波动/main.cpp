@@ -7,22 +7,22 @@ using namespace std;
 
 int N;
 
-int main(int argc, char **argv) {
-  scanf("%d", &N);
-  int pre;
-  int ans = -1;
+int main(int argc, char** argv) {
+    scanf("%d", &N);
+    int pre;
+    int ans = -1;
 
-  // 检查每一个数和它的前驱的查找即可。
-  for (int i = 0; i < N; ++i) {
-    int now;
-    scanf("%d", &now);
-    if (i > 0) {
-      int diff = abs(now - pre);
-      ans = max(ans, diff);
+    // 检查每一个数和它的前驱的查找即可。
+    for (int i = 0; i < N; ++i) {
+        int now;
+        scanf("%d", &now);
+        if (i > 0) {
+            int diff = abs(now - pre);
+            ans = max(ans, diff);
+        }
+        pre = now;
     }
-    pre = now;
-  }
-  printf("%d\n", ans);
+    printf("%d\n", ans);
 
-  return 0;
+    return 0;
 }
