@@ -79,6 +79,7 @@ Node* Create(int preL, int preR) {
     因为 NL+NR+1=N, EL+ER=E.
     */
     int i;
+    // 找到第一个满足 N+1=E 的位置，就是左子树的序列，剩下的就是右子树的序列。
     for (i = preL + 1; i <= preR; ++i) {
         if (numN + 1 == numE) { break; }
         if (pre[i] == '#') {
@@ -100,6 +101,8 @@ void Inorder(Node* root) {
     }
 }
 
+// 给定一颗二叉树的先序遍历（加上空结点的输出，用#表示），要求建树并输出中序。
+// 注意，一般只给先序是不能建树的，但是这里还给出了空结点，就可能了。
 int main(int argc, char** argv) {
     while (scanf("%s", pre) != EOF) {
         N = strlen(pre);

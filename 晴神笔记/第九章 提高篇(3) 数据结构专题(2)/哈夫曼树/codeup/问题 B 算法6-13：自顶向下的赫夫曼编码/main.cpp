@@ -83,6 +83,7 @@ int Build(int N) {
 }
 
 void PopBack(string& s) {
+    // 注意，在低版本的c++上，string是没有 pop-back 的。
     s.erase(s.end() - 1);
 }
 
@@ -96,15 +97,10 @@ void DFS(int root, string& now) {
 
         now.push_back('0');
         DFS(node[root].lchild, now);
-        /*
-        string.pop_back 是 C++11 特性。
-        */
         PopBack(now);
-        //		now.pop_back();
 
         now.push_back('1');
         DFS(node[root].rchild, now);
-        //		now.pop_back();
         PopBack(now);
     } else {
         // 叶子，输出到code，因为DFS生成编码的顺序和叶子节点的输入顺序不一致，

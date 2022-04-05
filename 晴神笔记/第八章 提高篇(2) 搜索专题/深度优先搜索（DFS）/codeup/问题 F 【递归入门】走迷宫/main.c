@@ -1,6 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
+// 走迷宫模板，DFS，打印所有线路（而不是最短的路线）。
+
 #define MAXN 20
 typedef struct Location {
     int x, y;  // 当前位置的行，列。
@@ -107,6 +109,7 @@ int main(int argc, char* argv[]) {
 
     while (scanf("%d%d", &N, &M) != EOF) {
         int i;
+        // 坐标的下标从1开始，所以输入的时候也要如此。
         for (i = 1; i <= N; ++i) {
             int j;
             for (j = 1; j <= M; ++j) {

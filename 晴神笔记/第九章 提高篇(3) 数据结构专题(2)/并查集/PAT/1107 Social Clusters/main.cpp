@@ -19,6 +19,7 @@ Hobby hb[MAXN];
 bool Has(int a, int b) {
     // 两个人是否有公共爱好。
     if (hb[a].len > hb[b].len) { swap(a, b); }
+    // 遍历较短的爱好列表。
     for (int i = 0; i < hb[a].len; ++i) {
         int x = hb[a].data[i];
         if (hb[b].hash[x]) { return true; }
@@ -119,11 +120,11 @@ int main(int argc, char** argv) {
     for (int i = 1; i <= N; ++i) {
         if (num[i]) {
             ++len;
-        } else {
+        } else { // 因为是有序的，后面都是0，不用看了。
             break;
         }
     }
-    printf("%d\n", len);
+    printf("%d\n", len); // 输出所有分量的大小。
     for (int i = 1; i <= len; ++i) {
         printf("%d%s", num[i], i == len ? "\n" : " ");
     }

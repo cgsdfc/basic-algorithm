@@ -14,7 +14,10 @@ using namespace std;
 
 typedef long long ll;
 
+// stl的小顶堆的写法：
 priority_queue<ll, vector<ll>, greater<ll>> q;
+// stl的大顶堆的写法：
+// priority_queue<ll> qq;
 
 /* run this program using the console pauser or add your own getch,
  * system("pause") or input loop */

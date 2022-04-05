@@ -5,6 +5,7 @@ using namespace std;
 /* run this program using the console pauser or add your own getch,
  * system("pause") or input loop */
 
+// 字典序枚举组合C(N,R)的模板。
 #define MAXN 25
 struct {
     int data[MAXN];
@@ -49,7 +50,6 @@ void DFS(int index, int start, int N, int R) {
 int main(int argc, char** argv) {
     int N;
     int R;
-
     while (scanf("%d%d", &N, &R) != EOF) {
         memset(&ans, 0, sizeof(ans));
         DFS(0, 1, N, R);

@@ -1,6 +1,7 @@
 #include <cassert>
 #include <cstdio>
 #include <map>
+#include <string.h>
 #include <queue>
 using namespace std;
 
@@ -26,10 +27,12 @@ struct Node {
                 if (A[i][j] != p.A[i][j]) return false;
             }
         }
+        // return !memcmp(A, p.A, sizeof(A));
         return true;
     }
 
-    int Hash() {
+    int Hash() {  // 转换为10进制数字。用Hash可以减少存储。
+        // 这里的Hash都是一一映射，不是传统上的hash，必须正确实现，否则bug很难发现。
         int ans = 0;
         for (int i = 0; i < N; ++i) {
             for (int j = 0; j < N; ++j) {
@@ -62,6 +65,7 @@ struct Node {
 
 map<int, Node> inq;
 Node target, init;
+// 移动的规则。
 const int X[] = {0, 0, -1, 1};
 const int Y[] = {-1, 1, 0, 0};
 
@@ -88,14 +92,15 @@ int BFS() {
         }
 
         for (int i = 0; i < 4; ++i) {
-            Node v = p;
+            Node v = p; // 先复制一份当前结点。
             v.x += X[i];
             v.y += Y[i];
             if (0 <= v.x && v.x < N && 0 <= v.y && v.y < N) {
                 assert(v.A[v.x][v.y] != 0);
                 assert(v.A[p.x][p.y] == 0);
 
-                swap(v.A[v.x][v.y], v.A[p.x][p.y]);
+                swap(v.A[v.x][v.y], v.A[p.x][p.y]); // 把0交换到新的位置上，才能改变结点的状态，
+                // Hash 才能知道这是一个新结点。
                 if (inq.find(v.Hash()) == inq.end()) {
                     v.step = p.step + 1;
                     //					v.pre=p.Hash();

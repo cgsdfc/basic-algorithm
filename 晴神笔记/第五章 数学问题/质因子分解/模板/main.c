@@ -93,6 +93,7 @@ int DoFactor(int N, Factor factors[]) {
             factors[num].x = p;
             factors[num].cnt = 0;
             // 把该因子的全部重复找出来。
+            // 不需要循环的，x=p; cnt=N/p; N%=p;
             while (N % p == 0) {
                 factors[num].cnt++;
                 N /= p;

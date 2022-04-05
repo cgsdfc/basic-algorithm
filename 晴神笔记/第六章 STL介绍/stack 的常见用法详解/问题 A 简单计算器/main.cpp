@@ -4,6 +4,8 @@
 #include <string>
 using namespace std;
 
+// 直接计算中缀表达式的模板。
+
 /* run this program using the console pauser or add your own getch,
  * system("pause") or input loop */
 const string AllOps = "+-*/";

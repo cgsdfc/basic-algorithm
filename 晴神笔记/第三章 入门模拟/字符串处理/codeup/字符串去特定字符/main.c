@@ -31,10 +31,11 @@ int main(int argc, char* argv[]) {
         int k;
         int len = strlen(str);
 
-        getchar();
+        getchar(); // 注意 scanf %c 不会自动跳过空格。
         k = 0;
         /*
-        顺序表删除所有特定元素，不需要顺序表有序。
+        顺序表inplace删除所有特定元素，不需要顺序表有序。
+        其实可以一边判断一边输出。
         */
         for (i = 0; i < len; ++i) {
             if (str[i] != c) { str[k++] = str[i]; }

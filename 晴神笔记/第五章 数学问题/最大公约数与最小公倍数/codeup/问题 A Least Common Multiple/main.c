@@ -29,7 +29,7 @@ int main(int argc, char* argv[]) {
 
             scanf("%d", &m);
             assert(m > 0);
-            scanf("%d", &ans);
+            scanf("%d", &ans); // 第一个数。1和任何数X的lcm都是X
             for (i = 1; i < m; ++i) {
                 int x;
                 scanf("%d", &x);

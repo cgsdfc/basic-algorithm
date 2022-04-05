@@ -20,7 +20,7 @@
 */
 #define MAXN 100
 
-int index;
+int index; // Index 比较好，index与STL重名。
 
 struct Node {
     int data;  // 键值。
@@ -55,7 +55,8 @@ int search(int root, int x) {
         return root;
     }
     // 往左子树或者右子树递归。
-    if (node[root].data < x) {
+    if (x < node[root].data) {
+        // data相当于一个路标，data比x小就走左边，否则走右边。
         return search(node[root].lchild, x);
     } else {
         return search(node[root].rchild, x);
@@ -85,7 +86,7 @@ bool insert(int& root, int x) {
         return false;
     }
     // 查找。
-    if (node[root].data < x) {
+    if (x < node[root].data) {
         return insert(node[root].lchild, x);
     } else {
         return insert(node[root].rchild, x);
@@ -94,6 +95,7 @@ bool insert(int& root, int x) {
 
 /*
 删除元素x。如果元素不存在返回false，否则返回true。
+删除操作比较复杂。
 
 删除的要领在于：被删除元素x的前驱和后继，即
 1. x的前驱即小于x的最大元素，即x的左子树的最大值。

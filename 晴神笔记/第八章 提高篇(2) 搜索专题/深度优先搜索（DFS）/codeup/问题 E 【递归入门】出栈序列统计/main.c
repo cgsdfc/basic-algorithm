@@ -32,6 +32,10 @@ void Pop(void) {
 
 /*
 index：当前未入栈的最小元素。
+每一步有两种可能的操作：
+1. 取一个还未入栈的元素，入栈；
+2. 从栈中弹出一个元素，该元素不再入栈。
+直到所有元素都入栈一次、出栈一次为止，即栈为空，且待入栈元素为空。
 */
 void DFS(int index) {
     if (Empty() && index == N + 1) {
@@ -53,6 +57,7 @@ void DFS(int index) {
     }
 }
 
+// 求N个元素的所有出栈序列数，实际上是斯特林数，这里用递归模拟计数。
 int main(int argc, char* argv[]) {
     while (scanf("%d", &N) != EOF) {
         ans = 0;

@@ -1,5 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
+#include <ctype.h>
 
 /* run this program using the console pauser or add your own getch,
  * system("pause") or input loop */
@@ -28,9 +30,11 @@ You love Tian Qin
 
 #define MAXN 110
 
+// 原字符串，待替换单词，要替换为的单词。
 char str[MAXN], a[MAXN], b[MAXN];
 
 int main(int argc, char* argv[]) {
+    // 注意不能用 scanf，因为一行之中有空格。getline(cin, str) 也可以。
     while (gets(str) && gets(a) && gets(b)) {
         int i;
         int len = strlen(str);

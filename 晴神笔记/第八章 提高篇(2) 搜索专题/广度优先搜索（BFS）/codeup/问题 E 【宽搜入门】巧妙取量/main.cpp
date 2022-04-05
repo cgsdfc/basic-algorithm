@@ -68,7 +68,7 @@ struct Node {
         assert(0 < ans && ans < N);
         return ans;
     }
-    // 关键函数，散列值到状态。
+    // 关键函数，散列值到状态。有了它就不需要保存Node了，只需要保存hash。
     void Unhash(int h) {
         data[0] = h % (A + 1);            // a
         data[1] = h / (A + 1) % (B + 1);  // b
@@ -109,6 +109,7 @@ int BFS() {
         if (p.OK()) { return inq[h]; }
         /*
         枚举每一对杯子i，j，先把i全给j，再把j全给i。
+        生成所有可能的下一个结点，再进行筛选。
         */
         Node next[10];
         int len = 0;
@@ -152,7 +153,7 @@ int main(int argc, char** argv) {
             puts("no");
         } else {
             puts("yes");
-            printf("%d\n", ans - 1);
+            printf("%d\n", ans - 1); // inq=0表示没有入队。其实用-1表示更好。
         }
     }
     return 0;

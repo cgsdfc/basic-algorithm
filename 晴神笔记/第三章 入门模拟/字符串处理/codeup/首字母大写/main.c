@@ -22,12 +22,14 @@ int main(int argc, char* argv[]) {
 
         for (i = 0; i < len; ++i) {
             char c = line[i];
+            // 识别c是否为首字母，且需要转换。其实 toupper() 即可转换。
             if (IsLower(c) && (i == 0 || IsSpace(line[i - 1]))) {
                 putchar('A' + c - 'a');
             } else {
                 putchar(c);
             }
         }
+        // 注意 gets 会丢弃换行，getline 也会。puts 会添加换行。
         putchar('\n');
     }
     return 0;

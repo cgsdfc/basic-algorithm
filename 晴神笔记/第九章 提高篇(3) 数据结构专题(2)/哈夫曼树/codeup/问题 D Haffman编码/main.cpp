@@ -28,7 +28,7 @@ struct cmp {
 
 int Build(int N) {
     priority_queue<int, vector<int>, cmp> Q;
-
+// 输入N个叶节点。
     for (int i = 0; i < N; ++i) {
         getchar();
         scanf("%c %d", &node[i].ch, &node[i].weight);

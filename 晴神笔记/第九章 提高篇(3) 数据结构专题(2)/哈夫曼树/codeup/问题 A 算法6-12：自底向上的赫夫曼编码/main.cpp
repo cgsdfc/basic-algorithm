@@ -34,9 +34,11 @@ int NewNode() {
     return index++;
 }
 
+// 因为 PQ 的模板要传入一个类，所以必须写一个类方法，不能只写函数。
 struct cmp {
     // 注意：相同的权重，id小的先出现，因为要模拟线性扫描的特性。
     bool operator()(int a, int b) {
+        // 注意，这里要实现 a>b的逻辑，才能实现小顶堆。
         // weight 小的先出队。
         if (node[a].weight != node[b].weight) { return node[a].weight > node[b].weight; }
         // id小的先出队。
@@ -80,7 +82,6 @@ int Build(int N) {
         int root = NewNode();
         node[root].weight = node[a].weight + node[b].weight;
         node[root].parent = -1;  // 不知道。
-        //		node[root].isLeaf=false; // 我有孩子，不是叶子。
         node[root].id = id++;
         node[a].parent = node[b].parent = root;
         Q.push(root);
@@ -90,10 +91,8 @@ int Build(int N) {
 
 // 对叶子找根，生成编码。
 void FindCode(int v, int root) {
-    //	assert(node[v].isLeaf);
     vector<int> code;
     while (v != root) {
-        //		printf("%d ", node[v].weight);
         code.push_back((int) node[v].isRight);
         v = node[v].parent;
     }

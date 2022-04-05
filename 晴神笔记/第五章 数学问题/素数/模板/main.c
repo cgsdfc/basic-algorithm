@@ -88,6 +88,7 @@ void FindPrime(void) {
 /*
 素数判定打素数表。
 注意p[i]=true表示i是素数。
+太慢，不用这个。
 */
 void FindPrime2(void) {
     int i;

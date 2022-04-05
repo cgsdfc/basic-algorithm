@@ -32,11 +32,13 @@ int Count(int N) {
 
     sqr = sqrt(N);
     for (i = 0; i < pNum && prime[i] <= sqr; ++i) {
+        // if N % p == 0: ans += N/p; N %= p
         while (N % prime[i] == 0) {
             ++ans;
             N /= prime[i];
         }
     }
+    // 注意不要漏了这个。
     if (N != 1) { ++ans; }
     return ans;
 }

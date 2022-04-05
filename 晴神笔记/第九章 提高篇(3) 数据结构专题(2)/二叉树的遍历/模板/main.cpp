@@ -29,16 +29,24 @@ void LayerOrder(Node* root) {
         Node* now = Q.front();  // 当前元素可以命名为 now
         Q.pop();
         printf("data %d layer %d\n", now->data, now->layer);
+        // 更简洁的写法，统一处理左右。
+        Node* children[] = {now->left, now->right};
+        for (int i = 0; i < 2; ++i) {
+            Node* nxt = children[i];
+            if (!nxt) continue;
+            nxt->layer = now->layer + 1;
+            Q.push(nxt);
+        }
         // 注意，先左后右的访问子节点。
-        if (now->left) {
-            now->left->layer = now->layer + 1;
-            Q.push(now->left);
-        }
-        // 注意不要把NULL放进队列。
-        if (now->right) {
-            now->right->layer = now->layer + 1;
-            Q.push(now->right);
-        }
+        // if (now->left) {
+        //     now->left->layer = now->layer + 1;
+        //     Q.push(now->left);
+        // }
+        // // 注意不要把NULL放进队列。
+        // if (now->right) {
+        //     now->right->layer = now->layer + 1;
+        //     Q.push(now->right);
+        // }
     }
 }
 

@@ -37,6 +37,7 @@ Node* Create(int inL, int inR, int preL, int preR) {
     for (k = inL; k <= inR; ++k) {
         if (in[k] == root->data) { break; }
     }
+    // k的位置是根。
     int numL = k - inL;
     root->lchild = Create(inL, k - 1, preL + 1, preL + numL);
     root->rchild = Create(k + 1, inR, preL + numL + 1, preR);

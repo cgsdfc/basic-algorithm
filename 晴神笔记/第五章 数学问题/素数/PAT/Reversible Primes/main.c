@@ -21,11 +21,12 @@ int IsPrime(int n) {
 }
 
 /*
-将十进制的N转换为D进制的码串，反转之，求出其十进制值。
+将十进制的N转换为D进制的码串，反转之（Reverse），求出其十进制值。
 */
 int Convert(int N, int D) {
     int ans = 0;
     while (N) {
+        // d是从低位到高位生成的，正好符合反转的要求。
         int d = N % D;
         ans = ans * D + d;
         N /= D;

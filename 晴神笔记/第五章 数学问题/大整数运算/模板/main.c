@@ -27,8 +27,8 @@ typedef struct Bign {
     {}
 
 /*
-把字符串形式的数字，即整除书写顺序（高位在前，低位在后），
-转为Bign（高位在后，低位在前。
+把字符串形式的数字，即书写顺序（高位在前，低位在后），
+转为Bign（高位在后，低位在前）。
 关键是逆序写入。
 
 注意：这里假设了str是非负的，并且没有多余的前导零。并且位数不超过MAXN。
@@ -107,6 +107,7 @@ int compare(Bign a, Bign b) {
                 return 1;  // 只要有一位a大，则a大。
             else if (a.d[i] < b.d[i])
                 return -1;  // 只要有一位a小，则a小。
+            // 分不出大小，继续看下一位。
         }
         return 0;
     }
@@ -193,7 +194,7 @@ Bign read(void) {
 */
 
 Bign Sub(Bign a, Bign b) {
-    if (a.neg != b.neg) {
+    if (a.neg != b.neg) { // 异号相减
         Bign c = add(a, b);
         c.neg = a.neg;
         return c;

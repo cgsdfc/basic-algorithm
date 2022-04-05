@@ -19,10 +19,11 @@ struct Node {
 */
 Node node[MAXN];
 
-bool has[MAXN];  // 某号节点是否有父亲。
+bool has[MAXN];  // 某号节点是否有父亲。用来确定根，根是唯一一个没有父亲的结点。
 
 int N;  // 节点数。
 
+// 所谓逆转一棵树，就是递归地交换左右子树。
 void Invert(int root) {
     if (root != -1) {
         swap(node[root].lchild, node[root].rchild);
@@ -52,7 +53,7 @@ int Create(int N) {
     for (int i = 0; i < N; ++i) {
         if (!has[i]) { return i; }
     }
-    return -1;
+    return -1; // 不可能没有根。
 }
 
 void BFS(int root) {

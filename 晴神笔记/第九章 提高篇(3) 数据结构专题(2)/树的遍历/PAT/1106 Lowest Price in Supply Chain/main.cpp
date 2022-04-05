@@ -43,6 +43,7 @@ int BFS() {
             ans = node[now].deep;
             flag = false;
         }
+        // 也可以在这里统计最小深度的叶节点数量。
         for (int i = 0; i < node[now].child.size(); ++i) {
             int p = node[now].child[i];
             node[p].deep = node[now].deep + 1;

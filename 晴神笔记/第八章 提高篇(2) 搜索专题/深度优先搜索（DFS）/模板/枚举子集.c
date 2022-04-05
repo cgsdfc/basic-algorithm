@@ -10,7 +10,7 @@ DFS 枚举N个元素的全集的无重复元素子集。
 
 // 全集大小 。
 static int N;
-// 子集的阶数。
+// 子集大小。
 static int K;
 
 #define MAXN 100
@@ -56,9 +56,11 @@ static void DFS(int index) {
 
 /*
 枚举K阶子集。
+index 表示当前考虑的元素，考虑完所有元素就得到一个子集，但该子集大小不一定为K；
+nowK 表示当前子集的大小。
 */
 static void DFS2(int index, int nowK) {
-    if (nowK == K) {
+    if (nowK == K) { // 当前子集的大小已经满足K，不必递归了。
         int i;
         for (i = 0; i < ans.len; ++i) {
             printf("%d ", ans.data[i]);
@@ -71,6 +73,7 @@ static void DFS2(int index, int nowK) {
         return;
     }
 
+    // 这里的逻辑类似DFS
     // 选 index。
     ans.data[ans.len++] = A[index];
     DFS2(index + 1, nowK + 1);

@@ -5,7 +5,7 @@
  * system("pause") or input loop */
 
 int main(int argc, char* argv[]) {
-    //	freopen("./in.txt","r",stdin);
+    freopen("./in.txt","r",stdin);
     //	Solve1();
     PrintAllSubset2();
     return 0;

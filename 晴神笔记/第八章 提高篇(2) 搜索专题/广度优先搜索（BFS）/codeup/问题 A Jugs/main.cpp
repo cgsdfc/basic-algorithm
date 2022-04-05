@@ -164,20 +164,20 @@ void BFS(Node& init, int K) {
             PrintResult(inq[p]);
             return;
         }
-        vector<Oper> next;
+        vector<Oper> next; // 这其实是边。
         for (int i = 0; i < N; ++i) {
             if (p.CanDo(EMPTY, i, 0)) { next.push_back({EMPTY, i, 0}); }
             if (p.CanDo(FILL, i, 0)) { next.push_back({FILL, i, 0}); }
-            for (int j = i + 1; j < N; ++j) {
+            for (int j = i + 1; j < N; ++j) { // 枚举一对水壶。
                 if (p.CanDo(POUR, i, j)) { next.push_back({POUR, i, j}); }
                 if (p.CanDo(POUR, j, i)) { next.push_back({POUR, j, i}); }
             }
         }
         for (int i = 0; i < next.size(); ++i) {
-            Node v = p;
-            v.Do(next[i].op, next[i].i, next[i].j);
-            if (inq.find(v) == inq.end()) {
-                q.push(v);
+            Node v = p; // 当前状态。
+            v.Do(next[i].op, next[i].i, next[i].j); // 下一状态。
+            if (inq.find(v) == inq.end()) { // 尚未发现的结点。
+                q.push(v); // 延长操作的序列。
                 vector<Oper> ops = inq[p];
                 ops.push_back(next[i]);
                 inq[v] = ops;

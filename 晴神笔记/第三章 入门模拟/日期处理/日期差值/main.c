@@ -54,7 +54,7 @@ int main(int argc, char* argv[]) {
     Time a, b;
     int res;
 
-    //	freopen("./in.txt", "r", stdin);
+    	freopen("./in.txt", "r", stdin);
 
     while (scanf("%d%d", &a1, &b1) != EOF) {
         if (a1 > b1) {

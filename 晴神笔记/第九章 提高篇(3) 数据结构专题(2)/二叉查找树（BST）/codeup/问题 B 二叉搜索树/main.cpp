@@ -116,6 +116,8 @@ bool Judge(int root, char str[], int len) {
     return true;
 }
 
+// 判断两个插入序列是否对应同一颗二叉搜索树。
+// 可以建两棵树，然后判断，但更快的方法是建一棵树，然后用另一个序列来查询这棵树。
 int main(int argc, char** argv) {
     int N;
     while (scanf("%d", &N), N) {

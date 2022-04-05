@@ -35,13 +35,13 @@ void Read(int a[]) {
 }
 
 // Node* 用 int 代替。
-// 传入中序区间和后续区间。
+// 传入中序区间和后序区间。后序的最后一个元素是根。
 int Create(int inL, int inR, int postL, int postR) {
     if (inL > inR) { return -1; }
     int v = post[postR];
     int root = newNode(v);
 
-    int k;
+    int k; // 在中序中找根。
     for (k = inL; k <= inR; ++k) {
         if (v == in[k]) { break; }
     }

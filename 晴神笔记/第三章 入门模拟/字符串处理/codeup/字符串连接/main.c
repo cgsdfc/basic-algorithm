@@ -1,9 +1,12 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 /* run this program using the console pauser or add your own getch,
  * system("pause") or input loop */
 
+// 连接 a和b，输出到c，相当于：
+// strcat(c, a); strcat(c, b);
 void Strcat(char a[], char b[], char c[]) {
     while (*a) {
         *c = *a;

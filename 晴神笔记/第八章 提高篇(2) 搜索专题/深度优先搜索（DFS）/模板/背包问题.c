@@ -49,7 +49,7 @@ void DFS(int index, int nowW, int nowC) {
         return;
     }
     DFS(index + 1, nowW, nowC);  // 不选 index 物品。
-
+    // temp记录当前的选择方案。也可以用Mask数组，Mask[index]=1
     temp.data[temp.len++] = index;
     DFS(index + 1, nowW + W[index], nowC + C[index]);  // 选 index 物品。
     --temp.len;
@@ -71,8 +71,11 @@ void DFS2(int index, int nowW, int nowC) {
     即先预判，如果现在做这个选择，则会不会违反限制条件。
     */
     if (nowW + W[index] <= V) {
+        // 顺便更新了最优解。
         if (nowC + C[index] > MaxValue) { MaxValue = nowC + C[index]; }
+        temp.data[temp.len++] = index;
         DFS2(index + 1, nowW + W[index], nowC + C[index]);
+        --temp.len;
     }
 }
 

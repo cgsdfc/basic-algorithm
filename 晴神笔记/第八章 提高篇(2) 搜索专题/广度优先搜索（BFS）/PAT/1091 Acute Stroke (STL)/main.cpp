@@ -10,6 +10,7 @@ int M, N, L, T;
 #define MAXN 130
 #define MAXL 65
 
+// 本题的状态是一个三维坐标。
 int A[MAXL][MAXM][MAXN];
 int inq[MAXL][MAXM][MAXN];  // 标记坐标是否在队列中。
 
@@ -35,6 +36,7 @@ int Judge(Point p) {
     return 1;
 }
 
+// 计算以v为源点的连通块的大小。
 int BFS(Point v) {
     int tot = 1;  // 本次遍历的块的体积。
     queue<Point> q;
@@ -45,7 +47,7 @@ int BFS(Point v) {
         int i;
         Point p = q.front();
         q.pop();
-        for (i = 0; i < 6; ++i) {
+        for (i = 0; i < 6; ++i) { // 前后左右上下，六个方向。
             Point k = {p.x + X[i], p.y + Y[i], p.z + Z[i]};
             if (Judge(k)) {
                 inq[k.z][k.x][k.y] = 1;
@@ -57,6 +59,7 @@ int BFS(Point v) {
     return tot;
 }
 
+// 这题好像是找有特殊标记的坐标的总数，用BFS和DFS都可以。
 int main(int argc, char* argv[]) {
     int i, j, k;
 
@@ -78,6 +81,7 @@ int main(int argc, char* argv[]) {
                 if (A[k][i][j] == 1 && inq[k][i][j] == 0) {
                     Point p = {i, j, k};
                     int V = BFS(p);
+                    // 每个块的大小有个阈值。
                     if (V >= T) { ans += V; }
                 }
             }

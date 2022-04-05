@@ -71,12 +71,13 @@ void DFS(Point now) {
     基于当前迷宫找到安全动作。
     然后刷新迷宫（备份到temp）。
     */
-    Point points[10];
+    Point points[10]; // 基于迷宫当前状态的可能的下一结点。
     int len = 0;
     for (int i = 0; i < 9; ++i) {
         Point v = {now.x + Dir[i].x, now.y + Dir[i].y};
         if (0 <= v.x && v.x < N && 0 <= v.y && v.y < N && A[v.x][v.y] != 'S' &&
-            (!inq[v.x][v.y] || (!Dir[i].x && !Dir[i].y))) {
+            (!inq[v.x][v.y] || (!Dir[i].x && !Dir[i].y))) { // 可以原地不动，但v就会出现在inq中，
+            // 所以原地不动或者没走过的结点，都可以。
             points[len++] = v;
         }
     }
@@ -106,7 +107,7 @@ void DFS(Point now) {
     for (int i = 0; i < len; ++i) {
         Point p = points[i];
         inq[p.x][p.y] = 1;
-        DFS(p);
+        DFS(p); // 还要恢复状态。
         memcpy(A, temp, sizeof(temp));
         inq[p.x][p.y] = 0;
     }

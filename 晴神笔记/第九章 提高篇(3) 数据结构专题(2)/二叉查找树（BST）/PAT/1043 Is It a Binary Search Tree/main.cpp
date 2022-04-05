@@ -29,6 +29,7 @@ int newNode(int v) {
     return index++;
 }
 
+// 一边建树，一边检查序列是否符合条件。
 int Create(int preL, int preR, bool (*cmp)(int, int)) {
     if (!ans || preL > preR) {
         // 已经检查不成功了。
@@ -52,13 +53,14 @@ int Create(int preL, int preR, bool (*cmp)(int, int)) {
         }
         ++j;
     }
+    // 已经找到了两个子树对应的序列，递归即可。
     node[root].lchild = Create(preL + 1, k - 1, cmp);
     node[root].rchild = Create(k, preR, cmp);
     return root;
 }
 
 // 后序遍历输出。
-void Print(int root, int& i) {
+void Print(int root, int& i) { // i是为了最后一个元素后面输出空格。
     if (root != -1) {
         Print(node[root].lchild, i);
         Print(node[root].rchild, i);

@@ -92,7 +92,7 @@ int main(int argc, char* argv[]) {
         int dis;
         int ans;
 
-        t.mm = FindMon(mon);
+        t.mm = FindMon(mon); // 文本的月份名转为数字。
         //		Print(t);
 
         ans = Weekday(t);
