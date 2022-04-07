@@ -6,10 +6,7 @@ using namespace std;
 /* run this program using the console pauser or add your own getch,
  * system("pause") or input loop */
 
-/*
-把字符串单独保留在一个数组中，用id表示学生，这样在最后的排序
-中可以节省时间，避免字符串的大量移动。
-*/
+// 这两道题考的其实是Map反转问题，即把Map的value和key反转，冗余的部分用list保存。
 
 #define MAXK (2500 + 5)
 struct Student {

@@ -27,7 +27,7 @@ int Prio(char op) {
 
 void Compute(stack<double>& data, char op) {
     assert(data.size() >= 2);
-
+    // a、b的出栈顺序。
     double a, b;
     b = data.top();
     data.pop();
@@ -38,7 +38,7 @@ void Compute(stack<double>& data, char op) {
         case '+': a += b; break;
         case '*': a *= b; break;
         case '/':
-            assert(b);
+            assert(b); // 这个必须有的，否则不知道哪里错了。
             a /= b;
             break;
     }
@@ -48,10 +48,13 @@ void Compute(stack<double>& data, char op) {
 int main(int argc, char** argv) {
     string str;
     while (getline(cin, str) && str != "0") {
+        // 需要两个栈，一个装操作符，一个装操作数。
         stack<char> op;
         stack<double> data;
         int i = 0;
+        // 解析字符串。
         while (i < str.size()) {
+            // 跳过空格。
             while (i < str.size() && str[i] == ' ') {
                 ++i;
             }
@@ -65,18 +68,24 @@ int main(int argc, char** argv) {
                 记住只有当新运算符x的优先级小于等于栈顶优先级才出栈。
                 */
                 // 栈空，或者新运算符优先级大于栈顶。
+                // 当前的操作符优先级较高，要入栈。
                 if (op.empty() || Prio(x) > Prio(op.top())) {
                     op.push(x);
                 } else {
+                    // 上下两个条件正好是取反的关系。
+                    // 当前操作符优先级较低，栈内的操作符可以弹出并计算。
                     while (!op.empty() && Prio(x) <= Prio(op.top())) {
                         char top = op.top();
                         op.pop();
                         Compute(data, top);
                     }
+                    // 当前操作符必须等遇到比它优先级低的才能运算，现在只能入栈。
                     op.push(x);
                 }
             } else if (isdigit(x)) {
+                // 只有遇到操作符才计算，遇到操作数就无脑入栈。
                 int num = 0;
+                // 先将解析此操作数。
                 while (i < str.size() && isdigit(str[i])) {
                     num = num * 10 + (str[i] - '0');
                     ++i;
@@ -92,6 +101,8 @@ int main(int argc, char** argv) {
             Compute(data, op.top());
             op.pop();
         }
+        // 最后栈必定只有一个元素，就是运算的结果。
+        // 如果是后缀表达式，算法更加简单，碰到操作符直接弹出两数计算即可。
         printf("%.2f\n", data.top());
     }
 

@@ -102,9 +102,11 @@ BFS需要一个inq数组，作用与DFS的vis数组类似，标志一个节点是否加入过队列。
 bool inq[MAXN];
 
 void BFS(int u) {
+    // 对源点的操作。
     queue<int> Q;
     Q.push(u);
     inq[u] = true;
+
     while (!Q.empty()) {
         int u = Q.front();
         Q.pop();
@@ -152,10 +154,12 @@ void BFS2(int s) {  // BFS树的根，即源点。
     start.layer = 0;
     Q.push(start);
     inq[start.v] = true;
+
     while (!Q.empty()) {
         Node topNode = Q.front();
         Q.pop();
         int u = topNode.v;
+        // u的邻居，访问u的邻接表。
         for (int i = 0; i < Adj2[u].size(); ++i) {
             Node next = Adj2[u][i];
             next.layer = topNode.layer + 1;  // 注意，next可能inq=true，但是没关系，因为不会访问了。

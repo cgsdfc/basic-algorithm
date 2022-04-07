@@ -10,6 +10,7 @@ int N, M;
 
 /*
 如果不能在一次BFS完成所有节点的访问，则图不是联通的。
+用bfs判断图的连通性。
 */
 
 #define MAXN 1005
@@ -23,6 +24,7 @@ int BFS(int s) {
     Q.push(s);
     inq[s] = true;
     while (!Q.empty()) {
+        // bfs访问的结点都要经过这里。
         ++ans;
         int v = Q.front();
         Q.pop();
@@ -38,6 +40,7 @@ int BFS(int s) {
 }
 
 bool Judge() {
+    // 或者可以看一次bfs能否把inq全部置为true。
     fill(inq, inq + N + 1, false);
     int n = BFS(1);
     return n == N;

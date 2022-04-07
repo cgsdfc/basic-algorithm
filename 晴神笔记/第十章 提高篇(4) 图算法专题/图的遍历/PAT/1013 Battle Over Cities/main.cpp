@@ -47,7 +47,7 @@ int DFSTrave() {
     for (int v = 1; v <= N; ++v) {
         if (!vis[v] && v != Del) {
             // 既不访问死点，也不重复访问。
-            ++ans;
+            ++ans; // 统计联通分量数量。
             DFS(v);
         }
     }
@@ -68,7 +68,7 @@ int main(int argc, char** argv) {
         G[i][j] = G[j][i] = true;
     }
     while (K--) {
-        // 查询。
+        // 查询。每次只删除一个点。
         scanf("%d", &Del);
         int ans = DFSTrave();
         printf("%d\n", ans);

@@ -21,9 +21,11 @@ vector<int> students[MAXN];
 // 对学生名字进行散列。
 int Hash(char name[], int len) {
     int ans = 0;
+    // 转换为26进制的整数。
     for (int i = 0; i < 3; ++i) {
         ans = ans * 26 + name[i] - 'A';
     }
+    // 最后一位是数字。
     return ans * 10 + name[len - 1] - '0';
 }
 
@@ -55,6 +57,7 @@ int main(int argc, char** argv) {
     for (int i = 0; i < K; ++i) {
         int cid;
         int num;
+        // 每个课，后面是选课的学生。
         scanf("%d%d", &cid, &num);
         while (num--) {
             char name[10];

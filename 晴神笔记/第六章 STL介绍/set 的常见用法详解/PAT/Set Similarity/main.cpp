@@ -68,6 +68,7 @@ int main(int argc, char** argv) {
     while (K--) {
         int a, b;
         scanf("%d%d", &a, &b);
+        // ab和ba的结果是一样的，所以人为规定a<b即可。
         if (a > b) { swap(a, b); }
         double rate = results[Hash(a, b, N)];
         printf("%.1f%%\n", rate);

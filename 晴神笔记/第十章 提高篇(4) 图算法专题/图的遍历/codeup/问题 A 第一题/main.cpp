@@ -7,6 +7,7 @@ using namespace std;
 
 /*
 用map实现的邻接表，过了。
+用dfs统计连通块数量。
 */
 // 节省内存。
 struct Node {

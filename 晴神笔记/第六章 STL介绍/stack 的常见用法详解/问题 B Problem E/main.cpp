@@ -33,19 +33,20 @@ bool Judge(string& str) {
                 break;
         }
     }
+    // 注意，合法的状态是最后栈为空。
     return s.empty();
 }
 
 /*
 注意点：
 1. 对栈进行top，pop之前必须判定empty。
-2. 读取整数后要getline，必须先getchar。
+2. 读取整数后若要getline，则必须先getchar。
 */
-
+// 模板：检查括号序列是否合法。
 int main(int argc, char** argv) {
     int N;
     while (scanf("%d", &N) != EOF) {
-        getchar();
+        getchar(); // scanf 会跳过换行，但不会主动清除换行，必须用getchar手动清除。
         while (N--) {
             string str;
             getline(cin, str);

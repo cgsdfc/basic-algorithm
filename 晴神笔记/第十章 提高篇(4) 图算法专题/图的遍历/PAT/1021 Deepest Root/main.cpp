@@ -95,6 +95,7 @@ int FindComp() {
 
 /*
 对某个节点进行DFS遍历，记录下最深的节点，记录在vi中。
+一边求最大深度，一边统计深度最大的点，有技巧。
 */
 void DFS2(int u, int depth, int& maxDepth, vector<int>& vi) {
     vis[u] = true;
@@ -195,6 +196,7 @@ int main(int argc, char** argv) {
         // 无向图。
         Union(a, b);
     }
+    // 用并查集可以快速检查连通性。
     int n = FindComp();
     if (n != 1) {
         // 不是联通图，不是树。
