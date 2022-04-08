@@ -4,7 +4,7 @@
 计算源点s到所有节点的最短距离，单源最短路。
 
 适用于：
-        非负边权的最短路
+        非负边权的最短路（不能处理有正有负的边权，但可以处理【非正边权的最长路】）
 
 时间复杂度：
         邻接矩阵：O(V^2)
@@ -58,7 +58,9 @@ void Dijkstra(int s) {
     fill(d, d + N, INF);        // 距离无穷大。
     fill(vis, vis + N, false);  // 节点未访问。
     d[s] = 0;                   // 注意，这个容易漏掉！！没有这个循环只进行一步。
-
+    // 注意与bfs不同，初始化时不需要把s标记为vis，因为算法在第一轮
+    // 就会把s标记为已访问。
+    
     for (int i = 0; i < N; ++i) {  // 循环N轮，每轮解决一个节点。
         // 查找当前最优节点。
         int u = -1;
@@ -267,6 +269,7 @@ v：终点。（当前节点）
 */
 void PrintPath(int s, int v) {
     if (s == v) {
+        // 已到达源点，pre[v]不存在了
         printf("%d\n", s);
         return;
     }
@@ -420,7 +423,7 @@ void Dijkstra8(int s) {
     PQueue Q;
     Q.push(Node(s, 0));
     d[s] = 0;
-    w[s] = weight[s];
+    w[s] = weight[s]; // w数组累加路径上的点权。
 
     while (!Q.empty()) {
         Node top = Q.top();
@@ -459,8 +462,8 @@ void Dijkstra9(int s) {
 
     PQueue Q;
     Q.push(Node(s, 0));
-    d[s] = 0;
-    num[s] = 1;  // 注意，到源点s的最短路有且仅有一条。
+    d[s] = 0; // 自己到自己的距离是0。
+    num[s] = 1;  // 注意，到源点s的最短路有且仅有一条。自己到自己。
 
     while (!Q.empty()) {
         Node top = Q.top();
@@ -473,6 +476,7 @@ void Dijkstra9(int s) {
                     d[v] = G[u][v] + d[u];
                     num[v] = num[u];  // 因为经过u的路径更短，所以之前求出的v的最短路
                                       // 不再是最短了，数量必须改。
+                    Q.push(Node(v, d[v])); // 注意：不要忘了入队更新了距离的结点！
                 } else if (G[u][v] + d[u] == d[v]) {
                     // 经过u的路径和v的当前最短路径一样长，所以累加。
                     num[v] += num[u];

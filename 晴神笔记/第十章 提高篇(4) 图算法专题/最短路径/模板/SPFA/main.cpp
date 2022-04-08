@@ -1,5 +1,6 @@
 /*
 SPFA是Bellman的优化版本，具有相同功能，但是复杂度为O(kE)，Bellman的复杂度为O(VE)。
+Shortest Path Fast Algorithm，国人提出的最短路优化算法。
 */
 
 /*
@@ -20,8 +21,18 @@ SPFA是Bellman的优化版本，具有相同功能，但是复杂度为O(kE)，Bellman的复杂度为O(VE)
 这部分暂时不明白。
 
 另外，SPFA有多种优化，这里不涉及。
-SPFA可能退化为Bellman的复杂度，即O(VE)。
-故非负边权的图，用Dijkstra好。
+SPFA可能退化为Bellman的复杂度，即O(VE)，对于稠密图，即为O(V^3)。
+故非负边权的图，用Dijkstra好，复杂度永远是 O(VlogV+E)，对于稠密图，即为O(V^2)。
+为什么Dijk比SPFA快？因为它假设了非负边权，导致贪心策略是正确的，自然比DP要低一个数量级。
+
+Dijk 是 PQ 优化，SPFA 是 Q 优化。
+
+为什么SPFA优化了Bellman？因为：
+1. Bellman每一轮都是无脑地遍历所有边，但其实只有那些在上一轮中某个结点距离发生了变化
+的边才有处理的价值，所以不需要每轮处理所有的边；
+2. Bellman总是要进行V-1轮循环，
+而当所有结点的距离都不变了，再怎么迭代也不会变。所以V-1轮只是理论上的轮数，实际上可能不需要这么多轮。
+对于这种某轮的变化触发下一轮的新变化的逻辑，用队列来跟踪每轮的变化是合适的。
 */
 
 #include <queue>  // SPFA必备。
@@ -50,7 +61,7 @@ bool SPFA(int s) {
     fill(num, num + N, 0);
 
     queue<int> Q;
-    // 队列Q跟踪那些节点被松弛了，那么这些节点就要继续扩展。
+    // 队列Q跟踪那些节点被松弛了，那么这些节点就可能触发新的松弛。
     Q.push(s);
     inq[s] = true;
     d[s] = 0;
@@ -70,6 +81,7 @@ bool SPFA(int s) {
                 // 注意，更新d数组不受inq的约束。
                 if (!inq[v]) {
                     Q.push(v);
+                    // 一个结点可以重复入队多次。
                     inq[v] = true;
                     num[v]++;
                     // 注意，先增加num，然后再检测。

@@ -30,7 +30,7 @@ using namespace std;
 #define MAXN 505  // 节点数。
 
 int in[MAXN];  // 输入图的时候可以记录每个节点的入度。
-int N;
+int N; // 结点数。
 vector<int> Adj[MAXN];
 
 bool TopoSort() {
@@ -44,18 +44,21 @@ bool TopoSort() {
     while (!Q.empty()) {
         int u = Q.front();
         Q.pop();
+        // 注意：在出队时输出当前元素。
         printf("%d\n", u);  // 输出当前元素。
         ++num;              // 计数拓扑序列的元素个数。
         // 更新后继节点的入度。
         for (int i = 0; i < Adj[u].size(); ++i) {
             int v = Adj[u][i];
             --in[v];
+            // 不需要inq数组。
             if (!in[v]) {
                 // 可以输出了。
                 Q.push(v);
             }
         }
     }
+    // 如果能在一次while循环中遍历了所有结点，则成功，否则不成功。
     return num == N;
 }
 
